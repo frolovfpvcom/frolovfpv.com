@@ -35,9 +35,9 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight"
           >
-            Filmisk
+            Se verden
             <br />
-            <span className="text-neutral-500">dronefilm</span>
+            <span className="text-neutral-500">med nye øjne</span>
           </motion.h1>
 
           <motion.p
