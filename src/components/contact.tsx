@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
+import Link from "next/link";
 import { Mail, ArrowUpRight } from "lucide-react";
 
 export function Contact() {
@@ -27,8 +28,8 @@ export function Contact() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <a
-              href="mailto:peterfrolov09@gmail.com"
+            <Link
+              href="/kontakt"
               className="group flex items-center gap-3 bg-white text-black px-6 py-3.5 rounded-full font-medium text-sm hover:bg-neutral-200 transition-colors duration-200"
             >
               <Mail size={16} />
@@ -37,7 +38,7 @@ export function Contact() {
                 size={14}
                 className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"
               />
-            </a>
+            </Link>
           </div>
         </motion.div>
       </div>
