@@ -109,8 +109,8 @@ const folders: (GlassFolderProps & { label: string })[] = [
     ],
   },
   {
-    label: "Byflow",
-    meta: "By · 3 klip",
+    label: "Natur",
+    meta: "Natur · 3 klip",
     tone: "dark",
     glass: "#0c2a18",
     art: art.green,
