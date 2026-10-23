@@ -21,7 +21,7 @@ export function Navbar() {
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className="fixed top-0 left-0 right-0 z-50 bg-white text-black border-b border-black/5"
     >
-      <div className="max-w-7xl mx-auto px-6 pt-8 pb-4 grid grid-cols-[1fr_auto_1fr] items-center">
+      <div className="max-w-7xl mx-auto px-6 py-3 grid grid-cols-[1fr_auto_1fr] items-center">
         <a href="#" aria-label="Til toppen" className="justify-self-start">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/kat-logo.png" alt="" className="h-10 w-auto md:h-12" />
