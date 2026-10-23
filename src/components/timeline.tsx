@@ -9,11 +9,12 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { WormLoader } from "@/components/worm-loader";
+import { MorphingSquare } from "@/components/ui/morphing-square";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -155,7 +156,7 @@ const textColor = "var(--foreground)";
 const mutedTextColor = "#a3a3a3";
 const activeColor = "#ededed";
 const duration = 1.2;
-// How long the loading screen covers the timeline once it scrolls into view.
+// How long the loading screen stays full size once the timeline scrolls into view.
 const loaderMs = 2600;
 
 export function Timeline() {
@@ -168,8 +169,8 @@ export function Timeline() {
   const activeStyle: CSSProperties = { backgroundColor: activeColor };
   const mutedTextStyle: CSSProperties = { color: mutedTextColor };
 
-  // The first time the timeline comes into view, show the loading screen for a
-  // moment, then fade it away.
+  // The first time the timeline comes into view, show the loading screen at full
+  // size for a moment, then shrink it to half. The blur stays on.
   useEffect(() => {
     const el = journeyRef.current;
     if (!el) return;
@@ -300,6 +301,9 @@ export function Timeline() {
           Scroll videre og følg turen fra den første helikopter til den første
           selvbyggede 5&quot; freestyle-drone.
         </p>
+        <div className="mt-12">
+          <MorphingSquare />
+        </div>
       </div>
 
       <div
@@ -424,33 +428,30 @@ export function Timeline() {
                 </div>
               </div>
 
-              <AnimatePresence>
-                {loading && (
-                  <motion.div
-                    key="timeline-loader"
-                    initial={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="absolute -inset-[2vw] z-10 bg-black/40 backdrop-blur-xl"
-                    aria-hidden
-                  >
-                    <div className="absolute left-[2vw] top-[2vw] bottom-[2vw] w-[50vw] overflow-hidden rounded-[1vw] border border-white/[0.06] max-[600px]:w-[85vw] max-[600px]:rounded-[5vw]">
-                      <video
-                        src="/loader.mp4"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="absolute inset-0 h-full w-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-black/35" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <WormLoader className="w-[12vw] text-white max-[600px]:w-[36vw]" />
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <div
+                className="absolute -inset-[2vw] z-10 bg-black/40 backdrop-blur-xl"
+                aria-hidden
+              >
+                <motion.div
+                  initial={false}
+                  animate={{ scale: loading ? 1 : 0.5 }}
+                  transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute left-[2vw] top-[2vw] bottom-[2vw] w-[50vw] origin-left overflow-hidden rounded-[1vw] border border-white/[0.06] max-[600px]:w-[85vw] max-[600px]:rounded-[5vw]"
+                >
+                  <video
+                    src="/loader.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="absolute inset-0 h-full w-full object-cover grayscale"
+                  />
+                  <div className="absolute inset-0 bg-black/35" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <WormLoader className="w-[12vw] text-white max-[600px]:w-[36vw]" />
+                  </div>
+                </motion.div>
+              </div>
             </div>
           </div>
         </div>
