@@ -3,13 +3,17 @@
 
 import {
   type CSSProperties,
+  useEffect,
   useLayoutEffect,
   useRef,
+  useState,
   useSyncExternalStore,
 } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { WormLoader } from "@/components/worm-loader";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -151,14 +155,39 @@ const textColor = "var(--foreground)";
 const mutedTextColor = "#a3a3a3";
 const activeColor = "#ededed";
 const duration = 1.2;
+// How long the loading screen covers the timeline once it scrolls into view.
+const loaderMs = 2600;
 
 export function Timeline() {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const wholeSliderRef = useRef<HTMLDivElement>(null);
+  const journeyRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState(true);
   const reducedMotion = usePrefersReducedMotion();
   const activeStyle: CSSProperties = { backgroundColor: activeColor };
   const mutedTextStyle: CSSProperties = { color: mutedTextColor };
+
+  // The first time the timeline comes into view, show the loading screen for a
+  // moment, then fade it away.
+  useEffect(() => {
+    const el = journeyRef.current;
+    if (!el) return;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        io.disconnect();
+        timer = setTimeout(() => setLoading(false), loaderMs);
+      },
+      { threshold: 0.15 },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      clearTimeout(timer);
+    };
+  }, []);
 
   useGSAP(() => {
     const track = trackRef.current;
@@ -292,7 +321,7 @@ export function Timeline() {
               />
             </div>
 
-            <div className="relative h-full w-full">
+            <div ref={journeyRef} className="relative h-full w-full">
               <div className="w-full absolute left-0 top-[49%] flex items-center h-fit">
                 <div
                   className="h-[.8vw] max-[600px]:h-[2vw] max-[600px]:w-[2vw] w-[.8vw] shrink-0 rounded-full"
@@ -394,6 +423,34 @@ export function Timeline() {
                   ))}
                 </div>
               </div>
+
+              <AnimatePresence>
+                {loading && (
+                  <motion.div
+                    key="timeline-loader"
+                    initial={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="absolute -inset-[2vw] z-10 bg-black/40 backdrop-blur-xl"
+                    aria-hidden
+                  >
+                    <div className="absolute left-[2vw] top-[2vw] bottom-[2vw] w-[50vw] overflow-hidden rounded-[1vw] border border-white/[0.06] max-[600px]:w-[85vw] max-[600px]:rounded-[5vw]">
+                      <video
+                        src="/loader.mp4"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="absolute inset-0 h-full w-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/35" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <WormLoader className="w-[12vw] text-white max-[600px]:w-[36vw]" />
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>

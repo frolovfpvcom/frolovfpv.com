@@ -95,16 +95,17 @@ const frontLeaves: Leaf[] = [
 
 const folders: (GlassFolderProps & { label: string })[] = [
   {
-    label: "Bjergjagt",
-    meta: "Natur · 3 klip",
+    label: "Reklame for Peugeot",
+    meta: "Reklame · 3 klip",
     tone: "light",
     glass: "#d9d9dd",
     art: art.gray,
     seed: 4,
     files: [
-      { name: "Dyk fra toppen", blank: true },
-      { name: "Bjergkam", blank: true },
-      { name: "Ned i dalen", blank: true },
+      { name: "Peugeot 3", meta: "720p · 0:04", video: "/clips/peugeot/klip-3.mp4", image: "/clips/peugeot/klip-3.jpg" },
+      { name: "Peugeot 2", meta: "720p · 0:04", video: "/clips/peugeot/klip-2.mp4", image: "/clips/peugeot/klip-2.jpg" },
+      // last in the list = front of the folder and first in the opened stack
+      { name: "Peugeot 1", meta: "720p · 0:02", video: "/clips/peugeot/klip-1.mp4", image: "/clips/peugeot/klip-1.jpg" },
     ],
   },
   {

@@ -1311,6 +1311,9 @@ canvas.gf-sheet-art[data-ready] { opacity: 1; filter: none; }
   font-weight: 500;
   line-height: 1.15;
   letter-spacing: -.012em;
+  /* room for descenders (j, g, p) inside the clipped box */
+  padding-bottom: .15em;
+  margin-bottom: -.15em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
