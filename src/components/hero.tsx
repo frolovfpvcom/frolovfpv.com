@@ -17,7 +17,7 @@ export function Hero() {
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         className="absolute inset-0 h-full w-full object-cover"
       >
-        <source src="/intro.mp4" type="video/mp4" />
+        <source src="/intro-2.mp4" type="video/mp4" />
       </motion.video>
 
       {/* Darken the top for the menu and the bottom for the headline. */}
