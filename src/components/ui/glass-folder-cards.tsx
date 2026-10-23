@@ -862,18 +862,16 @@ export default function GlassFolder({
                       <i style={{ width: "42%" }} />
                     </span>
                   )}
-                  <span className="gf-sheet-pill" aria-hidden="true">
-                    {file.name}
-                  </span>
-                  {file.blank ? null : (
+                  {/* clips show no title, only the meta (e.g. 4K) */}
+                  {file.blank || !file.meta ? null : (
                     <span className="gf-sheet-head">
-                      <span className="gf-sheet-name">{file.name}</span>
-                      {file.meta ? <span className="gf-sheet-meta">{file.meta}</span> : null}
+                      <span className="gf-sheet-meta">{file.meta}</span>
                     </span>
                   )}
                 </>
               )
               const common = {
+                "aria-label": file.name,
                 className:
                   "gf-sheet" +
                   (picture ? " gf-sheet--art" : "") +
@@ -1191,7 +1189,7 @@ canvas.gf-sheet-art[data-ready] { opacity: 1; filter: none; }
   z-index: 1;
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 10px;
   white-space: nowrap;
 }

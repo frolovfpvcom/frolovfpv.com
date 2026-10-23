@@ -102,15 +102,15 @@ const folders: (GlassFolderProps & { label: string })[] = [
     art: art.gray,
     seed: 4,
     files: [
-      { name: "Peugeot 3", meta: "720p · 0:04", video: "/clips/peugeot/klip-3.mp4", image: "/clips/peugeot/klip-3.jpg" },
-      { name: "Peugeot 2", meta: "720p · 0:04", video: "/clips/peugeot/klip-2.mp4", image: "/clips/peugeot/klip-2.jpg" },
+      { name: "Peugeot shenanigans", meta: "4K", video: "/clips/peugeot/klip-3.mp4", image: "/clips/peugeot/klip-3.jpg" },
+      { name: "Peugeot shenanigans", meta: "4K", video: "/clips/peugeot/klip-2.mp4", image: "/clips/peugeot/klip-2.jpg" },
       // last in the list = front of the folder and first in the opened stack
-      { name: "Peugeot 1", meta: "720p · 0:02", video: "/clips/peugeot/klip-1.mp4", image: "/clips/peugeot/klip-1.jpg" },
+      { name: "Peugeot shenanigans", meta: "4K", video: "/clips/peugeot/klip-1.mp4", image: "/clips/peugeot/klip-1.jpg" },
     ],
   },
   {
-    label: "Byflow",
-    meta: "By · 3 klip",
+    label: "Natur",
+    meta: "Natur · 3 klip",
     tone: "dark",
     glass: "#0c2a18",
     art: art.green,
@@ -121,11 +121,11 @@ const folders: (GlassFolderProps & { label: string })[] = [
       { name: "Gennem parken", blank: true },
       { name: "Nattelys", blank: true },
       // last in the list = front of the folder and first in the opened stack
-      { name: "Panoram", meta: "1080p · 0:33", video: "/clips/panoram.mp4", image: "/clips/panoram.jpg" },
+      { name: "Panoram", meta: "4K · 0:33", video: "/clips/panoram.mp4", image: "/clips/panoram.jpg" },
     ],
   },
   {
-    label: "Kystdyk",
+    label: "Whoopin’",
     meta: "Hav · 3 klip",
     tone: "light",
     glass: "#f9c4d8",
