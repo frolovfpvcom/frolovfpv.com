@@ -32,12 +32,17 @@ export function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 pt-8 pb-4 grid grid-cols-[1fr_auto_1fr] items-center">
+        <a href="#" aria-label="Til toppen" className="justify-self-start">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/kat-logo.png" alt="" className="h-10 w-auto md:h-12" />
+        </a>
+
         <a href="#" className="text-lg font-semibold tracking-tight">
           FROLOV<span className="text-neutral-500">FPV</span>
         </a>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-8 justify-self-end">
           {links.map((link) => (
             <a
               key={link.href}
@@ -52,7 +57,7 @@ export function Navbar() {
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? "Luk menu" : "Åbn menu"}
-          className="md:hidden text-white"
+          className="md:hidden text-white justify-self-end"
         >
           {mobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
