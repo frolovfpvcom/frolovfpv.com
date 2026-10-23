@@ -5,27 +5,52 @@ import { motion } from "motion/react";
 // A stick figure doing "the worm", facing right. It stays in place while the
 // thin grey floor slides in towards it, so it looks like it crawls forward.
 const DURATION = 1.6;
+const FRAMES = 32;
+const FLOOR_Y = 56;
 
-// Body: feet → knees → hips → chest → shoulders. The wave runs from the feet to the head.
-const body = [
-  "M10 56 L30 56 L50 56 L70 56 L86 56",
-  "M10 56 L30 46 L50 55 L70 56 L86 56",
-  "M10 56 L30 54 L50 42 L70 55 L86 56",
-  "M10 56 L30 56 L50 52 L70 43 L86 52",
-  "M10 56 L30 56 L50 56 L70 52 L86 45",
-  "M10 56 L30 56 L50 56 L70 56 L86 56",
-];
-const headY = [52, 52, 52, 49, 41, 52];
-const arm = [
-  "M86 56 L96 59",
-  "M86 56 L96 59",
-  "M86 56 L96 59",
-  "M86 52 L96 59",
-  "M86 45 L96 59",
-  "M86 56 L96 59",
-];
+// Points along the body from the feet (s = 0) to the shoulders (s = 1).
+const SAMPLES = [0, 0.17, 0.34, 0.5, 0.67, 0.83, 1];
+const xAt = (s: number) => 10 + s * 76;
 
-const loop = { duration: DURATION, repeat: Infinity, ease: "easeInOut" as const };
+// A soft hump that rolls from the feet to the shoulders once per loop.
+function bodyY(s: number, t: number) {
+  // Starts and ends off the body, so the loop joins without a jump.
+  const centre = -0.45 + t * 1.9;
+  const hump = Math.exp(-(((s - centre) / 0.2) ** 2));
+  // Lift the chest a little more as the wave reaches it.
+  const amp = 10 + 4 * s;
+  return FLOOR_Y - amp * hump;
+}
+
+const round = (n: number) => Math.round(n * 100) / 100;
+
+// Catmull-Rom through the samples, written as cubic Béziers so every frame has
+// the same commands and motion can tween between them smoothly.
+function smoothPath(points: [number, number][]) {
+  let d = `M${round(points[0][0])} ${round(points[0][1])}`;
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = points[i - 1] ?? points[i];
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const p3 = points[i + 2] ?? p2;
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    d += ` C${round(c1[0])} ${round(c1[1])} ${round(c2[0])} ${round(c2[1])} ${round(p2[0])} ${round(p2[1])}`;
+  }
+  return d;
+}
+
+const frames = Array.from({ length: FRAMES + 1 }, (_, i) => i / FRAMES);
+const body = frames.map((t) =>
+  smoothPath(SAMPLES.map((s) => [xAt(s), bodyY(s, t)])),
+);
+const shoulderY = frames.map((t) => bodyY(1, t));
+const headY = shoulderY.map((y) => round(y - 4));
+const arm = shoulderY.map(
+  (y) => `M86 ${round(y)} C90 ${round(y + 1)} 93 ${round((y + 59) / 2)} 96 59`,
+);
+
+const loop = { duration: DURATION, repeat: Infinity, ease: "linear" as const };
 
 export function WormLoader({ className }: { className?: string }) {
   return (
