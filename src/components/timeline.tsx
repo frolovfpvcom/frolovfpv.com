@@ -1,7 +1,5 @@
 "use client";
 
-import { MorphingSquare } from "@/components/ui/morphing-square";
-
 export function Timeline() {
   return (
     <section id="tidslinje" className="relative w-full py-32">
@@ -12,9 +10,6 @@ export function Timeline() {
         <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
           Min rejse som FPV drone pilot indtil nu
         </h2>
-        <div className="mt-12">
-          <MorphingSquare />
-        </div>
       </div>
 
       <div className="mt-16 px-6">
