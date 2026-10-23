@@ -28,7 +28,7 @@ export function Contact() {
 
           <div className="flex flex-col sm:flex-row gap-4">
             <a
-              href="mailto:hello@frolovfpv.com"
+              href="mailto:peterfrolov09@gmail.com"
               className="group flex items-center gap-3 bg-white text-black px-6 py-3.5 rounded-full font-medium text-sm hover:bg-neutral-200 transition-colors duration-200"
             >
               <Mail size={16} />
