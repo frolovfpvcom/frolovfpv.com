@@ -7,14 +7,6 @@ export function Footer() {
         </p>
         <div className="flex gap-6">
           <a
-            href="https://instagram.com/frolovfpv"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-neutral-600 hover:text-white transition-colors"
-          >
-            Instagram
-          </a>
-          <a
             href="https://youtube.com/@frolovfpv"
             target="_blank"
             rel="noopener noreferrer"
