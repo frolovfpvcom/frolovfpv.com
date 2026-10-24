@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Udvalgt arbejde | Frolov FPV",
@@ -12,7 +10,6 @@ export const metadata: Metadata = {
 export default function ArbejdePage() {
   return (
     <>
-      <Navbar />
       <main className="flex flex-1 items-center bg-black px-6 pt-36 pb-24 md:pt-44">
         <div className="mx-auto max-w-3xl text-center">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">Udvalgt arbejde</h1>
@@ -32,7 +29,6 @@ export default function ArbejdePage() {
           </Link>
         </div>
       </main>
-      <Footer />
     </>
   );
 }
