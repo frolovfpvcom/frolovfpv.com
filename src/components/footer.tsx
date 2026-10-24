@@ -5,16 +5,6 @@ export function Footer() {
         <p className="text-sm text-neutral-600">
           &copy; {new Date().getFullYear()} Frolov FPV. Alle rettigheder forbeholdes.
         </p>
-        <div className="flex gap-6">
-          <a
-            href="https://youtube.com/@frolovfpv"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-neutral-600 hover:text-white transition-colors"
-          >
-            YouTube
-          </a>
-        </div>
       </div>
     </footer>
   );

@@ -6,7 +6,7 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 
 const links = [
-  { label: "Arbejde", href: "/#work" },
+  { label: "Arbejde", href: "/arbejde" },
   { label: "Om mig", href: "/#about" },
   { label: "Kontakt", href: "/kontakt" },
 ];
