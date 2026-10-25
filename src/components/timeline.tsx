@@ -1,14 +1,22 @@
 "use client";
 
+import { useT } from "@/lib/lang";
+
+const texts = {
+  da: { label: "Tidslinje", title: "Min rejse som FPV drone pilot indtil nu", alt: "Portræt af Peter Frolov" },
+  en: { label: "Timeline", title: "My journey as an FPV drone pilot so far", alt: "Portrait of Peter Frolov" },
+};
+
 export function Timeline() {
+  const t = useT(texts);
   return (
     <section id="tidslinje" className="relative w-full py-32">
       <div className="max-w-3xl mx-auto px-6 text-center">
         <p className="text-xs text-neutral-500 uppercase tracking-[0.3em] mb-6">
-          Tidslinje
+          {t.label}
         </p>
         <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
-          Min rejse som FPV drone pilot indtil nu
+          {t.title}
         </h2>
       </div>
 
@@ -17,7 +25,7 @@ export function Timeline() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/portrait.jpg"
-            alt="Portræt af Peter Frolov"
+            alt={t.alt}
             draggable={false}
             className="h-full w-full object-cover"
           />

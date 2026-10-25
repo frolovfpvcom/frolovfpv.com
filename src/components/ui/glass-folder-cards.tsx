@@ -1,6 +1,12 @@
 "use client"
 
 import * as React from "react"
+import { useT } from "@/lib/lang"
+
+const gfTexts = {
+  da: { open: "Åbn", close: "Luk", openFolder: "Åbn mappe", closeFolder: "Luk mappe", item: " element", items: " elementer", untitled: "Uden navn ", justNow: "Lige nu", contents: "Indhold i ", addTo: "Tilføj en fil til ", moreFor: "Flere muligheder for ", optionsFor: "Muligheder for " },
+  en: { open: "Open", close: "Close", openFolder: "Open folder", closeFolder: "Close folder", item: " item", items: " items", untitled: "Untitled ", justNow: "Just now", contents: "Contents of ", addTo: "Add a file to ", moreFor: "More options for ", optionsFor: "Options for " },
+}
 
 /**
  * Glass Folder Cards — a folder you can actually use, drawn as an object.
@@ -569,6 +575,7 @@ export default function GlassFolder({
   className,
   style,
 }: GlassFolderProps) {
+  const t = useT(gfTexts)
   const uid = React.useId().replace(/:/g, "")
   const rootRef = React.useRef<HTMLDivElement>(null)
   const filesRef = React.useRef<HTMLDivElement>(null)
@@ -695,7 +702,7 @@ export default function GlassFolder({
 
   const addFile = () => {
     const made = onAdd?.(files)
-    const file: FolderFile = made || { name: "Uden navn " + (files.length + 1), meta: "Lige nu" }
+    const file: FolderFile = made || { name: t.untitled + (files.length + 1), meta: t.justNow }
     const next = [...files, file]
     const id = nextId.current++
     ids.current = [...ids.current, id]
@@ -706,7 +713,7 @@ export default function GlassFolder({
   }
 
   const menuItems: FolderMenuItem[] = [
-    { label: open ? "Luk mappe" : "Åbn mappe", onSelect: () => setOpen(!open) },
+    { label: open ? t.closeFolder : t.openFolder, onSelect: () => setOpen(!open) },
     ...menu,
   ]
 
@@ -728,7 +735,7 @@ export default function GlassFolder({
   const start = Math.max(0, files.length - MAX_VISIBLE)
   const visible = files.slice(start)
   const count = files.length
-  const metaLine = meta ?? count + (count === 1 ? " element" : " elementer")
+  const metaLine = meta ?? count + (count === 1 ? t.item : t.items)
 
   return (
     <div
@@ -803,7 +810,7 @@ export default function GlassFolder({
               type="button"
               className="gf-hit"
               aria-expanded={open}
-              aria-label={(open ? "Luk " : "Åbn ") + label + ", " + count + (count === 1 ? " element" : " elementer")}
+              aria-label={(open ? t.close : t.open) + " " + label + ", " + count + (count === 1 ? t.item : t.items)}
               onClick={() => {
                 setMenuOpen(false)
                 setOpen(!open)
@@ -818,7 +825,7 @@ export default function GlassFolder({
           </div>
 
           {/* the contents: after the glass in tab order, beneath it on screen */}
-          <div ref={filesRef} className="gf-files" role="list" aria-label={"Indhold i " + label}>
+          <div ref={filesRef} className="gf-files" role="list" aria-label={t.contents + label}>
             {visible.map((file, v) => {
               const id = ids.current[start + v]
               const slot = fanSlot(v, visible.length)
@@ -907,7 +914,7 @@ export default function GlassFolder({
               ref={keyRef}
               type="button"
               className={"gf-key gf-key--" + action}
-              aria-label={action === "add" ? "Tilføj en fil til " + label : "Flere muligheder for " + label}
+              aria-label={action === "add" ? t.addTo + label : t.moreFor + label}
               aria-haspopup={action === "more" ? "menu" : undefined}
               aria-expanded={action === "more" ? menuOpen : undefined}
               aria-controls={action === "more" ? "gf-menu-" + uid : undefined}
@@ -932,7 +939,7 @@ export default function GlassFolder({
               ref={menuRef}
               id={"gf-menu-" + uid}
               role="menu"
-              aria-label={"Muligheder for " + label}
+              aria-label={t.optionsFor + label}
               className="gf-menu"
               data-open={menuOpen || undefined}
               onKeyDown={onMenuKey}

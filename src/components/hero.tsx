@@ -2,8 +2,25 @@
 
 import { motion } from "motion/react";
 import { ChevronDown } from "lucide-react";
+import { useT } from "@/lib/lang";
+
+const texts = {
+  da: {
+    title: "Se verden",
+    accent: "med nye øjne",
+    lead: "FPV-perspektiver, der fortæller historier fra vinkler, du aldrig har set før.",
+    down: "Gå til arbejde",
+  },
+  en: {
+    title: "See the world",
+    accent: "With new eyes",
+    lead: "FPV perspectives that tell stories from angles you have never seen before.",
+    down: "Go to work",
+  },
+};
 
 export function Hero() {
+  const t = useT(texts);
   return (
     <section className="relative w-full overflow-hidden bg-black pt-20 md:pt-0 md:h-[100svh] md:min-h-[560px]">
       {/* On desktop the intro video fills the whole first screen with the menu and
@@ -34,9 +51,9 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight"
           >
-            Se verden
+            {t.title}
             <br />
-            <span className="text-neutral-400">med nye øjne</span>
+            <span className="text-neutral-400">{t.accent}</span>
           </motion.h1>
 
           <motion.p
@@ -45,7 +62,7 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="mt-4 text-neutral-300 text-base md:text-lg max-w-md mx-auto"
           >
-            FPV-perspektiver, der fortæller historier fra vinkler, du aldrig har set før.
+            {t.lead}
           </motion.p>
         </div>
 
@@ -54,7 +71,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.6 }}
-          aria-label="Gå til arbejde"
+          aria-label={t.down}
           className="mt-8 animate-bounce"
         >
           <ChevronDown size={24} className="text-neutral-300" />

@@ -5,6 +5,12 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { FolderFile } from "@/components/ui/glass-folder-cards";
+import { useT } from "@/lib/lang";
+
+const texts = {
+  da: { from: "fra", close: "Luk", prev: "Forrige klip", next: "Næste klip", clip: "Klip", of: "af", show: "Vis" },
+  en: { from: "from", close: "Close", prev: "Previous clip", next: "Next clip", clip: "Clip", of: "of", show: "Show" },
+};
 
 export type ClipSelection = {
   files: FolderFile[];
@@ -42,6 +48,7 @@ export function ClipViewer({
 
 function Viewer({ selection, onClose }: { selection: ClipSelection; onClose: () => void }) {
   const { files, folder, origin } = selection;
+  const t = useT(texts);
   const [index, setIndex] = useState(selection.index);
   const [dir, setDir] = useState(0);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -143,7 +150,7 @@ function Viewer({ selection, onClose }: { selection: ClipSelection; onClose: () 
       data-gf-keep-open
       role="dialog"
       aria-modal="true"
-      aria-label={`${file.name}, fra ${folder}`}
+      aria-label={`${file.name}, ${t.from} ${folder}`}
       className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8"
     >
       <div
@@ -204,12 +211,12 @@ function Viewer({ selection, onClose }: { selection: ClipSelection; onClose: () 
             {file.meta ? <p className="mt-0.5 font-mono text-xs text-neutral-400">{file.meta}</p> : null}
           </div>
           {many ? (
-            <div className="flex gap-1.5" aria-label={`Clip ${index + 1} of ${files.length}`}>
+            <div className="flex gap-1.5" aria-label={`${t.clip} ${index + 1} ${t.of} ${files.length}`}>
               {files.map((f, i) => (
                 <button
                   key={f.name}
                   type="button"
-                  aria-label={`Vis ${f.name}`}
+                  aria-label={`${t.show} ${f.name}`}
                   aria-current={i === index || undefined}
                   onClick={() => {
                     setDir(i > index ? 1 : -1);
@@ -229,7 +236,7 @@ function Viewer({ selection, onClose }: { selection: ClipSelection; onClose: () 
           ref={closeRef}
           type="button"
           onClick={close}
-          aria-label="Luk"
+          aria-label={t.close}
           className="absolute right-3 top-3 grid size-9 place-items-center rounded-full border border-white/15 bg-black/40 text-white backdrop-blur-md transition hover:bg-black/60 focus-visible:outline-2 focus-visible:outline-white"
         >
           <X className="size-4" />
@@ -269,12 +276,13 @@ function Media({ file }: { file: FolderFile }) {
 }
 
 function NavButton({ side, onClick }: { side: "left" | "right"; onClick: () => void }) {
+  const t = useT(texts);
   const Icon = side === "left" ? ChevronLeft : ChevronRight;
   return (
     <button
       type="button"
       onClick={onClick}
-      aria-label={side === "left" ? "Forrige klip" : "Næste klip"}
+      aria-label={side === "left" ? t.prev : t.next}
       className={
         "absolute top-1/2 z-10 hidden size-10 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-black/40 text-white backdrop-blur-md transition hover:bg-black/60 sm:grid " +
         (side === "left" ? "left-3" : "right-3")
