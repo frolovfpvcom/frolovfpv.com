@@ -4,15 +4,39 @@ import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { Compass, Zap, Film } from "lucide-react";
 
+import { useT } from "@/lib/lang";
+
+const texts = {
+  da: {
+    title: "Om mig",
+    body: [
+      "Jeg er FPV-dronepilot og filmfotograf med en passion for at fange perspektiver, der rykker grænserne for, hvad luftoptagelser kan fortælle.",
+      "Hver flyvning er en mulighed for at skabe noget unikt — jeg fletter mig gennem omgivelserne med præcision og kreativitet og leverer optagelser, der føles medrivende og levende.",
+      "Uanset om det er jagt gennem bjergterræn, dyk ud over bygninger eller glidende flyvninger gennem interiører — bringer jeg et filmisk blik til hvert projekt.",
+    ],
+    stats: ["Projekter", "Lokationer", "År i luften"],
+  },
+  en: {
+    title: "About me",
+    body: [
+      "I'm an FPV drone pilot and cinematographer with a passion for capturing perspectives that push the limits of what aerial footage can tell.",
+      "Every flight is a chance to create something unique — I weave through the surroundings with precision and creativity and deliver footage that feels immersive and alive.",
+      "Whether it's chasing through mountain terrain, diving off buildings or gliding through interiors — I bring a cinematic eye to every project.",
+    ],
+    stats: ["Projects", "Locations", "Years in the air"],
+  },
+};
+
 const stats = [
-  { icon: Film, label: "Projekter", value: "50+" },
-  { icon: Compass, label: "Lokationer", value: "12+" },
-  { icon: Zap, label: "År i luften", value: "3+" },
+  { icon: Film, value: "50+" },
+  { icon: Compass, value: "12+" },
+  { icon: Zap, value: "3+" },
 ];
 
 export function About() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const t = useT(texts);
 
   return (
     <section id="about" className="py-32 px-6">
@@ -26,31 +50,19 @@ export function About() {
         >
           <div>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
-              Om mig
+              {t.title}
             </h2>
             <div className="space-y-4 text-neutral-400 leading-relaxed">
-              <p>
-                Jeg er FPV-dronepilot og filmfotograf med en passion for at
-                fange perspektiver, der rykker grænserne for, hvad
-                luftoptagelser kan fortælle.
-              </p>
-              <p>
-                Hver flyvning er en mulighed for at skabe noget unikt — jeg
-                fletter mig gennem omgivelserne med præcision og kreativitet og
-                leverer optagelser, der føles medrivende og levende.
-              </p>
-              <p>
-                Uanset om det er jagt gennem bjergterræn, dyk ud over bygninger
-                eller glidende flyvninger gennem interiører — bringer jeg et
-                filmisk blik til hvert projekt.
-              </p>
+              {t.body.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
             </div>
           </div>
 
           <div className="grid grid-cols-3 gap-4">
             {stats.map((stat, i) => (
               <motion.div
-                key={stat.label}
+                key={stat.value}
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{
@@ -66,7 +78,7 @@ export function About() {
                 />
                 <p className="text-2xl font-bold">{stat.value}</p>
                 <p className="text-xs text-neutral-500 mt-1 uppercase tracking-wide">
-                  {stat.label}
+                  {t.stats[i]}
                 </p>
               </motion.div>
             ))}

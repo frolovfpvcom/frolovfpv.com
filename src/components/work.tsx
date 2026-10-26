@@ -7,6 +7,7 @@ import GlassFolder, {
   type GlassFolderProps,
 } from "@/components/ui/glass-folder-cards";
 import { ClipViewer, type ClipSelection } from "@/components/clip-viewer";
+import { useLang, useT, type Lang } from "@/lib/lang";
 
 const art = {
   gray: {
@@ -93,10 +94,12 @@ const frontLeaves: Leaf[] = [
   { x: 30, y: 10, size: 28, rotate: -30, color: "#6cba70", opacity: 0.9 },
 ];
 
-const folders: (GlassFolderProps & { label: string })[] = [
+type Folder = GlassFolderProps & { label: string };
+
+const foldersByLang = (lang: Lang): Folder[] => [
   {
-    label: "Reklame for Peugeot",
-    meta: "Reklame · 3 klip",
+    label: "Surfin’",
+    meta: lang === "da" ? "Reklame · 3 klip" : "Commercial · 3 clips",
     tone: "light",
     glass: "#d9d9dd",
     art: art.gray,
@@ -109,8 +112,8 @@ const folders: (GlassFolderProps & { label: string })[] = [
     ],
   },
   {
-    label: "Natur",
-    meta: "Natur · 3 klip",
+    label: lang === "da" ? "Natur" : "Nature",
+    meta: lang === "da" ? "Natur · 3 klip" : "Nature · 3 clips",
     tone: "dark",
     glass: "#0c2a18",
     art: art.green,
@@ -118,36 +121,36 @@ const folders: (GlassFolderProps & { label: string })[] = [
     backDecor: <Leaves leaves={backLeaves} />,
     frontDecor: <Leaves leaves={frontLeaves} />,
     files: [
-      { name: "Gennem parken", blank: true },
-      { name: "Nattelys", blank: true },
+      { name: lang === "da" ? "Gennem parken" : "Through the park", blank: true },
+      { name: lang === "da" ? "Nattelys" : "Night lights", blank: true },
       // last in the list = front of the folder and first in the opened stack
       { name: "Panoram", meta: "4K · 0:33", video: "/clips/panoram.mp4", image: "/clips/panoram.jpg" },
     ],
   },
   {
     label: "Whoopin’",
-    meta: "Hav · 3 klip",
+    meta: lang === "da" ? "Hav · 3 klip" : "Sea · 3 clips",
     tone: "light",
     glass: "#f9c4d8",
     art: art.pink,
     seed: 2,
     files: [
-      { name: "Klippekant", blank: true },
-      { name: "Surf i solnedgang", blank: true },
-      { name: "Tidevandshuller", blank: true },
+      { name: lang === "da" ? "Klippekant" : "Cliff edge", blank: true },
+      { name: lang === "da" ? "Surf i solnedgang" : "Sunset surf", blank: true },
+      { name: lang === "da" ? "Tidevandshuller" : "Tide pools", blank: true },
     ],
   },
   {
-    label: "Skovløb",
-    meta: "Natur · 3 klip",
+    label: lang === "da" ? "Skovløb" : "Forest run",
+    meta: lang === "da" ? "Natur · 3 klip" : "Nature · 3 clips",
     tone: "light",
     glass: "#a5eef7",
     art: art.cyan,
     seed: 9,
     files: [
-      { name: "Hul i trækronerne", blank: true },
-      { name: "Langs åen", blank: true },
-      { name: "Fyrretræer i tåge", blank: true },
+      { name: lang === "da" ? "Hul i trækronerne" : "Canopy gap", blank: true },
+      { name: lang === "da" ? "Langs åen" : "Along the stream", blank: true },
+      { name: lang === "da" ? "Fyrretræer i tåge" : "Pines in fog", blank: true },
     ],
   },
 ];
@@ -159,7 +162,7 @@ function FolderCell({
   folder,
   onOpenClip,
 }: {
-  folder: (typeof folders)[0];
+  folder: Folder;
   onOpenClip: (clip: ClipSelection) => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -194,6 +197,12 @@ export function Work() {
   const headerRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-100px" });
   const [clip, setClip] = useState<ClipSelection | null>(null);
+  const { lang } = useLang();
+  const folders = foldersByLang(lang);
+  const t = useT({
+    da: { title: "Udvalgt arbejde", lead: "En samling af flyvninger og historier fanget fra unikke perspektiver." },
+    en: { title: "Selected work", lead: "A collection of flights and stories captured from unique perspectives." },
+  });
 
   return (
     <section id="work" className="py-32 px-6">
@@ -206,17 +215,14 @@ export function Work() {
           className="mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Udvalgt arbejde
+            {t.title}
           </h2>
-          <p className="mt-3 text-neutral-400 max-w-md">
-            En samling af flyvninger og historier fanget fra unikke
-            perspektiver.
-          </p>
+          <p className="mt-3 text-neutral-400 max-w-md">{t.lead}</p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-24">
           {folders.map((folder) => (
-            <FolderCell key={folder.label} folder={folder} onOpenClip={setClip} />
+            <FolderCell key={folder.seed} folder={folder} onOpenClip={setClip} />
           ))}
         </div>
       </div>

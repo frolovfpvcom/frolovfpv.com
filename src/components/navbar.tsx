@@ -4,17 +4,41 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import { useLang, useT, type Lang } from "@/lib/lang";
 
-const links = [
-  { label: "Arbejde", href: "/arbejde" },
-  { label: "Om mig", href: "/#about" },
-  { label: "Kontakt", href: "/kontakt" },
-];
+const hrefs = ["/arbejde", "/#about", "/kontakt"];
+
+const texts = {
+  da: { links: ["Arbejde", "Om mig", "Kontakt"], home: "Til forsiden", open: "Åbn menu", close: "Luk menu", switchTo: "Switch to English" },
+  en: { links: ["Work", "About me", "Contact"], home: "To the front page", open: "Open menu", close: "Close menu", switchTo: "Skift til dansk" },
+};
+
+/** DA / EN switch; the active language is white, the other grey. */
+function LangToggle() {
+  const { lang, setLang } = useLang();
+  const t = useT(texts);
+  const next: Lang = lang === "da" ? "en" : "da";
+  return (
+    <button
+      type="button"
+      onClick={() => setLang(next)}
+      aria-label={t.switchTo}
+      lang={next}
+      className="self-start whitespace-nowrap text-lg font-bold"
+    >
+      <span className={lang === "da" ? "text-white" : "text-neutral-500 hover:text-neutral-300"}>DA</span>
+      <span className="text-neutral-600"> / </span>
+      <span className={lang === "en" ? "text-white" : "text-neutral-500 hover:text-neutral-300"}>EN</span>
+    </button>
+  );
+}
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const t = useT(texts);
+  const links = hrefs.map((href, i) => ({ href, label: t.links[i] }));
 
   // Transparent over the intro video; dark once the page scrolls past it.
   // Slides away while scrolling down and comes back when scrolling up or at the top.
@@ -42,7 +66,7 @@ export function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-3 grid grid-cols-[1fr_auto_1fr] items-center">
-        <Link href="/" aria-label="Til forsiden" className="justify-self-start">
+        <Link href="/" aria-label={t.home} className="justify-self-start">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/kat-logo-tiger.png" alt="" className="h-14 w-auto md:h-20" />
         </Link>
@@ -61,11 +85,12 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
+          <LangToggle />
         </div>
 
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label={mobileOpen ? "Luk menu" : "Åbn menu"}
+          aria-label={mobileOpen ? t.close : t.open}
           className="md:hidden text-white justify-self-end"
         >
           {mobileOpen ? <X size={28} /> : <Menu size={28} />}
@@ -91,6 +116,7 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
+              <LangToggle />
             </div>
           </motion.div>
         )}
