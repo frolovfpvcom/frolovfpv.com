@@ -330,7 +330,6 @@ function HangingFrame({
   const width = height * project.aspect;
   const wire = Math.round(hang.wire * (height / 220));
   const barWidth = Math.min(width * 0.62, 150);
-  const { lang } = useLang();
 
   // Each frame swings on its nail when the wall moves, then settles with a few
   // dying wobbles. Slightly different springs per frame so they don't move in lockstep.
@@ -381,16 +380,6 @@ function HangingFrame({
           </div>
         </motion.button>
 
-        {/* little label under the corner, like a price tag */}
-        <div className="mt-3 flex justify-end pr-1">
-          <span
-            className="inline-flex items-center gap-1.5 rounded-[4px] border border-white/10 bg-white/[0.06] px-2 py-0.5 text-[11px] text-neutral-300 transition-colors duration-300"
-            style={{ color: active ? "#fff" : undefined }}
-          >
-            {active ? <span className="size-1.5 rounded-full bg-emerald-400" /> : null}
-            {project.category[lang]}
-          </span>
-        </div>
       </motion.div>
     </div>
   );
