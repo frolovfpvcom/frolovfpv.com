@@ -36,14 +36,6 @@ const art = {
     gloss: 0.5,
     veins: 0.3,
   },
-  cyan: {
-    style: "streak",
-    colors: ["#ecfeff", "#a5f3fc", "#06b6d4", "#083344", "#0e7490", "#67e8f9", "#f0fdff"],
-    scale: 0.7,
-    warp: 1.5,
-    angle: -0.6,
-    gloss: 0.3,
-  },
 } satisfies Record<string, ArtRecipe>;
 
 type Leaf = { x: number; y: number; size: number; rotate: number; color: string; opacity?: number };
@@ -140,22 +132,9 @@ const foldersByLang = (lang: Lang): Folder[] => [
       { name: lang === "da" ? "Tidevandshuller" : "Tide pools", blank: true },
     ],
   },
-  {
-    label: lang === "da" ? "Skovløb" : "Forest run",
-    meta: lang === "da" ? "Natur · 3 klip" : "Nature · 3 clips",
-    tone: "light",
-    glass: "#a5eef7",
-    art: art.cyan,
-    seed: 9,
-    files: [
-      { name: lang === "da" ? "Hul i trækronerne" : "Canopy gap", blank: true },
-      { name: lang === "da" ? "Langs åen" : "Along the stream", blank: true },
-      { name: lang === "da" ? "Fyrretræer i tåge" : "Pines in fog", blank: true },
-    ],
-  },
 ];
 
-const MAX_FOLDER_WIDTH = 306;
+const MAX_FOLDER_WIDTH = 153;
 
 /** Fits the folder to its grid cell; the component itself takes a fixed px width. */
 function FolderCell({

@@ -21,7 +21,7 @@ export function Timeline() {
       </div>
 
       <div className="mt-16 px-6">
-        <div className="mx-auto aspect-square w-full max-w-md overflow-hidden rounded-2xl border border-white/[0.06]">
+        <div className="mx-auto aspect-square w-full max-w-56 overflow-hidden rounded-2xl border border-white/[0.06]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/portrait.jpg"
