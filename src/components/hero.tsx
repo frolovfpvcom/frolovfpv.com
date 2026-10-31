@@ -22,7 +22,7 @@ const texts = {
 export function Hero() {
   const t = useT(texts);
   return (
-    <section className="relative w-full overflow-hidden bg-black pt-20 md:pt-0 md:h-[100svh] md:min-h-[560px]">
+    <section className="relative w-full overflow-hidden bg-blaa-950 pt-20 md:pt-0 md:h-[100svh] md:min-h-[560px]">
       {/* On desktop the intro video fills the whole first screen with the menu and
           text on top. On phones it shows the full 16:9 frame under the menu, with
           the text below, so less of the picture is cropped away. */}
@@ -40,8 +40,8 @@ export function Hero() {
       </motion.video>
 
       {/* Darken the top for the menu and the bottom for the headline. */}
-      <div className="absolute inset-x-0 top-0 hidden md:block h-40 bg-gradient-to-b from-black/60 to-transparent" />
-      <div className="absolute inset-0 hidden md:block bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+      <div className="absolute inset-x-0 top-0 hidden md:block h-40 bg-gradient-to-b from-blaa-950/60 to-transparent" />
+      <div className="absolute inset-0 hidden md:block bg-gradient-to-t from-blaa-950/90 via-blaa-900/25 to-transparent" />
 
       <div className="relative z-10 flex flex-col items-center px-6 pt-10 pb-12 md:h-full md:justify-end md:pt-0 md:pb-16">
         <div className="text-center">
@@ -53,7 +53,7 @@ export function Hero() {
           >
             {t.title}
             <br />
-            <span className="text-neutral-400">{t.accent}</span>
+            <span className="bg-gradient-to-r from-blaa-100 via-blaa-300 to-blaa-400 bg-clip-text text-transparent">{t.accent}</span>
           </motion.h1>
 
           <motion.p
@@ -74,7 +74,7 @@ export function Hero() {
           aria-label={t.down}
           className="mt-8 animate-bounce"
         >
-          <ChevronDown size={24} className="text-neutral-300" />
+          <ChevronDown size={24} className="text-blaa-200" />
         </motion.a>
       </div>
     </section>

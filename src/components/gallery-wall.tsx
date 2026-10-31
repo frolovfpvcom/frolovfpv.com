@@ -482,7 +482,7 @@ export function GalleryWall() {
   return (
     <section id="projekter" className="relative w-full scroll-mt-16 overflow-x-clip py-24 md:py-32">
       <div className="relative mx-auto max-w-3xl px-6 text-center">
-        <p className="text-[11px] uppercase tracking-[0.4em] text-neutral-400">{t.eyebrow}</p>
+        <p className="text-[11px] uppercase tracking-[0.4em] text-blaa-300">{t.eyebrow}</p>
         <h2 className="mt-4 text-2xl font-normal tracking-tight text-white md:text-4xl">{t.title}</h2>
       </div>
 
@@ -601,7 +601,7 @@ export function GalleryWall() {
             <button
               type="button"
               onClick={() => frameEls.current[active] && setOpened({ index: active, origin: frameEls.current[active]!, rotation: 0 })}
-              className="text-neutral-200 underline-offset-4 hover:underline"
+              className="text-blaa-200 underline-offset-4 hover:underline"
             >
               {t.open}
             </button>
@@ -609,7 +609,7 @@ export function GalleryWall() {
         </motion.div>
         <Link
           href="/kontakt"
-          className="group mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition-colors duration-200 hover:bg-neutral-200"
+          className="group mt-6 inline-flex items-center gap-2 rounded-full bg-blaa-500 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-blaa-500/25 transition-colors duration-200 hover:bg-blaa-400"
         >
           {t.cta}
           <ArrowUpRight
@@ -728,7 +728,7 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
       <div
         ref={backdropRef}
         onClick={close}
-        className="absolute inset-0 bg-[#0a0a0a]"
+        className="absolute inset-0 bg-blaa-950"
         style={{
           opacity: 0,
           backgroundImage:

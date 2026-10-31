@@ -62,7 +62,7 @@ export function Navbar() {
       animate={{ y: hidden && !mobileOpen ? "-100%" : 0 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className={`fixed top-0 left-0 right-0 z-50 text-white transition-colors duration-300 ${
-        scrolled || mobileOpen ? "bg-black/80 backdrop-blur-md" : "bg-transparent"
+        scrolled || mobileOpen ? "bg-blaa-950/80 backdrop-blur-md border-b border-blaa-300/10" : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-3 grid grid-cols-[1fr_auto_1fr] items-center">
@@ -72,7 +72,7 @@ export function Navbar() {
         </Link>
 
         <Link href="/" className="text-2xl md:text-4xl font-black uppercase tracking-tight text-white">
-          FROLOV<span className="text-neutral-400">FPV</span>
+          FROLOV<span className="text-blaa-300">FPV</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-10 justify-self-end">
@@ -80,7 +80,7 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-lg font-bold text-white hover:text-neutral-300 transition-colors duration-200"
+              className="text-lg font-bold text-white hover:text-blaa-200 transition-colors duration-200"
             >
               {link.label}
             </Link>
@@ -103,7 +103,7 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-white/10 overflow-hidden"
+            className="md:hidden border-t border-blaa-300/15 overflow-hidden"
           >
             <div className="px-6 py-4 flex flex-col gap-4">
               {links.map((link) => (
@@ -111,7 +111,7 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="text-lg font-bold text-white hover:text-neutral-300 transition-colors"
+                  className="text-lg font-bold text-white hover:text-blaa-200 transition-colors"
                 >
                   {link.label}
                 </Link>

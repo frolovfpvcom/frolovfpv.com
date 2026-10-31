@@ -39,7 +39,7 @@ export function About() {
   const t = useT(texts);
 
   return (
-    <section id="about" className="py-32 px-6">
+    <section id="about" className="py-32 px-6 bg-gradient-to-b from-transparent via-blaa-900/25 to-transparent">
       <div className="max-w-7xl mx-auto">
         <motion.div
           ref={ref}
@@ -70,13 +70,13 @@ export function About() {
                   delay: 0.2 + i * 0.1,
                   ease: [0.16, 1, 0.3, 1],
                 }}
-                className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6 text-center"
+                className="bg-blaa-900/40 border border-blaa-300/10 rounded-xl p-6 text-center"
               >
                 <stat.icon
                   size={22}
-                  className="mx-auto mb-3 text-neutral-500"
+                  className="mx-auto mb-3 text-blaa-300"
                 />
-                <p className="text-2xl font-bold">{stat.value}</p>
+                <p className="text-2xl font-bold text-blaa-50">{stat.value}</p>
                 <p className="text-xs text-neutral-500 mt-1 uppercase tracking-wide">
                   {t.stats[i]}
                 </p>
