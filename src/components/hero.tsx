@@ -36,7 +36,7 @@ export function Hero() {
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         className="relative block aspect-video w-full object-cover md:absolute md:inset-0 md:h-full md:aspect-auto"
       >
-        <source src="/intro-2.mp4" type="video/mp4" />
+        <source src="/intro-4.mp4" type="video/mp4" />
       </motion.video>
 
       {/* Darken the top for the menu and the bottom for the headline. */}
