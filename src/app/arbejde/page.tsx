@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
-import { SelectedWork } from "@/components/selected-work";
+import { WorkPage } from "@/components/sections/work-page";
+import { ClipArchive } from "@/components/sections/clip-archive";
+import { CtaBand } from "@/components/sections/cta-band";
 
 export const metadata: Metadata = {
-  title: "Udvalgt arbejde | Frolov FPV",
-  description: "Udvalgt arbejde fra Frolov FPV.",
+  title: "Arbejde | Frolov FPV",
+  description: "Udvalgt arbejde fra Frolov FPV: FPV-dronefilm til reklamer, events og natur.",
 };
 
 export default function ArbejdePage() {
   return (
-    <main className="flex flex-1 items-center bg-black px-6 pt-36 pb-24 md:pt-44">
-      <SelectedWork />
+    <main id="main" className="flex-1">
+      <WorkPage />
+      <ClipArchive />
+      <CtaBand />
     </main>
   );
 }

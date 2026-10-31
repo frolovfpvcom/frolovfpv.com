@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import GlassFolder, {
   type ArtRecipe,
@@ -155,7 +154,8 @@ const foldersByLang = (lang: Lang): Folder[] => [
   },
 ];
 
-const MAX_FOLDER_WIDTH = 306;
+// kept small: the folders are a side archive, not the main show
+const MAX_FOLDER_WIDTH = 200;
 
 /** Fits the folder to its grid cell; the component itself takes a fixed px width. */
 function FolderCell({
@@ -193,34 +193,24 @@ function FolderCell({
   );
 }
 
-export function Work() {
-  const headerRef = useRef(null);
-  const headerInView = useInView(headerRef, { once: true, margin: "-100px" });
+/** Small archive of clip folders at the bottom of /arbejde. */
+export function ClipArchive() {
   const [clip, setClip] = useState<ClipSelection | null>(null);
   const { lang } = useLang();
   const folders = foldersByLang(lang);
   const t = useT({
-    da: { title: "Udvalgt arbejde", lead: "En samling af flyvninger og historier fanget fra unikke perspektiver." },
-    en: { title: "Selected work", lead: "A collection of flights and stories captured from unique perspectives." },
+    da: { title: "Klip-arkiv", lead: "Råklip og små flyvninger, sorteret i mapper. Tryk på en mappe for at kigge i den." },
+    en: { title: "Clip archive", lead: "Raw clips and short flights, sorted into folders. Tap a folder to look inside." },
   });
 
   return (
-    <section id="work" className="py-32 px-6">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          ref={headerRef}
-          initial={{ opacity: 0, y: 20 }}
-          animate={headerInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            {t.title}
-          </h2>
-          <p className="mt-3 text-neutral-400 max-w-md">{t.lead}</p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-24">
+    <section id="arkiv" className="border-t border-line px-5 py-20 md:px-8 md:py-24">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-12 flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
+          <h2 className="font-mono text-sm uppercase tracking-[0.25em] text-foreground">{t.title}</h2>
+          <p className="max-w-md text-sm text-muted md:text-right">{t.lead}</p>
+        </div>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-14 md:grid-cols-4">
           {folders.map((folder) => (
             <FolderCell key={folder.seed} folder={folder} onOpenClip={setClip} />
           ))}

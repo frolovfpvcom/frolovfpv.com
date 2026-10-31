@@ -1,81 +1,112 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ChevronDown } from "lucide-react";
+import { ButtonLink } from "@/components/ui/button-link";
+import { heroMedia } from "@/lib/media";
 import { useT } from "@/lib/lang";
 
 const texts = {
   da: {
-    title: "Se verden",
-    accent: "med nye øjne",
-    lead: "FPV-perspektiver, der fortæller historier fra vinkler, du aldrig har set før.",
-    down: "Gå til arbejde",
+    eyebrow: "FPV-dronefilm · Danmark",
+    title: ["Se verden", "med nye øjne"],
+    lead: "Filmiske FPV-optagelser til reklamer, events og brands. Jeg flyver tæt på, gennem og rundt om det, andre kun kan filme på afstand.",
+    cta: "Book en flyvning",
+    secondary: "Se arbejde",
+    scroll: "Scroll",
   },
   en: {
-    title: "See the world",
-    accent: "With new eyes",
-    lead: "FPV perspectives that tell stories from angles you have never seen before.",
-    down: "Go to work",
+    eyebrow: "FPV drone film · Denmark",
+    title: ["See the world", "with new eyes"],
+    lead: "Cinematic FPV footage for commercials, events and brands. I fly close to, through and around what others can only film from a distance.",
+    cta: "Book a flight",
+    secondary: "See work",
+    scroll: "Scroll",
   },
 };
+
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+/** Viewfinder corners, like the frame in FPV goggles. */
+function Corners() {
+  const corner = "absolute size-6 border-white/50";
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-6 hidden md:block lg:inset-10">
+      <span className={`${corner} left-0 top-20 border-l-2 border-t-2`} />
+      <span className={`${corner} right-0 top-20 border-r-2 border-t-2`} />
+      <span className={`${corner} bottom-0 left-0 border-b-2 border-l-2`} />
+      <span className={`${corner} bottom-0 right-0 border-b-2 border-r-2`} />
+      <span className="absolute left-10 top-[6.5rem] flex items-center gap-2 font-mono text-xs tracking-[0.2em] text-white/80">
+        <span className="rec-dot size-2 rounded-full bg-red-500" />
+        REC
+      </span>
+      <span className="absolute right-10 top-[6.5rem] font-mono text-xs tracking-[0.2em] text-white/60">
+        FROLOV FPV
+      </span>
+    </div>
+  );
+}
 
 export function Hero() {
   const t = useT(texts);
   return (
-    <section className="relative w-full overflow-hidden bg-black pt-20 md:pt-0 md:h-[100svh] md:min-h-[560px]">
-      {/* On desktop the intro video fills the whole first screen with the menu and
-          text on top. On phones it shows the full 16:9 frame under the menu, with
-          the text below, so less of the picture is cropped away. */}
+    <section className="relative w-full overflow-hidden bg-black pt-16 md:h-[100svh] md:min-h-[640px] md:pt-0">
+      {/* On desktop the intro video fills the whole first screen with the text on
+          top. On phones it shows the full 16:9 frame, with the text below, so
+          less of the picture is cropped away. */}
       <motion.video
         autoPlay
         loop
         muted
         playsInline
+        poster={heroMedia.image}
         initial={{ opacity: 0, scale: 1.04 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 1.2, ease: EASE }}
         className="relative block aspect-video w-full object-cover md:absolute md:inset-0 md:h-full md:aspect-auto"
       >
-        <source src="/intro-2.mp4" type="video/mp4" />
+        <source src={heroMedia.video} type="video/mp4" />
       </motion.video>
 
-      {/* Darken the top for the menu and the bottom for the headline. */}
-      <div className="absolute inset-x-0 top-0 hidden md:block h-40 bg-gradient-to-b from-black/60 to-transparent" />
-      <div className="absolute inset-0 hidden md:block bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+      <div className="absolute inset-0 hidden bg-gradient-to-t from-black via-black/30 to-black/20 md:block" />
+      <div className="absolute inset-0 hidden bg-gradient-to-r from-black/60 via-transparent to-transparent md:block" />
+      <Corners />
 
-      <div className="relative z-10 flex flex-col items-center px-6 pt-10 pb-12 md:h-full md:justify-end md:pt-0 md:pb-16">
-        <div className="text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight"
-          >
-            {t.title}
-            <br />
-            <span className="text-neutral-400">{t.accent}</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-4 text-neutral-300 text-base md:text-lg max-w-md mx-auto"
-          >
-            {t.lead}
-          </motion.p>
-        </div>
-
-        <motion.a
-          href="#work"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.6 }}
-          aria-label={t.down}
-          className="mt-8 animate-bounce"
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-5 pb-14 pt-10 md:h-full md:justify-end md:px-8 md:pb-24 lg:pb-28">
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.3, ease: EASE }}
+          className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-white/80"
         >
-          <ChevronDown size={24} className="text-neutral-300" />
-        </motion.a>
+          <span aria-hidden="true" className="h-px w-8 bg-accent" />
+          {t.eyebrow}
+        </motion.p>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.4, ease: EASE }}
+          className="display mt-5 text-[3.4rem] sm:text-7xl md:text-8xl lg:text-[8.5rem]"
+        >
+          {t.title[0]}
+          <br />
+          <span className="text-white/55">{t.title[1]}</span>
+        </motion.h1>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6, ease: EASE }}
+          className="mt-7 flex flex-col gap-8 md:flex-row md:items-end md:justify-between"
+        >
+          <p className="max-w-lg text-base leading-relaxed text-white/80 md:text-lg">{t.lead}</p>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <ButtonLink href="/kontakt">{t.cta}</ButtonLink>
+            <ButtonLink href="/arbejde" variant="secondary" arrow={false}>
+              {t.secondary}
+            </ButtonLink>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

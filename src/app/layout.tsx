@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Anton, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
-import { LangProvider } from "@/lib/lang";
+import { Providers } from "@/components/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,10 +15,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const display = Anton({
+  variable: "--font-display",
+  weight: "400",
+  subsets: ["latin", "latin-ext"],
+});
+
 export const metadata: Metadata = {
-  title: "Frolov FPV | Dronefilm",
+  title: "Frolov FPV | FPV-dronefilm",
   description:
-    "Professionel FPV-dronefilm — filmiske luftoptagelser, medrivende footage og kreativ historiefortælling fra oven.",
+    "Professionel FPV-dronefilm — filmiske luftoptagelser til reklamer, events, ejendomme og natur. Book en flyvning.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -26,14 +32,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="da"
       data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${display.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#0a0a0a] text-white">
-        <LangProvider>
+      <body className="min-h-full flex flex-col bg-background text-foreground">
+        <Providers>
           <Navbar />
           {children}
           <Footer />
-        </LangProvider>
+        </Providers>
       </body>
     </html>
   );

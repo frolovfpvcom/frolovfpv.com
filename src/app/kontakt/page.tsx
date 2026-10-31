@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function KontaktPage() {
   return (
     <>
-      <main className="flex-1">
+      <main id="main" className="flex-1">
         <ContactForm />
       </main>
     </>

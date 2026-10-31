@@ -5,7 +5,8 @@ import { motion } from "motion/react";
 import { Mail, Send } from "lucide-react";
 import { useT } from "@/lib/lang";
 
-const EMAIL = "peterfrolov09@gmail.com";
+import { Eyebrow } from "@/components/ui/eyebrow";
+import { EMAIL } from "@/components/sections/cta-band";
 
 const texts = {
   da: {
@@ -55,7 +56,7 @@ const texts = {
 };
 
 const field =
-  "w-full rounded-xl border border-white/[0.1] bg-white/[0.03] px-4 py-3 text-white placeholder:text-neutral-600 focus:border-white/40 focus:outline-none transition-colors";
+  "w-full min-h-12 rounded-xl border border-white/10 bg-background px-4 py-3 text-base text-foreground placeholder:text-subtle focus:border-accent focus:outline-none transition-colors";
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
@@ -84,25 +85,22 @@ export function ContactForm() {
   }
 
   return (
-    <section className="px-6 pt-36 pb-24 md:pt-44">
-      <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-14">
+    <section className="px-5 pt-32 pb-24 md:px-8 md:pt-44">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-14 lg:gap-20">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="text-xs text-neutral-500 uppercase tracking-[0.3em] mb-6">{t.label}</p>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
-            {t.title}
-            <br />
-            <span className="text-neutral-400">{t.accent}</span>
-          </h1>
-          <p className="mt-6 text-neutral-400 text-lg leading-relaxed">
+          <Eyebrow>{t.label}</Eyebrow>
+          <h1 className="display mt-6 text-6xl sm:text-7xl lg:text-8xl">{t.title}</h1>
+          <p className="mt-6 text-2xl font-semibold tracking-tight text-accent">{t.accent}</p>
+          <p className="mt-6 max-w-md text-muted text-lg leading-relaxed">
             {t.lead}
           </p>
           <a
             href={`mailto:${EMAIL}`}
-            className="mt-8 inline-flex items-center gap-3 text-neutral-300 hover:text-white transition-colors"
+            className="mt-8 inline-flex min-h-11 items-center gap-3 text-foreground hover:text-accent transition-colors"
           >
             <Mail size={18} />
             {EMAIL}
@@ -114,32 +112,32 @@ export function ContactForm() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 md:p-8 space-y-5"
+          className="rounded-2xl border border-line bg-surface p-6 md:p-8 space-y-5"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <label className="block">
-              <span className="mb-2 block text-sm text-neutral-400">{t.name}</span>
+              <span className="mb-2 block text-sm text-muted">{t.name}</span>
               <input name="name" required autoComplete="name" className={field} placeholder={t.namePh} />
             </label>
             <label className="block">
-              <span className="mb-2 block text-sm text-neutral-400">{t.email}</span>
+              <span className="mb-2 block text-sm text-muted">{t.email}</span>
               <input name="email" type="email" required autoComplete="email" className={field} placeholder={t.emailPh} />
             </label>
             <label className="block">
-              <span className="mb-2 block text-sm text-neutral-400">{t.phone}</span>
+              <span className="mb-2 block text-sm text-muted">{t.phone}</span>
               <input name="phone" type="tel" autoComplete="tel" className={field} placeholder={t.optional} />
             </label>
             <label className="block">
-              <span className="mb-2 block text-sm text-neutral-400">{t.when}</span>
+              <span className="mb-2 block text-sm text-muted">{t.when}</span>
               <input name="date" className={field} placeholder={t.whenPh} />
             </label>
           </div>
 
           <label className="block">
-            <span className="mb-2 block text-sm text-neutral-400">{t.type}</span>
+            <span className="mb-2 block text-sm text-muted">{t.type}</span>
             <select name="type" className={`${field} appearance-none`} key={t.types[0]} defaultValue={t.types[0]}>
               {t.types.map((type) => (
-                <option key={type} value={type} className="bg-neutral-900">
+                <option key={type} value={type} className="bg-surface">
                   {type}
                 </option>
               ))}
@@ -147,7 +145,7 @@ export function ContactForm() {
           </label>
 
           <label className="block">
-            <span className="mb-2 block text-sm text-neutral-400">{t.message}</span>
+            <span className="mb-2 block text-sm text-muted">{t.message}</span>
             <textarea
               name="message"
               required
@@ -159,14 +157,14 @@ export function ContactForm() {
 
           <button
             type="submit"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-medium text-black hover:bg-neutral-200 transition-colors sm:w-auto"
+            className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-accent px-7 text-sm font-semibold uppercase tracking-[0.08em] text-on-accent hover:bg-accent-hover transition-colors sm:w-auto"
           >
             <Send size={16} />
             {t.send}
           </button>
 
           {sent && (
-            <p className="text-sm text-neutral-400">
+            <p role="status" className="text-sm text-muted">
               {t.sent} {EMAIL}.
             </p>
           )}
