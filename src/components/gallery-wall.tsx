@@ -149,7 +149,7 @@ const hangs = [
 
 const texts = {
   da: {
-    eyebrow: "Udvalgt arbejde · Projekter",
+    eyebrow: "Projekter",
     title: "En væg af flyvninger, du kan bladre i.",
     open: "Klik for at se",
     cta: "Kontakt mig",
@@ -161,7 +161,7 @@ const texts = {
     hint: "Træk væggen til siden, eller brug piletasterne",
   },
   en: {
-    eyebrow: "Selected work · Projects",
+    eyebrow: "Projects",
     title: "A wall of flights you can browse.",
     open: "Click to view",
     cta: "Contact me",
@@ -175,6 +175,7 @@ const texts = {
 };
 
 const EASE = [0.16, 1, 0.3, 1] as const;
+const START = 2;
 const LAMP_ON = "linear-gradient(180deg,#fff6c8 0%,#f3d76a 45%,#c9a23c 100%)";
 const BRASS = "linear-gradient(180deg,#e9cf7a 0%,#b8923a 55%,#7d6122 100%)";
 
@@ -406,18 +407,20 @@ export function GalleryWall() {
   const stageRef = useRef<HTMLDivElement>(null);
   const frameEls = useRef<(HTMLButtonElement | null)[]>([]);
   const [stageWidth, setStageWidth] = useState(0);
-  const [active, setActive] = useState(0);
+  // start in the middle so the wall is filled on both sides
+  const [active, setActive] = useState(START);
   const [opened, setOpened] = useState<Opened | null>(null);
   const dragged = useRef(false);
   // where the wall is heading, so quick arrow presses add up
-  const target = useRef(0);
+  const target = useRef(START);
 
   const x = useMotionValue(0);
   const velocity = useVelocity(x);
 
   // Frame size follows the screen: smaller on phones, capped on big screens.
-  const height = Math.round(stageWidth < 640 ? Math.min(210, stageWidth * 0.46) : Math.max(170, Math.min(250, stageWidth * 0.19)));
-  const gap = height * 0.42;
+  const height = Math.round(stageWidth < 640 ? Math.min(200, stageWidth * 0.42) : Math.max(170, Math.min(250, stageWidth * 0.19)));
+  // tighter on phones so the neighbours peek in and invite a swipe
+  const gap = height * (stageWidth < 640 ? 0.22 : 0.42);
   const widths = useMemo(() => projects.map((p) => height * p.aspect), [height]);
   const centers = useMemo(() => {
     const out: number[] = [];
@@ -488,7 +491,7 @@ export function GalleryWall() {
   const project = projects[active];
 
   return (
-    <section className="relative w-full overflow-x-clip pt-36 pb-16 md:pt-44">
+    <section id="projekter" className="relative w-full scroll-mt-16 overflow-x-clip py-24 md:py-32">
       <div className="relative mx-auto max-w-3xl px-6 text-center">
         <p className="text-[11px] uppercase tracking-[0.4em] text-neutral-400">{t.eyebrow}</p>
         <h2 className="mt-4 text-2xl font-normal tracking-tight text-white md:text-4xl">{t.title}</h2>

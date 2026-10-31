@@ -1,4 +1,5 @@
 import { Hero } from "@/components/hero";
+import { GalleryWall } from "@/components/gallery-wall";
 import { Work } from "@/components/work";
 import { Services } from "@/components/services";
 import { About } from "@/components/about";
@@ -10,11 +11,12 @@ export default function Home() {
     <>
       <main>
         <Hero />
-        <Work />
+        <GalleryWall />
         <Services />
         <About />
         <Timeline />
         <Contact />
+        <Work />
       </main>
     </>
   );

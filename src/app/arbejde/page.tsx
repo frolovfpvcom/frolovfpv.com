@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { GalleryWall } from "@/components/gallery-wall";
 import { SelectedWork } from "@/components/selected-work";
 
 export const metadata: Metadata = {
@@ -9,11 +8,8 @@ export const metadata: Metadata = {
 
 export default function ArbejdePage() {
   return (
-    <main className="flex flex-1 flex-col bg-black">
-      <GalleryWall />
-      <div className="px-6 pt-8 pb-24">
-        <SelectedWork />
-      </div>
+    <main className="flex flex-1 items-center bg-black px-6 pt-36 pb-24 md:pt-44">
+      <SelectedWork />
     </main>
   );
 }
