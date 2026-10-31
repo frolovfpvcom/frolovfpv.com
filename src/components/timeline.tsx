@@ -12,7 +12,7 @@ export function Timeline() {
   return (
     <section id="tidslinje" className="relative w-full py-32">
       <div className="max-w-3xl mx-auto px-6 text-center">
-        <p className="text-xs text-neutral-500 uppercase tracking-[0.3em] mb-6">
+        <p className="text-xs text-blaa-300 uppercase tracking-[0.3em] mb-6">
           {t.label}
         </p>
         <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
@@ -21,7 +21,7 @@ export function Timeline() {
       </div>
 
       <div className="mt-16 px-6">
-        <div className="mx-auto aspect-square w-full max-w-56 overflow-hidden rounded-2xl border border-white/[0.06]">
+        <div className="mx-auto aspect-square w-full max-w-56 overflow-hidden rounded-2xl border border-blaa-300/20 shadow-[0_20px_60px_-20px_rgba(4,84,231,0.5)]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/portrait.jpg"

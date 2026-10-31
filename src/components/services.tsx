@@ -37,7 +37,7 @@ export function Services() {
   const t = useT(texts);
 
   return (
-    <section className="py-32 px-6 border-t border-white/[0.04]">
+    <section className="relative py-32 px-6 border-t border-blaa-300/10 bg-[radial-gradient(60%_50%_at_15%_0%,rgba(4,84,231,0.14),transparent)]">
       <div className="max-w-7xl mx-auto">
         <motion.div
           ref={ref}
@@ -65,11 +65,11 @@ export function Services() {
                 delay: i * 0.1,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="group bg-white/[0.02] border border-white/[0.06] rounded-xl p-6 hover:bg-white/[0.04] hover:border-white/[0.1] transition-all duration-300"
+              className="group bg-blaa-900/30 border border-blaa-300/10 rounded-xl p-6 hover:bg-blaa-800/40 hover:border-blaa-400/40 transition-all duration-300"
             >
               <Icon
                 size={24}
-                className="text-neutral-500 group-hover:text-white transition-colors duration-300 mb-4"
+                className="text-blaa-300 group-hover:text-blaa-50 transition-colors duration-300 mb-4"
               />
               <h3 className="font-medium mb-2">{service.title}</h3>
               <p className="text-sm text-neutral-500 leading-relaxed">

@@ -25,7 +25,7 @@ export function Contact() {
   const t = useT(texts);
 
   return (
-    <section id="contact" className="py-32 px-6 border-t border-white/[0.04]">
+    <section id="contact" className="py-32 px-6 border-t border-blaa-300/10 bg-[radial-gradient(45%_45%_at_80%_50%,rgba(4,84,231,0.16),transparent)]">
       <div className="max-w-7xl mx-auto">
         <motion.div
           ref={ref}
@@ -44,7 +44,7 @@ export function Contact() {
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
               href="/kontakt"
-              className="group flex items-center gap-3 bg-white text-black px-6 py-3.5 rounded-full font-medium text-sm hover:bg-neutral-200 transition-colors duration-200"
+              className="group flex items-center gap-3 bg-blaa-500 text-white px-6 py-3.5 rounded-full font-medium text-sm shadow-lg shadow-blaa-500/25 hover:bg-blaa-400 transition-colors duration-200"
             >
               <Mail size={16} />
               {t.cta}

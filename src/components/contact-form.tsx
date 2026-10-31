@@ -55,7 +55,7 @@ const texts = {
 };
 
 const field =
-  "w-full rounded-xl border border-white/[0.1] bg-white/[0.03] px-4 py-3 text-white placeholder:text-neutral-600 focus:border-white/40 focus:outline-none transition-colors";
+  "w-full rounded-xl border border-blaa-300/15 bg-blaa-900/30 px-4 py-3 text-white placeholder:text-neutral-600 focus:border-blaa-400 focus:outline-none transition-colors";
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
@@ -91,11 +91,11 @@ export function ContactForm() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="text-xs text-neutral-500 uppercase tracking-[0.3em] mb-6">{t.label}</p>
+          <p className="text-xs text-blaa-300 uppercase tracking-[0.3em] mb-6">{t.label}</p>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
             {t.title}
             <br />
-            <span className="text-neutral-400">{t.accent}</span>
+            <span className="text-blaa-300">{t.accent}</span>
           </h1>
           <p className="mt-6 text-neutral-400 text-lg leading-relaxed">
             {t.lead}
@@ -114,7 +114,7 @@ export function ContactForm() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 md:p-8 space-y-5"
+          className="rounded-2xl border border-blaa-300/10 bg-blaa-900/20 p-6 md:p-8 space-y-5"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <label className="block">
@@ -159,7 +159,7 @@ export function ContactForm() {
 
           <button
             type="submit"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-medium text-black hover:bg-neutral-200 transition-colors sm:w-auto"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-blaa-500 px-6 py-3.5 text-sm font-medium text-white shadow-lg shadow-blaa-500/25 hover:bg-blaa-400 transition-colors sm:w-auto"
           >
             <Send size={16} />
             {t.send}

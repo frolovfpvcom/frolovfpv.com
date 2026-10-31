@@ -1,13 +1,41 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #010818;
+  --foreground: #eef4ff;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+}
+
+/* Peters blå palet, fra næsten hvid til næsten sort navy. 500 er den markerede klare blå. */
+@theme {
+  --color-blaa-50: #e6effe;
+  --color-blaa-100: #b9d1ff;
+  --color-blaa-200: #8cb3fe;
+  --color-blaa-300: #5f96fb;
+  --color-blaa-400: #3278fa;
+  --color-blaa-500: #0454e7;
+  --color-blaa-600: #044acc;
+  --color-blaa-700: #033a9f;
+  --color-blaa-800: #022a72;
+  --color-blaa-900: #011947;
+  --color-blaa-950: #010818;
+
+  /* De grå tekstfarver får et køligt, blåt skær, så de passer til paletten. */
+  --color-neutral-200: #dbe5f7;
+  --color-neutral-300: #b7c7e3;
+  --color-neutral-400: #8b9fc4;
+  --color-neutral-500: #66799f;
+  --color-neutral-600: #4a5b7e;
+  --color-neutral-700: #31405f;
+  --color-neutral-800: #1a2643;
+  --color-neutral-900: #0c1630;
+}
+
+@theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -20,6 +48,11 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+::selection {
+  background: #0454e7;
+  color: #fff;
 }
 
 @keyframes fade-in {
