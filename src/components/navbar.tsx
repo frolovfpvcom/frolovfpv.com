@@ -34,11 +34,13 @@ const texts = {
   },
 };
 
-/** DA / EN switch; the active language is white, the other grey. */
-function LangToggle({ className = "" }: { className?: string }) {
+/** DA / EN switch; the active language is bold, the other faded. */
+function LangToggle({ className = "", light = false }: { className?: string; light?: boolean }) {
   const { lang, setLang } = useLang();
   const t = useT(texts);
   const next: Lang = lang === "da" ? "en" : "da";
+  const on = light ? "text-white" : "text-foreground";
+  const off = light ? "text-white/60 hover:text-white" : "text-subtle hover:text-muted";
   return (
     <button
       type="button"
@@ -47,9 +49,9 @@ function LangToggle({ className = "" }: { className?: string }) {
       lang={next}
       className={`min-h-11 whitespace-nowrap font-mono text-sm font-semibold tracking-wider ${className}`}
     >
-      <span className={lang === "da" ? "text-foreground" : "text-subtle hover:text-muted"}>DA</span>
-      <span className="text-white/25"> / </span>
-      <span className={lang === "en" ? "text-foreground" : "text-subtle hover:text-muted"}>EN</span>
+      <span className={lang === "da" ? on : off}>DA</span>
+      <span className={light ? "text-white/40" : "text-foreground/25"}> / </span>
+      <span className={lang === "en" ? on : off}>EN</span>
     </button>
   );
 }
@@ -94,6 +96,8 @@ export function Navbar() {
   }, [mobileOpen]);
 
   const solid = scrolled || mobileOpen || pathname !== "/";
+  // over the front-page video everything in the bar is white
+  const light = !solid;
 
   return (
     <motion.header
@@ -101,7 +105,7 @@ export function Navbar() {
       animate={{ y: hidden && !mobileOpen ? "-100%" : 0 }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        solid ? "border-b border-line bg-background/85 backdrop-blur-md" : "border-b border-transparent bg-gradient-to-b from-black/60 to-transparent"
+        solid ? "border-b border-line bg-background/85 backdrop-blur-md" : "border-b border-transparent bg-gradient-to-b from-black/40 to-transparent text-white"
       }`}
     >
       <a
@@ -115,8 +119,8 @@ export function Navbar() {
         <Link href="/" aria-label={t.home} className="flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/kat-logo-tiger.png" alt="" className="h-10 w-auto md:h-12" />
-          <span className="display text-2xl tracking-wide md:text-[1.7rem]">
-            Frolov<span className="text-accent">FPV</span>
+          <span className="display text-xl md:text-2xl">
+            Frolov<span className={light ? "text-white/70" : "text-accent"}>FPV</span>
           </span>
         </Link>
 
@@ -127,16 +131,18 @@ export function Navbar() {
               href={link.href}
               aria-current={isActive(link.href) ? "page" : undefined}
               className={`relative py-2 text-sm font-semibold uppercase tracking-[0.12em] transition-colors duration-200 ${
-                isActive(link.href) ? "text-foreground" : "text-muted hover:text-foreground"
+                isActive(link.href)
+                  ? light ? "text-white" : "text-foreground"
+                  : light ? "text-white/80 hover:text-white" : "text-muted hover:text-foreground"
               }`}
             >
               {link.label}
               {isActive(link.href) ? (
-                <span aria-hidden="true" className="absolute inset-x-0 -bottom-0.5 h-0.5 bg-accent" />
+                <span aria-hidden="true" className={`absolute inset-x-0 -bottom-0.5 h-0.5 ${light ? "bg-white" : "bg-accent"}`} />
               ) : null}
             </Link>
           ))}
-          <LangToggle />
+          <LangToggle light={light} />
           <Link
             href="/kontakt"
             aria-current={isActive("/kontakt") ? "page" : undefined}
@@ -176,7 +182,7 @@ export function Navbar() {
                   <Link
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
-                    className={`display block py-2 text-5xl ${isActive(link.href) ? "text-accent" : "text-foreground"}`}
+                    className={`display block py-2 text-4xl ${isActive(link.href) ? "text-accent" : "text-foreground"}`}
                   >
                     {link.label}
                   </Link>

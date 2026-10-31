@@ -25,7 +25,7 @@ export function PageHeader({
         className="mx-auto max-w-7xl"
       >
         <Eyebrow>{eyebrow}</Eyebrow>
-        <h1 className="display mt-6 text-6xl sm:text-7xl md:text-8xl lg:text-9xl">{title}</h1>
+        <h1 className="display mt-6 text-5xl sm:text-6xl md:text-7xl lg:text-8xl">{title}</h1>
         {lead ? <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted md:text-xl">{lead}</p> : null}
         {children}
       </motion.div>

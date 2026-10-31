@@ -32,13 +32,13 @@ export function Process() {
       <div className="mx-auto max-w-7xl">
         <Reveal>
           <Eyebrow>{t.eyebrow}</Eyebrow>
-          <h2 className="display mt-5 text-5xl md:text-7xl">{t.title}</h2>
+          <h2 className="display mt-5 text-4xl md:text-6xl">{t.title}</h2>
         </Reveal>
         <ol className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-3">
           {t.steps.map((step, i) => (
             <li key={step.title} className="bg-surface p-8 md:p-10">
               <Reveal delay={i * 0.08}>
-                <span className="display text-6xl text-accent">{String(i + 1).padStart(2, "0")}</span>
+                <span className="display text-5xl text-accent">{String(i + 1).padStart(2, "0")}</span>
                 <h3 className="mt-6 text-2xl font-semibold tracking-tight">{step.title}</h3>
                 <p className="mt-3 leading-relaxed text-muted">{step.body}</p>
               </Reveal>

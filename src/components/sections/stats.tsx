@@ -18,7 +18,7 @@ export function Stats({ className = "" }: { className?: string }) {
       {values.map((value, i) => (
         <Reveal key={value} delay={i * 0.08} className="border-l border-line pl-4 md:pl-6">
           <dt className="sr-only">{labels[i]}</dt>
-          <dd className="display text-5xl md:text-7xl">{value}</dd>
+          <dd className="display text-4xl md:text-6xl">{value}</dd>
           <dd aria-hidden="true" className="mt-2 font-mono text-[11px] uppercase tracking-[0.2em] text-muted md:text-xs">
             {labels[i]}
           </dd>

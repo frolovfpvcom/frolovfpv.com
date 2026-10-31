@@ -1,113 +1,121 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Lenis from "lenis";
 import { ButtonLink } from "@/components/ui/button-link";
+import { Eyebrow } from "@/components/ui/eyebrow";
 import { heroMedia } from "@/lib/media";
 import { useT } from "@/lib/lang";
 
 const texts = {
   da: {
     eyebrow: "FPV-dronefilm · Danmark",
-    title: ["Se verden", "med nye øjne"],
+    title: "Se verden med nye øjne",
     lead: "Filmiske FPV-optagelser til reklamer, events og brands. Jeg flyver tæt på, gennem og rundt om det, andre kun kan filme på afstand.",
     cta: "Book en flyvning",
     secondary: "Se arbejde",
-    scroll: "Scroll",
   },
   en: {
     eyebrow: "FPV drone film · Denmark",
-    title: ["See the world", "with new eyes"],
+    title: "See the world with new eyes",
     lead: "Cinematic FPV footage for commercials, events and brands. I fly close to, through and around what others can only film from a distance.",
     cta: "Book a flight",
     secondary: "See work",
-    scroll: "Scroll",
   },
 };
 
-const EASE = [0.16, 1, 0.3, 1] as const;
+// how far each layer drifts down while the header scrolls away
+const LAYERS = [
+  { layer: "1", yPercent: 70 }, // the video, furthest back
+  { layer: "3", yPercent: 40 }, // the big name
+];
 
-/** Viewfinder corners, like the frame in FPV goggles. */
-function Corners() {
-  const corner = "absolute size-6 border-white/50";
-  return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-6 hidden md:block lg:inset-10">
-      <span className={`${corner} left-0 top-20 border-l-2 border-t-2`} />
-      <span className={`${corner} right-0 top-20 border-r-2 border-t-2`} />
-      <span className={`${corner} bottom-0 left-0 border-b-2 border-l-2`} />
-      <span className={`${corner} bottom-0 right-0 border-b-2 border-r-2`} />
-      <span className="absolute left-10 top-[6.5rem] flex items-center gap-2 font-mono text-xs tracking-[0.2em] text-white/80">
-        <span className="rec-dot size-2 rounded-full bg-red-500" />
-        REC
-      </span>
-      <span className="absolute right-10 top-[6.5rem] font-mono text-xs tracking-[0.2em] text-white/60">
-        FROLOV FPV
-      </span>
-    </div>
-  );
-}
-
+/**
+ * Front-page header: the intro video and the name in separate layers that
+ * move at different speeds as you scroll, fading into the page below.
+ * Smooth scrolling (Lenis) runs only on the front page.
+ */
 export function Hero() {
   const t = useT(texts);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const trigger = rootRef.current?.querySelector<HTMLElement>("[data-parallax-layers]");
+    const ctx = gsap.context(() => {
+      if (!trigger) return;
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger, start: "0% 0%", end: "100% 0%", scrub: 0 },
+      });
+      LAYERS.forEach(({ layer, yPercent }, i) => {
+        tl.to(
+          trigger.querySelectorAll(`[data-parallax-layer="${layer}"]`),
+          { yPercent, ease: "none" },
+          i === 0 ? undefined : "<",
+        );
+      });
+    }, rootRef);
+
+    const lenis = new Lenis();
+    lenis.on("scroll", ScrollTrigger.update);
+    const tick = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      ctx.revert();
+      gsap.ticker.remove(tick);
+      lenis.destroy();
+    };
+  }, []);
+
   return (
-    <section className="relative w-full overflow-hidden bg-black pt-16 md:h-[100svh] md:min-h-[640px] md:pt-0">
-      {/* On desktop the intro video fills the whole first screen with the text on
-          top. On phones it shows the full 16:9 frame, with the text below, so
-          less of the picture is cropped away. */}
-      <motion.video
-        autoPlay
-        loop
-        muted
-        playsInline
-        poster={heroMedia.image}
-        initial={{ opacity: 0, scale: 1.04 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.2, ease: EASE }}
-        className="relative block aspect-video w-full object-cover md:absolute md:inset-0 md:h-full md:aspect-auto"
-      >
-        <source src={heroMedia.video} type="video/mp4" />
-      </motion.video>
-
-      <div className="absolute inset-0 hidden bg-gradient-to-t from-black via-black/30 to-black/20 md:block" />
-      <div className="absolute inset-0 hidden bg-gradient-to-r from-black/60 via-transparent to-transparent md:block" />
-      <Corners />
-
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-5 pb-14 pt-10 md:h-full md:justify-end md:px-8 md:pb-24 lg:pb-28">
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.3, ease: EASE }}
-          className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-white/80"
-        >
-          <span aria-hidden="true" className="h-px w-8 bg-accent" />
-          {t.eyebrow}
-        </motion.p>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.4, ease: EASE }}
-          className="display mt-5 text-[3.4rem] sm:text-7xl md:text-8xl lg:text-[8.5rem]"
-        >
-          {t.title[0]}
-          <br />
-          <span className="text-white/55">{t.title[1]}</span>
-        </motion.h1>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, ease: EASE }}
-          className="mt-7 flex flex-col gap-8 md:flex-row md:items-end md:justify-between"
-        >
-          <p className="max-w-lg text-base leading-relaxed text-white/80 md:text-lg">{t.lead}</p>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="/kontakt">{t.cta}</ButtonLink>
-            <ButtonLink href="/arbejde" variant="secondary" arrow={false}>
-              {t.secondary}
-            </ButtonLink>
+    <div className="parallax" ref={rootRef}>
+      <section className="parallax__header">
+        <div className="parallax__visuals">
+          <div data-parallax-layers className="parallax__layers">
+            <video
+              data-parallax-layer="1"
+              className="parallax__layer-img"
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster={heroMedia.image}
+              aria-hidden="true"
+            >
+              <source src={heroMedia.video} type="video/mp4" />
+            </video>
+            <div className="parallax__shade" aria-hidden="true" />
+            <div data-parallax-layer="3" className="parallax__layer-title">
+              <p className="parallax__title display" aria-hidden="true">
+                Frolov FPV
+              </p>
+            </div>
           </div>
-        </motion.div>
-      </div>
-    </section>
+          <div className="parallax__fade" />
+        </div>
+      </section>
+
+      <section className="parallax__content px-5 md:px-8">
+        <div className="mx-auto w-full max-w-7xl">
+          <Eyebrow>{t.eyebrow}</Eyebrow>
+          <h1 className="display mt-6 max-w-5xl text-5xl sm:text-6xl md:text-7xl lg:text-8xl">{t.title}</h1>
+          <div className="mt-10 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+            <p className="max-w-lg text-lg leading-relaxed text-muted">{t.lead}</p>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <ButtonLink href="/kontakt">{t.cta}</ButtonLink>
+              <ButtonLink href="/arbejde" variant="secondary" arrow={false}>
+                {t.secondary}
+              </ButtonLink>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }

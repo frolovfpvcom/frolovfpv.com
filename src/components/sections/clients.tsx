@@ -24,10 +24,10 @@ export function Clients() {
                   src={client.logo}
                   alt={client.name}
                   loading="lazy"
-                  className="max-h-9 w-auto max-w-[120px] object-contain opacity-60 grayscale transition-opacity hover:opacity-100"
+                  className="max-h-9 w-auto max-w-[120px] object-contain opacity-70 grayscale transition-opacity hover:opacity-100"
                 />
               ) : (
-                <span className="flex h-full w-full items-center justify-center rounded-lg border border-dashed border-white/10 font-mono text-[10px] uppercase tracking-[0.2em] text-white/25">
+                <span className="flex h-full w-full items-center justify-center rounded-lg border border-dashed border-foreground/15 font-mono text-[10px] uppercase tracking-[0.2em] text-subtle">
                   {t.logo}
                 </span>
               )}

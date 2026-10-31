@@ -6,7 +6,7 @@ type Variant = "primary" | "secondary" | "ghost";
 
 const styles: Record<Variant, string> = {
   primary: "bg-accent text-on-accent hover:bg-accent-hover",
-  secondary: "border border-white/25 text-foreground hover:border-white hover:bg-white/5",
+  secondary: "border border-foreground/25 text-foreground hover:border-foreground hover:bg-foreground/5",
   ghost: "text-foreground hover:text-accent px-0",
 };
 

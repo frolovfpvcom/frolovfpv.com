@@ -27,7 +27,7 @@ export function ProjectCard({ project, index, tall = false }: { project: Project
           label={t.empty}
           className="transition-transform duration-700 ease-out group-hover:scale-[1.03]"
         />
-        <span className="absolute left-4 top-4 rounded-full bg-black/55 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-white/85 backdrop-blur-sm">
+        <span className="absolute left-4 top-4 rounded-full bg-background/85 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-foreground backdrop-blur-sm">
           {project.tag[lang]}
         </span>
       </div>

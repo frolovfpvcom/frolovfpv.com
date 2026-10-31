@@ -27,10 +27,10 @@ export function CtaBand() {
     <section className="relative overflow-hidden border-t border-line px-5 py-24 md:px-8 md:py-36">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-40 left-1/2 h-80 w-[60rem] max-w-[140vw] -translate-x-1/2 rounded-full bg-accent/15 blur-3xl"
+        className="pointer-events-none absolute -bottom-40 left-1/2 h-80 w-[60rem] max-w-[140vw] -translate-x-1/2 rounded-full bg-accent/10 blur-3xl"
       />
       <Reveal className="relative mx-auto flex max-w-7xl flex-col items-start gap-10 lg:flex-row lg:items-end lg:justify-between">
-        <h2 className="display text-6xl sm:text-7xl md:text-8xl lg:text-9xl">
+        <h2 className="display text-5xl sm:text-6xl md:text-7xl lg:text-8xl">
           {t.title[0]}
           <br />
           <span className="text-accent">{t.title[1]}</span>

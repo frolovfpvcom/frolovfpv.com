@@ -84,7 +84,7 @@ export function ServicesPage() {
               </Reveal>
               <Reveal delay={0.1}>
                 <span className="font-mono text-sm text-accent">{String(i + 1).padStart(2, "0")}</span>
-                <h2 className="display mt-4 text-5xl md:text-6xl">{service.title}</h2>
+                <h2 className="display mt-4 text-4xl md:text-5xl">{service.title}</h2>
                 <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted">{service.long}</p>
                 <ul className="mt-8 space-y-3">
                   {service.points.map((point) => (
@@ -104,7 +104,7 @@ export function ServicesPage() {
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-20">
           <Reveal>
             <Eyebrow>{t.faqEyebrow}</Eyebrow>
-            <h2 className="display mt-5 text-5xl md:text-7xl">{t.faqTitle}</h2>
+            <h2 className="display mt-5 text-4xl md:text-6xl">{t.faqTitle}</h2>
           </Reveal>
           <div className="border-t border-line">
             {t.faq.map((item) => (

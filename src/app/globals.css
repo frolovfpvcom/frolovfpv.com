@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
-/* Design tokens. One accent (tiger orange, after the cat logo) used only for
-   calls to action and small highlights; everything else is black, white and grey. */
+/* Design tokens. Light and airy: warm paper background, ink text and one
+   sky-blue accent for calls to action. */
 :root {
-  --background: #080808;
-  --surface: #111111;
-  --surface-2: #181818;
-  --foreground: #f5f5f4;
-  --muted: #a3a3a3;
-  --subtle: #737373;
-  --line: rgba(255, 255, 255, 0.08);
-  --accent: #ff6a1f;
-  --accent-hover: #ff8547;
-  --on-accent: #0a0a0a;
+  --background: #f3f2ee;
+  --surface: #e8e6e0;
+  --surface-2: #dedbd3;
+  --foreground: #16171a;
+  --muted: #55534e;
+  --subtle: #6b6862;
+  --line: rgba(22, 23, 26, 0.12);
+  --accent: #2b59d9;
+  --accent-hover: #1f47b8;
+  --on-accent: #ffffff;
 }
 
 @theme inline {
@@ -57,13 +57,25 @@ h3 {
   text-wrap: balance;
 }
 
-/* Big uppercase headings in the display face. */
+/* Big headings in the wide display face. */
 .display {
   font-family: var(--font-display), var(--font-sans), sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.005em;
-  line-height: 0.92;
-  font-weight: 400;
+  font-stretch: 125%;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+/* Lenis smooth scrolling (front page) takes over from CSS smooth scrolling. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+html.lenis {
+  scroll-behavior: auto;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
 }
 
 /* Faint grid used behind empty media slots. */
@@ -102,4 +114,74 @@ h3 {
   .animate-bounce {
     animation: none;
   }
+}
+
+/* Front-page parallax header: video and name in layers that drift apart on scroll. */
+.parallax__header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 100svh;
+  align-items: center;
+  justify-content: center;
+}
+.parallax__visuals {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120%;
+}
+.parallax__layers {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.parallax__layer-img {
+  pointer-events: none;
+  position: absolute;
+  top: -17.5%;
+  left: 0;
+  width: 100%;
+  height: 117.5%;
+  object-fit: cover;
+}
+.parallax__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.15));
+}
+.parallax__layer-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+  height: 100svh;
+  align-items: center;
+  justify-content: center;
+}
+.parallax__title {
+  color: #fff;
+  text-align: center;
+  font-size: clamp(3.25rem, 13vw, 13rem);
+  line-height: 1;
+  text-shadow: 0 2px 40px rgba(0, 0, 0, 0.25);
+}
+.parallax__fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 30;
+  width: 100%;
+  height: 20%;
+  background-image: linear-gradient(transparent, var(--background));
+}
+.parallax__content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  /* the video layer hangs 20% past the header and fades out; start below it */
+  padding-top: calc(20svh + 4rem);
+  padding-bottom: 6rem;
 }

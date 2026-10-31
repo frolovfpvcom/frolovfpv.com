@@ -21,7 +21,7 @@ export function ServicesTeaser() {
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-20">
         <Reveal>
           <Eyebrow>{t.eyebrow}</Eyebrow>
-          <h2 className="display mt-5 text-5xl md:text-7xl">{t.title}</h2>
+          <h2 className="display mt-5 text-4xl md:text-6xl">{t.title}</h2>
         </Reveal>
         <ul className="border-t border-line">
           {services[lang].map((service, i) => (

@@ -91,7 +91,7 @@ export function MediaSlot({
     <div
       className={`slot-grid flex h-full w-full flex-col items-center justify-center gap-3 bg-surface text-center ${className}`}
     >
-      <span className="grid size-12 place-items-center rounded-full border border-white/15 text-muted">
+      <span className="grid size-12 place-items-center rounded-full border border-foreground/15 text-muted">
         <Icon size={18} aria-hidden="true" />
       </span>
       <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-subtle">

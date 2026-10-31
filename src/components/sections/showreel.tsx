@@ -29,7 +29,7 @@ export function Showreel() {
         <Reveal className="mb-10 flex flex-col gap-4 md:mb-14 md:flex-row md:items-end md:justify-between">
           <div>
             <Eyebrow>{t.eyebrow}</Eyebrow>
-            <h2 className="display mt-5 text-5xl md:text-7xl">{t.title}</h2>
+            <h2 className="display mt-5 text-4xl md:text-6xl">{t.title}</h2>
           </div>
           <p className="max-w-sm text-muted md:text-right">{t.lead}</p>
         </Reveal>

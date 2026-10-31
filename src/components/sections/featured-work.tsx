@@ -20,7 +20,7 @@ export function FeaturedWork() {
         <Reveal className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <Eyebrow>{t.eyebrow}</Eyebrow>
-            <h2 className="display mt-5 text-5xl md:text-7xl">{t.title}</h2>
+            <h2 className="display mt-5 text-4xl md:text-6xl">{t.title}</h2>
           </div>
           <ButtonLink href="/arbejde" variant="secondary" className="self-start md:self-auto">
             {t.all}

@@ -56,7 +56,7 @@ const texts = {
 };
 
 const field =
-  "w-full min-h-12 rounded-xl border border-white/10 bg-background px-4 py-3 text-base text-foreground placeholder:text-subtle focus:border-accent focus:outline-none transition-colors";
+  "w-full min-h-12 rounded-xl border border-foreground/15 bg-background px-4 py-3 text-base text-foreground placeholder:text-subtle focus:border-accent focus:outline-none transition-colors";
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
@@ -93,7 +93,7 @@ export function ContactForm() {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
           <Eyebrow>{t.label}</Eyebrow>
-          <h1 className="display mt-6 text-6xl sm:text-7xl lg:text-8xl">{t.title}</h1>
+          <h1 className="display mt-6 text-5xl sm:text-6xl lg:text-7xl">{t.title}</h1>
           <p className="mt-6 text-2xl font-semibold tracking-tight text-accent">{t.accent}</p>
           <p className="mt-6 max-w-md text-muted text-lg leading-relaxed">
             {t.lead}

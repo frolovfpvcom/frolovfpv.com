@@ -56,10 +56,10 @@ export function AboutTeaser() {
         </Reveal>
         <Reveal delay={0.1}>
           <Eyebrow>{t.eyebrow}</Eyebrow>
-          <h2 className="display mt-5 text-5xl md:text-7xl">
+          <h2 className="display mt-5 text-4xl md:text-6xl">
             {t.title[0]}
             <br />
-            <span className="text-white/55">{t.title[1]}</span>
+            <span className="text-muted">{t.title[1]}</span>
           </h2>
           <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted">{t.teaser}</p>
           <Stats className="mt-10" />
@@ -81,10 +81,10 @@ export function AboutPage() {
         <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-[1fr_0.85fr] lg:gap-20">
           <Reveal>
             <Eyebrow>{t.eyebrow}</Eyebrow>
-            <h1 className="display mt-6 text-6xl sm:text-7xl lg:text-8xl">
+            <h1 className="display mt-6 text-5xl sm:text-6xl lg:text-7xl">
               {t.title[0]}
               <br />
-              <span className="text-white/55">{t.title[1]}</span>
+              <span className="text-muted">{t.title[1]}</span>
             </h1>
             <div className="mt-10 max-w-xl space-y-5 text-lg leading-relaxed text-muted">
               {t.body.map((p) => (
@@ -104,7 +104,7 @@ export function AboutPage() {
       <section className="border-t border-line px-5 py-24 md:px-8 md:py-32">
         <div className="mx-auto grid max-w-7xl items-center gap-12 md:grid-cols-2 lg:gap-20">
           <Reveal>
-            <h2 className="display text-5xl md:text-7xl">{t.journey}</h2>
+            <h2 className="display text-4xl md:text-6xl">{t.journey}</h2>
             <p className="mt-6 max-w-md text-lg leading-relaxed text-muted">{t.journeyLead}</p>
           </Reveal>
           <Reveal delay={0.1}>
