@@ -1,8 +1,7 @@
 "use client";
 
-import { animate, motion, useInView, useScroll, useTransform } from "motion/react";
-import { useEffect, useRef, useState } from "react";
-import { Compass, Zap, Film } from "lucide-react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useRef } from "react";
 
 import { useT } from "@/lib/lang";
 
@@ -14,7 +13,6 @@ const texts = {
       "Hver flyvning er en mulighed for at skabe noget unikt — jeg fletter mig gennem omgivelserne med præcision og kreativitet og leverer optagelser, der føles medrivende og levende.",
       "Uanset om det er jagt gennem bjergterræn, dyk ud over bygninger eller glidende flyvninger gennem interiører — bringer jeg et filmisk blik til hvert projekt.",
     ],
-    stats: ["Projekter", "Lokationer", "År i luften"],
     eyebrow: "Hej, jeg hedder Peter",
     alt: "Portræt af Peter Frolov",
   },
@@ -25,30 +23,10 @@ const texts = {
       "Every flight is a chance to create something unique — I weave through the surroundings with precision and creativity and deliver footage that feels immersive and alive.",
       "Whether it's chasing through mountain terrain, diving off buildings or gliding through interiors — I bring a cinematic eye to every project.",
     ],
-    stats: ["Projects", "Locations", "Years in the air"],
     eyebrow: "Hi, I'm Peter",
     alt: "Portrait of Peter Frolov",
   },
 };
-
-const stats = [
-  { icon: Film, value: 50 },
-  { icon: Compass, value: 12 },
-  { icon: Zap, value: 3 },
-];
-
-/** Counts up from 0 the first time it scrolls into view. */
-function CountUp({ to }: { to: number }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true });
-  const [n, setN] = useState(0);
-  useEffect(() => {
-    if (!inView) return;
-    const controls = animate(0, to, { duration: 1.6, ease: [0.16, 1, 0.3, 1], onUpdate: (v) => setN(Math.round(v)) });
-    return () => controls.stop();
-  }, [inView, to]);
-  return <span ref={ref}>{n}+</span>;
-}
 
 export function About() {
   const t = useT(texts);
@@ -60,7 +38,7 @@ export function About() {
   return (
     <section id="about" className="px-6 pt-36 pb-24 md:pt-44">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
-        {/* the photo of Peter, framed big with a blue glow behind it */}
+        {/* the photo of Peter, framed big with a warm glow behind it */}
         <motion.div
           ref={photoRef}
           initial={false}
@@ -107,25 +85,6 @@ export function About() {
               >
                 {p}
               </motion.p>
-            ))}
-          </div>
-
-          <div className="mt-10 grid grid-cols-3 gap-3 md:gap-4">
-            {stats.map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={false}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 + i * 0.1, ease }}
-                whileHover={{ y: -6, rotate: i === 1 ? 0 : i === 0 ? -2 : 2 }}
-                className="rounded-3xl bg-card p-5 text-center shadow-[0_20px_40px_-25px_rgba(58,53,41,0.45)] md:p-6"
-              >
-                <stat.icon size={22} className="mx-auto mb-3 text-skov-500" />
-                <p className="text-3xl font-black text-skov-950">
-                  <CountUp to={stat.value} />
-                </p>
-                <p className="mt-1 text-xs uppercase tracking-wide text-skov-900/55">{t.stats[i]}</p>
-              </motion.div>
             ))}
           </div>
         </div>
