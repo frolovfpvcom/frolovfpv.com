@@ -99,7 +99,7 @@ const projects: Project[] = [
     video: "/clips/peugeot/klip-3.mp4",
     aspect: 4 / 5,
     frame: "oak",
-    title: { da: "Tæt på", en: "Up close" },
+    title: { da: "Mask på", en: "Mask på" },
     category: { da: "Bil", en: "Car" },
     meta: { da: "4K", en: "4K" },
     description: {
