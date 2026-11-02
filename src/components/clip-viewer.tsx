@@ -163,7 +163,7 @@ function Viewer({ selection, onClose }: { selection: ClipSelection; onClose: () 
 
       <div
         ref={panelRef}
-        className="relative w-full max-w-[min(960px,calc((100dvh-12rem)*16/9))] overflow-hidden rounded-[22px] border border-white/10 bg-neutral-900/80 shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8)] will-change-transform"
+        className="relative w-full max-w-[min(960px,calc((100dvh-12rem)*16/9))] overflow-hidden rounded-[22px] border border-white/10 bg-neutral-900/80 text-white shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8)] will-change-transform"
         style={{ opacity: 0 }}
         onTouchStart={(e) => (touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY })}
         onTouchEnd={(e) => {

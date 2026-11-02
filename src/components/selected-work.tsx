@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { motion } from "motion/react";
+import { GenieLink as Link } from "@/lib/smooth-scroll";
 import { ArrowUpRight } from "lucide-react";
 import { useT } from "@/lib/lang";
 
@@ -20,12 +21,17 @@ const texts = {
 export function SelectedWork() {
   const t = useT(texts);
   return (
-    <div className="mx-auto max-w-3xl text-center">
-      <h1 className="text-4xl md:text-6xl font-bold tracking-tight">{t.title}</h1>
-      <p className="mt-8 text-lg md:text-xl leading-relaxed text-neutral-400">{t.lead}</p>
+    <motion.div
+      initial={false}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className="mx-auto max-w-3xl text-center"
+    >
+      <h1 className="text-5xl md:text-7xl font-black tracking-tight">{t.title}</h1>
+      <p className="mt-8 text-lg md:text-xl leading-relaxed text-skov-950/70">{t.lead}</p>
       <Link
         href="/kontakt"
-        className="group mt-10 inline-flex items-center gap-3 rounded-full bg-white px-7 py-3.5 text-sm font-medium text-black hover:bg-neutral-200 transition-colors duration-200"
+        className="group mt-10 inline-flex items-center gap-3 rounded-full bg-skov-800 px-7 py-3.5 text-sm font-bold text-white shadow-[0_15px_35px_-15px_rgba(24,46,16,0.8)] transition-all duration-300 hover:scale-105 hover:bg-sol-400 hover:text-skov-950"
       >
         {t.cta}
         <ArrowUpRight
@@ -33,6 +39,6 @@ export function SelectedWork() {
           className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
         />
       </Link>
-    </div>
+    </motion.div>
   );
 }

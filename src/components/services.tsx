@@ -37,7 +37,7 @@ export function Services() {
   const t = useT(texts);
 
   return (
-    <section className="py-32 px-6 border-t border-white/[0.04]">
+    <section className="px-6 py-24 md:py-32">
       <div className="max-w-7xl mx-auto">
         <motion.div
           ref={ref}
@@ -46,10 +46,10 @@ export function Services() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+          <h2 className="text-4xl md:text-6xl font-black tracking-tight">
             {t.title}
           </h2>
-          <p className="mt-3 text-neutral-400 max-w-md">{t.lead}</p>
+          <p className="mt-4 text-lg text-skov-950/70 max-w-md">{t.lead}</p>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -65,14 +65,13 @@ export function Services() {
                 delay: i * 0.1,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="group bg-white/[0.02] border border-white/[0.06] rounded-xl p-6 hover:bg-white/[0.04] hover:border-white/[0.1] transition-all duration-300"
+              className="group rounded-3xl bg-white p-7 shadow-[0_20px_40px_-25px_rgba(24,46,16,0.45)] transition-all duration-300 hover:-translate-y-2 hover:bg-skov-800 hover:text-white hover:shadow-[0_30px_60px_-25px_rgba(24,46,16,0.8)]"
             >
-              <Icon
-                size={24}
-                className="text-neutral-500 group-hover:text-white transition-colors duration-300 mb-4"
-              />
-              <h3 className="font-medium mb-2">{service.title}</h3>
-              <p className="text-sm text-neutral-500 leading-relaxed">
+              <span className="mb-5 grid size-12 place-items-center rounded-2xl bg-sol-100 text-skov-700 transition-colors duration-300 group-hover:bg-sol-400 group-hover:text-skov-950">
+                <Icon size={24} />
+              </span>
+              <h3 className="text-lg font-bold mb-2">{service.title}</h3>
+              <p className="text-sm text-skov-950/65 leading-relaxed transition-colors duration-300 group-hover:text-white/85">
                 {service.description}
               </p>
             </motion.div>
