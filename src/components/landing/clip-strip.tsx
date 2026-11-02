@@ -7,11 +7,7 @@ import { useT } from "@/lib/lang";
 import { GenieLink } from "@/lib/smooth-scroll";
 
 const clips = [
-  { video: "/clips/peugeot/klip-1.mp4", image: "/clips/peugeot/klip-1.jpg" },
-  // the cards are at most half a screen wide, so the 720p file is plenty here
-  { video: "/clips/panoram-720.mp4", image: "/clips/panoram.jpg" },
-  { video: "/clips/peugeot/klip-2.mp4", image: "/clips/peugeot/klip-2.jpg" },
-  { video: "/clips/peugeot/klip-3.mp4", image: "/clips/peugeot/klip-3.jpg" },
+  { video: "/clips/pande-ram.mp4", mobile: "/clips/pande-ram-720.mp4", image: "/clips/pande-ram.jpg" },
 ];
 
 const texts = {
@@ -19,10 +15,7 @@ const texts = {
     eyebrow: "Fra luften",
     title: "Scroll, og flyv med",
     cards: [
-      { title: "Peugeot shenanigans", tag: "4K" },
       { title: "Panoram", tag: "Natur" },
-      { title: "Rundt om bilen", tag: "4K" },
-      { title: "Mask på", tag: "4K" },
     ],
     next: "Dit projekt her?",
     cta: "Lad os tale",
@@ -31,10 +24,7 @@ const texts = {
     eyebrow: "From the air",
     title: "Scroll and fly along",
     cards: [
-      { title: "Peugeot shenanigans", tag: "4K" },
       { title: "Panoram", tag: "Nature" },
-      { title: "Around the car", tag: "4K" },
-      { title: "Mask på", tag: "4K" },
     ],
     next: "Your project here?",
     cta: "Let's talk",
@@ -82,7 +72,20 @@ export function ClipStrip() {
       { rootMargin: "0px 25% 0px 25%" },
     );
     videos.forEach((v) => io.observe(v));
-    return () => io.disconnect();
+    // Nothing is fetched on arrival; the clips start loading when the row gets close.
+    const near = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        videos.forEach((v) => (v.preload = "auto"));
+        near.disconnect();
+      },
+      { rootMargin: "100% 0px 100% 0px" },
+    );
+    if (section.current) near.observe(section.current);
+    return () => {
+      io.disconnect();
+      near.disconnect();
+    };
   }, []);
 
   return (
@@ -104,11 +107,14 @@ export function ClipStrip() {
                 muted
                 loop
                 playsInline
-                preload="metadata"
-                // the Peugeot clips have black side bars baked in; zoom just past them
-                className="h-full w-full scale-[1.12] object-cover transition-transform duration-700 group-hover:scale-[1.2]"
-                src={clip.video}
-              />
+                preload="none"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+              >
+                {"mobile" in clip && clip.mobile ? (
+                  <source src={clip.mobile} type="video/mp4" media="(max-width: 767px)" />
+                ) : null}
+                <source src={clip.video} type="video/mp4" />
+              </video>
               <div className="absolute inset-0 bg-gradient-to-t from-skov-950/75 via-transparent to-transparent" />
               <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-6 text-white md:p-8">
                 <div>
@@ -136,8 +142,8 @@ export function ClipStrip() {
           </div>
         </motion.div>
 
-        <div className="mx-6 mt-10 h-1 overflow-hidden rounded-full bg-skov-100 md:mx-16">
-          <motion.div style={{ scaleX: progress }} className="h-full origin-left rounded-full bg-skov-500" />
+        <div className="mx-6 mt-10 h-1 overflow-hidden rounded-full bg-muted md:mx-16">
+          <motion.div style={{ scaleX: progress }} className="h-full origin-left rounded-full bg-primary" />
         </div>
       </div>
     </section>

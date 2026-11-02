@@ -37,7 +37,7 @@ export function Contact() {
       <motion.div
         ref={panel}
         style={{ scale, borderRadius: radius }}
-        className="relative overflow-hidden bg-gradient-to-br from-skov-700 via-skov-800 to-skov-950 px-6 py-24 text-white md:px-16 md:py-36"
+        className="relative overflow-hidden bg-gradient-to-br from-secondary via-[#0a4a4d] to-skov-950 px-6 py-24 text-white md:px-16 md:py-36"
       >
         {/* bright clouds drifting around in the panel */}
         <motion.div
@@ -50,7 +50,7 @@ export function Contact() {
           aria-hidden="true"
           animate={{ x: [0, -60, 0], y: [0, 50, 0] }}
           transition={{ duration: 17, repeat: Infinity, ease: "easeInOut" }}
-          className="pointer-events-none absolute -bottom-32 right-0 size-[28rem] rounded-full bg-ild-500/30 blur-3xl"
+          className="pointer-events-none absolute -bottom-32 right-0 size-[28rem] rounded-full bg-ild-500/40 blur-3xl"
         />
 
         {/* silk threads from the button to the mouse, and the auto-click after 5 s standing still */}
@@ -87,8 +87,8 @@ export function Contact() {
               <div ref={btnLean} className="inline-flex will-change-transform">
                 <GenieLink
                   href="/kontakt"
-                  className="group relative inline-flex h-14 items-center gap-3 overflow-hidden rounded-full px-8 text-base font-bold text-skov-950 ring-1 ring-inset ring-white/70 backdrop-blur-md transition-transform duration-300 hover:scale-105 active:scale-95 shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.3),inset_0_-12px_18px_-10px_rgb(0_0_0/0.14),inset_0_10px_16px_-8px_rgb(255_255_255/0.55),0_14px_32px_-12px_rgb(0_0_0/0.45),0_1px_3px_rgb(0_0_0/0.12)]"
-                  style={{ backgroundColor: "color-mix(in oklab, #dbc894 92%, transparent)" }}
+                  className="group relative inline-flex h-14 items-center gap-3 overflow-hidden rounded-full px-8 text-base font-bold text-primary-foreground ring-1 ring-inset ring-white/70 backdrop-blur-md transition-transform duration-300 hover:scale-105 active:scale-95 shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.3),inset_0_-12px_18px_-10px_rgb(0_0_0/0.14),inset_0_10px_16px_-8px_rgb(255_255_255/0.55),0_14px_32px_-12px_rgb(0_0_0/0.45),0_1px_3px_rgb(0_0_0/0.12)]"
+                  style={{ backgroundColor: "color-mix(in oklab, #ffe3b0 92%, transparent)" }}
                 >
                   {/* glass highlights */}
                   <span aria-hidden="true" className="pointer-events-none absolute inset-x-[7%] top-[2px] h-[48%] rounded-full bg-gradient-to-b from-white/75 to-white/0" />

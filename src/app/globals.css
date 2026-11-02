@@ -1,39 +1,48 @@
 @import "tailwindcss";
 @import "lenis/dist/lenis.css";
 
-/* Peters tema (lyst): pergament-baggrund, brun tekst, olivengrøn som primær farve. */
+/* Peters tema: "Taste in Motion Colour Slam" (mørkt). Varm næsten-sort baggrund, creme primær,
+   petroleumsblå sekundær og bordeaux accent. Koral (destructive) bruges kun til fejl. */
 :root {
-  --card: #e7dbbf;
-  --ring: #9db18c;
-  --input: #dbc894;
-  --muted: #decea0;
-  --accent: #dbc894;
-  --border: #b19681;
-  --chart-1: #9db18c;
-  --chart-2: #8a9f7b;
-  --chart-3: #bac9b4;
-  --chart-4: #71856a;
-  --chart-5: #5e6e58;
-  --popover: #f3ead2;
-  --primary: #8d9d4f;
-  --secondary: #decea0;
-  --background: #e4d7b0;
-  --foreground: #5c4b3e;
-  --destructive: #d98b7e;
-  --muted-foreground: #85766a;
-  --primary-foreground: #fdfbf6;
+  --background: #141210;
+  --foreground: #fbf7ee;
+  --card: #23201d;
+  --card-foreground: #fbf7ee;
+  --popover: #23201d;
+  --popover-foreground: #fbf7ee;
+  --primary: #ffe3b0;
+  --primary-foreground: #141210;
+  --secondary: #0e6e72;
+  --secondary-foreground: #fbf7ee;
+  --accent: #8a1e50;
+  --accent-foreground: #fbf7ee;
+  --muted: #2a2622;
+  --muted-foreground: #b5ac9c;
+  --destructive: #d96a52;
+  --border: #3a342e;
+  --input: #3a342e;
+  --ring: #ffe3b0;
+  --chart-1: #ffe3b0;
+  --chart-2: #0e6e72;
+  --chart-3: #8a1e50;
+  --chart-4: #b5ac9c;
+  --chart-5: #d96a52;
 }
 
 @theme inline {
   --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
   --color-border: var(--border);
   --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-destructive: var(--destructive);
@@ -41,32 +50,32 @@
   --color-primary-foreground: var(--primary-foreground);
 }
 
-/* The site's colour scales, all taken from Peter's theme (and its dark variant for the darkest steps). */
+/* The site's colour scales, all taken from the theme. */
 @theme {
-  /* skov: lyse pergamenttoner, salviegrøn, oliven og de mørke brune */
-  --color-skov-50: #f3ead2;
-  --color-skov-100: #e7dbbf;
-  --color-skov-200: #bac9b4;
-  --color-skov-300: #9db18c;
-  --color-skov-400: #8a9f7b;
-  --color-skov-500: #8d9d4f;
-  --color-skov-600: #71856a;
-  --color-skov-700: #5e6e58;
-  --color-skov-800: #4a4439;
-  --color-skov-900: #3a3529;
-  --color-skov-950: #5c4b3e;
+  /* skov: the warm dark browns of the surfaces, plus the petrol blue (500/600) for links and lines */
+  --color-skov-50: #23201d;
+  --color-skov-100: #2a2622;
+  --color-skov-200: #3a342e;
+  --color-skov-300: #3a342e;
+  --color-skov-400: #0e6e72;
+  --color-skov-500: #2a9599;
+  --color-skov-600: #5bb8ba;
+  --color-skov-700: #2a2622;
+  --color-skov-800: #23201d;
+  --color-skov-900: #1b1815;
+  --color-skov-950: #0c0a09;
 
-  /* sol: de gyldne sand- og halmtoner */
-  --color-sol-100: #f3ead2;
-  --color-sol-200: #decea0;
-  --color-sol-300: #dbc894;
-  --color-sol-400: #dbc894;
-  --color-sol-500: #a18f5c;
+  /* sol: the cream */
+  --color-sol-100: #2f2922;
+  --color-sol-200: #fff0d4;
+  --color-sol-300: #ffe3b0;
+  --color-sol-400: #ffe3b0;
+  --color-sol-500: #c9ad7c;
 
-  /* ild: den varme rosa-terracotta */
-  --color-ild-400: #e3a497;
-  --color-ild-500: #d98b7e;
-  --color-ild-600: #b5766a;
+  /* ild: the bordeaux accent; 600 is a lighter tint of it so it can be read as text on the dark background */
+  --color-ild-400: #b8417a;
+  --color-ild-500: #8a1e50;
+  --color-ild-600: #d9689a;
 }
 
 @theme inline {
@@ -81,8 +90,8 @@ body {
 }
 
 ::selection {
-  background: #dbc894;
-  color: #5c4b3e;
+  background: #ffe3b0;
+  color: #141210;
 }
 
 @keyframes fade-in {

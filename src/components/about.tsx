@@ -13,7 +13,7 @@ const texts = {
       "Hver flyvning er en mulighed for at skabe noget unikt — jeg fletter mig gennem omgivelserne med præcision og kreativitet og leverer optagelser, der føles medrivende og levende.",
       "Uanset om det er jagt gennem bjergterræn, dyk ud over bygninger eller glidende flyvninger gennem interiører — bringer jeg et filmisk blik til hvert projekt.",
     ],
-    alt: "Portræt af Peter Frolov",
+    alt: "Peter Frolov med FPV-briller på",
   },
   en: {
     title: "About me",
@@ -22,7 +22,7 @@ const texts = {
       "Every flight is a chance to create something unique — I weave through the surroundings with precision and creativity and deliver footage that feels immersive and alive.",
       "Whether it's chasing through mountain terrain, diving off buildings or gliding through interiors — I bring a cinematic eye to every project.",
     ],
-    alt: "Portrait of Peter Frolov",
+    alt: "Peter Frolov wearing FPV goggles",
   },
 };
 
@@ -47,7 +47,7 @@ export function About() {
           <div aria-hidden="true" className="absolute -inset-6 rounded-[44px] bg-gradient-to-br from-sol-300 via-ild-400 to-skov-500 opacity-60 blur-2xl" />
           <div className="relative aspect-[4/5] overflow-hidden rounded-[36px] border-[6px] border-popover bg-skov-100 shadow-[0_40px_80px_-30px_rgba(58,53,41,0.6)]">
             <motion.img
-              src="/images/portrait.jpg"
+              src="/images/portrait-fpv.jpg"
               alt={t.alt}
               draggable={false}
               style={{ y: photoY, scale: 1.18 }}
@@ -65,7 +65,7 @@ export function About() {
           >
             {t.title}
           </motion.h1>
-          <div className="mt-8 space-y-5 text-lg leading-relaxed text-skov-950/75">
+          <div className="mt-8 space-y-5 text-lg leading-relaxed text-foreground/75">
             {t.body.map((p, i) => (
               <motion.p
                 key={p}

@@ -40,46 +40,18 @@ type Project = {
 // Placeholder projects. Swap in real titles, texts and thumbnails as they come.
 const projects: Project[] = [
   {
-    image: "/projekter/peugeot-1.jpg",
-    video: "/clips/peugeot/klip-1.mp4",
-    aspect: 4 / 3,
-    frame: "white",
-    title: { da: "Peugeot shenanigans", en: "Peugeot shenanigans" },
-    category: { da: "Bil", en: "Car" },
-    meta: { da: "4K", en: "4K" },
-    description: {
-      da: "FPV-drone tæt langs bilen på en grusplads. Lave, hurtige linjer, der får en stillestående bil til at føles levende.",
-      en: "An FPV drone tight along the car on a gravel lot. Low, fast lines that make a parked car feel alive.",
-    },
-    tags: { da: ["4K", "FPV"], en: ["4K", "FPV"] },
-  },
-  {
-    image: "/projekter/panoram.jpg",
-    video: "/clips/panoram.mp4",
+    image: "/projekter/pande-ram.jpg",
+    video: "/clips/pande-ram.mp4",
     aspect: 16 / 10,
     frame: "oak",
     title: { da: "Panoram", en: "Panoram" },
     category: { da: "Natur", en: "Nature" },
-    meta: { da: "Natur · 4K · 0:33", en: "Nature · 4K · 0:33" },
+    meta: { da: "Natur · 4K · 0:13", en: "Nature · 4K · 0:13" },
     description: {
-      da: "En rolig flyvning hen over marken i aftenlys, hvor landskabet folder sig ud foran kameraet.",
-      en: "A calm flight over the field in evening light, with the landscape unfolding in front of the camera.",
+      da: "Cruiser igennem der ud af",
+      en: "Cruising right through it",
     },
-    tags: { da: ["4K", "Natur", "Aftenlys"], en: ["4K", "Nature", "Evening light"] },
-  },
-  {
-    image: "/projekter/peugeot-2.jpg",
-    video: "/clips/peugeot/klip-2.mp4",
-    aspect: 1,
-    frame: "black",
-    title: { da: "Rundt om bilen", en: "Around the car" },
-    category: { da: "Bil", en: "Car" },
-    meta: { da: "4K", en: "4K" },
-    description: {
-      da: "Et langt, glidende kredsløb om bilen, der viser den fra alle sider i ét skud.",
-      en: "One long, gliding orbit around the car that shows it from every side in a single shot.",
-    },
-    tags: { da: ["4K", "FPV", "Ét skud"], en: ["4K", "FPV", "One take"] },
+    tags: { da: ["4K", "Natur"], en: ["4K", "Nature"] },
   },
   {
     aspect: 4 / 5,
@@ -93,20 +65,6 @@ const projects: Project[] = [
       en: "Placeholder. A project with a flight between the trees is coming here.",
     },
     tags: { da: ["Natur"], en: ["Nature"] },
-  },
-  {
-    image: "/projekter/peugeot-3.jpg",
-    video: "/clips/peugeot/klip-3.mp4",
-    aspect: 4 / 5,
-    frame: "oak",
-    title: { da: "Mask på", en: "Mask på" },
-    category: { da: "Bil", en: "Car" },
-    meta: { da: "4K", en: "4K" },
-    description: {
-      da: "Dronen dykker ind over bilen og trækker væk igen. Bygget til at åbne eller lukke en film.",
-      en: "The drone dives in over the car and pulls away again. Made to open or close a film.",
-    },
-    tags: { da: ["4K", "FPV"], en: ["4K", "FPV"] },
   },
   {
     aspect: 16 / 10,
@@ -175,7 +133,7 @@ const texts = {
 };
 
 const EASE = [0.16, 1, 0.3, 1] as const;
-const START = 2;
+const START = 0;
 const LAMP_ON = "linear-gradient(180deg,#fff6c8 0%,#f3d76a 45%,#c9a23c 100%)";
 const BRASS = "linear-gradient(180deg,#e9cf7a 0%,#b8923a 55%,#7d6122 100%)";
 
@@ -244,7 +202,7 @@ function Framed({
         <div className="relative h-full w-full overflow-hidden bg-neutral-900" style={{ boxShadow: "0 0 0 1px rgba(0,0,0,.15)" }}>
           {project.image ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={project.image} alt="" draggable={false} className="h-full w-full object-cover select-none" />
+            <img src={project.image} alt="" draggable={false} loading="eager" fetchPriority="high" decoding="async" className="h-full w-full object-cover select-none" />
           ) : (
             <div
               className="flex h-full w-full items-end p-[8%]"
@@ -264,8 +222,7 @@ function Framed({
               muted
               loop
               playsInline
-              // the Peugeot clips have black side bars baked in; zoom just past them
-              className="absolute inset-0 h-full w-full scale-[1.08] object-cover"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           ) : null}
           {/* light from the lamp falling across the top of the picture */}
@@ -584,7 +541,7 @@ export function GalleryWall() {
               aria-current={i === active}
               onClick={() => goTo(i)}
               className="h-1.5 rounded-full transition-all duration-300"
-              style={{ width: i === active ? 22 : 6, background: i === active ? "#8d9d4f" : "rgba(89,109,70,.25)" }}
+              style={{ width: i === active ? 22 : 6, background: i === active ? "#ffe3b0" : "rgba(255,227,176,.25)" }}
             />
           ))}
         </div>
@@ -596,7 +553,7 @@ export function GalleryWall() {
           className="mt-5"
         >
           <p className="text-base font-bold">{project.title[lang]}</p>
-          <p className="mt-1 text-sm text-skov-900/60 md:text-base">
+          <p className="mt-1 text-sm text-foreground/60 md:text-base">
             {project.meta[lang]} ·{" "}
             <button
               type="button"
@@ -728,11 +685,11 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
       <div
         ref={backdropRef}
         onClick={close}
-        className="absolute inset-0 bg-[#e4d7b0]"
+        className="absolute inset-0 bg-background"
         style={{
           opacity: 0,
           backgroundImage:
-            "radial-gradient(60% 55% at 35% 45%, rgba(255,226,140,.3), rgba(255,226,140,0) 70%), radial-gradient(40% 40% at 75% 50%, rgba(219,200,148,.6), rgba(219,200,148,0) 70%)",
+            "radial-gradient(60% 55% at 35% 45%, rgba(255,227,176,.12), rgba(255,227,176,0) 70%), radial-gradient(40% 40% at 75% 50%, rgba(14,110,114,.35), rgba(14,110,114,0) 70%)",
         }}
       />
 
@@ -740,7 +697,7 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
         ref={closeRef}
         type="button"
         onClick={close}
-        className="absolute right-5 top-5 z-10 inline-flex items-center gap-2 rounded-full border border-skov-950/10 bg-popover/80 px-4 py-2 text-sm font-medium text-skov-950 shadow-sm backdrop-blur transition hover:bg-white"
+        className="absolute right-5 top-5 z-10 inline-flex items-center gap-2 rounded-full border border-border bg-popover/80 px-4 py-2 text-sm font-medium text-foreground shadow-sm backdrop-blur transition hover:bg-card"
       >
         <X size={14} /> {t.close}
       </button>
@@ -764,12 +721,12 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
           <p className="font-mono text-xs tracking-[0.3em] text-skov-500">
             {String(opened.index + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
           </p>
-          <h2 className="mt-3 text-3xl font-black tracking-tight text-skov-950">{project.title[lang]}</h2>
-          <p className="mt-2 text-sm text-skov-900/60">{project.meta[lang]}</p>
-          <p className="mt-5 text-[15px] leading-relaxed text-skov-950/80">{project.description[lang]}</p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight text-foreground">{project.title[lang]}</h2>
+          <p className="mt-2 text-sm text-foreground/60">{project.meta[lang]}</p>
+          <p className="mt-5 text-[15px] leading-relaxed text-foreground/80">{project.description[lang]}</p>
           <div className="mt-5 flex flex-wrap gap-2">
             {project.tags[lang].map((tag) => (
-              <span key={tag} className="rounded-full border border-border/60 bg-card px-3 py-1 text-xs text-skov-700">
+              <span key={tag} className="rounded-full border border-border/60 bg-card px-3 py-1 text-xs text-muted-foreground">
                 {tag}
               </span>
             ))}
@@ -784,7 +741,7 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
                   aria-selected={tab === k}
                   onClick={() => setTab(k)}
                   className={`border-b pb-1 transition-colors ${
-                    tab === k ? "border-skov-500 text-skov-950 font-bold" : "border-transparent text-skov-900/50 hover:text-skov-900"
+                    tab === k ? "border-skov-500 text-foreground font-bold" : "border-transparent text-foreground/50 hover:text-foreground"
                   }`}
                 >
                   {t[k]}

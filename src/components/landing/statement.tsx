@@ -21,7 +21,7 @@ const texts = {
   },
 };
 
-/** "wow." bounces twice the moment it lights up, then grows big, so the point lands. */
+/** "wow." bounces twice the moment it lights up, then grows really big in the middle of the screen, so the point lands. */
 function Wow({ word, progress, range }: { word: string; progress: MotionValue<number>; range: [number, number] }) {
   const [scope, animate] = useAnimate();
   const shown = useRef(false);
@@ -29,9 +29,16 @@ function Wow({ word, progress, range }: { word: string; progress: MotionValue<nu
   useMotionValueEvent(progress, "change", (p) => {
     if (!shown.current && p >= range[1] - 0.002) {
       shown.current = true;
+      const el = scope.current as HTMLElement;
+      const r = el.getBoundingClientRect();
+      const vw = document.documentElement.clientWidth;
+      // 3x the old 1.65, but never wider than the screen
+      const s = Math.min(4.95, (vw - 32) / r.width);
+      // slide it to the middle of the screen while it grows, so it doesn't run off the side
+      const dx = vw / 2 - (r.left + r.width / 2);
       animate(
-        scope.current,
-        { y: [0, -26, 0, -14, 0, 0], scale: [1, 1, 1, 1, 1, 1.65] },
+        el,
+        { y: [0, -26, 0, -14, 0, 0], x: [0, 0, 0, 0, 0, dx], scale: [1, 1, 1, 1, 1, s] },
         {
           duration: 1.15,
           times: [0, 0.18, 0.36, 0.5, 0.64, 1],
@@ -41,13 +48,13 @@ function Wow({ word, progress, range }: { word: string; progress: MotionValue<nu
     } else if (shown.current && p < range[0]) {
       // scrolled back up past it: shrink back so it can happen again
       shown.current = false;
-      animate(scope.current, { y: 0, scale: 1 }, { duration: 0.3 });
+      animate(scope.current, { y: 0, x: 0, scale: 1 }, { duration: 0.3 });
     }
   });
 
   return (
     <Word word={word} progress={progress} range={range} highlight>
-      <span ref={scope} className="inline-block" style={{ transformOrigin: "0% 85%" }}>
+      <span ref={scope} className="inline-block" style={{ transformOrigin: "50% 0%" }}>
         {word}
       </span>
     </Word>
@@ -80,17 +87,24 @@ function Word({
 export function Statement() {
   const t = useT(texts);
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.85", "end 0.45"] });
+  // all lit up, "wow." included, by the time the text sits in the middle of the screen
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.95", "end 0.8"] });
   const words = t.words.split(" ");
 
   return (
     <section className="relative px-6 py-28 md:py-44 overflow-hidden">
-      {/* soft warm light drifting behind the text */}
+      {/* soft warm light drifting behind the text. It is exactly as big as the section and has already
+          faded to nothing at its own edge, so the section never cuts it off with a visible line,
+          whatever the screen size. */}
       <motion.div
         aria-hidden="true"
-        animate={{ x: ["-10%", "10%", "-10%"], y: ["0%", "8%", "0%"] }}
+        animate={{ x: ["-4%", "4%", "-4%"] }}
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[70vmin] w-[90vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-popover/70 blur-3xl"
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(closest-side, color-mix(in oklab, var(--primary) 11%, transparent) 0%, color-mix(in oklab, var(--primary) 7%, transparent) 30%, color-mix(in oklab, var(--primary) 3.5%, transparent) 55%, color-mix(in oklab, var(--primary) 1.2%, transparent) 75%, color-mix(in oklab, var(--primary) 0.4%, transparent) 90%, transparent 100%)",
+        }}
       />
       <div ref={ref} className="mx-auto max-w-5xl">
         <p className="mb-8 text-xs font-bold uppercase tracking-[0.35em] text-ild-600">{t.eyebrow}</p>
@@ -105,6 +119,8 @@ export function Statement() {
           })}
         </p>
       </div>
+      {/* room underneath for the big "wow." to grow into (outside ref, so the reveal timing stays put) */}
+      <div aria-hidden="true" className="h-[3.2em] text-4xl md:text-6xl lg:text-7xl" />
     </section>
   );
 }

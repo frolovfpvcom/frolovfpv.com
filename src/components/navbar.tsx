@@ -61,8 +61,8 @@ export function Navbar() {
   }, [pathname]);
 
   const light = home && overHero && !mobileOpen;
-  const tone = light ? "text-white" : "text-skov-950";
-  const accent = light ? "text-sol-300" : "text-skov-600";
+  const tone = light ? "text-white" : "text-foreground";
+  const accent = "text-sol-300";
 
   return (
     <motion.nav
@@ -124,7 +124,7 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="text-xl font-bold text-skov-950 hover:text-skov-600 transition-colors"
+                  className="text-xl font-bold text-foreground hover:text-primary transition-colors"
                 >
                   {link.label}
                 </GenieLink>

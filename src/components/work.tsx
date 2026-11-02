@@ -1,13 +1,12 @@
 "use client";
 
-import { motion, useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import GlassFolder, {
   type ArtRecipe,
   type GlassFolderProps,
 } from "@/components/ui/glass-folder-cards";
 import { ClipViewer, type ClipSelection } from "@/components/clip-viewer";
-import { useLang, useT, type Lang } from "@/lib/lang";
+import { useLang, type Lang } from "@/lib/lang";
 
 const art = {
   gray: {
@@ -90,20 +89,6 @@ type Folder = GlassFolderProps & { label: string };
 
 const foldersByLang = (lang: Lang): Folder[] => [
   {
-    label: "Surfin’",
-    meta: lang === "da" ? "3 klip" : "3 clips",
-    tone: "light",
-    glass: "#d9d9dd",
-    art: art.gray,
-    seed: 4,
-    files: [
-      { name: "Peugeot shenanigans", meta: "4K", video: "/clips/peugeot/klip-3.mp4", image: "/clips/peugeot/klip-3.jpg" },
-      { name: "Peugeot shenanigans", meta: "4K", video: "/clips/peugeot/klip-2.mp4", image: "/clips/peugeot/klip-2.jpg" },
-      // last in the list = front of the folder and first in the opened stack
-      { name: "Peugeot shenanigans", meta: "4K", video: "/clips/peugeot/klip-1.mp4", image: "/clips/peugeot/klip-1.jpg" },
-    ],
-  },
-  {
     label: lang === "da" ? "Natur" : "Nature",
     meta: lang === "da" ? "Natur · 3 klip" : "Nature · 3 clips",
     tone: "dark",
@@ -116,7 +101,7 @@ const foldersByLang = (lang: Lang): Folder[] => [
       { name: lang === "da" ? "Gennem parken" : "Through the park", blank: true },
       { name: lang === "da" ? "Nattelys" : "Night lights", blank: true },
       // last in the list = front of the folder and first in the opened stack
-      { name: "Panoram", meta: "4K · 0:33", video: "/clips/panoram.mp4", image: "/clips/panoram.jpg" },
+      { name: "Panoram", meta: "4K · 0:13", video: "/clips/pande-ram.mp4", image: "/clips/pande-ram.jpg" },
     ],
   },
   {
@@ -173,35 +158,20 @@ function FolderCell({
 }
 
 export function Work() {
-  const headerRef = useRef(null);
-  const headerInView = useInView(headerRef, { once: true, margin: "-100px" });
   const [clip, setClip] = useState<ClipSelection | null>(null);
   const { lang } = useLang();
   const folders = foldersByLang(lang);
-  const t = useT({
-    da: { title: "Klip fra arkivet", lead: "En samling af flyvninger og historier fanget fra unikke perspektiver." },
-    en: { title: "From the archive", lead: "A collection of flights and stories captured from unique perspectives." },
-  });
 
   return (
-    <section id="work" className="py-24 px-6 md:py-32">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          ref={headerRef}
-          initial={{ opacity: 0, y: 20 }}
-          animate={headerInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-40 text-center md:mb-16"
-        >
-          <p className="text-xs font-bold uppercase tracking-[0.35em] text-ild-600">{t.title}</p>
-          <p className="mx-auto mt-3 max-w-md text-lg text-skov-950/70">{t.lead}</p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-48 md:gap-y-24">
-          {folders.map((folder) => (
-            <FolderCell key={folder.seed} folder={folder} onOpenClip={setClip} />
-          ))}
-        </div>
+    <section id="work" className="px-3 pb-10 pt-44 md:px-6 md:pb-14 md:pt-24">
+      {/* the folders side by side in one row, close together without touching. On phones the
+          top padding leaves room for an opened folder's clips, which stack upwards. */}
+      <div className="mx-auto flex max-w-3xl items-end justify-center gap-4 md:gap-6">
+        {folders.map((folder) => (
+          <div key={folder.seed} className="min-w-0 max-w-[153px] flex-1">
+            <FolderCell folder={folder} onOpenClip={setClip} />
+          </div>
+        ))}
       </div>
       <ClipViewer selection={clip} onClose={() => setClip(null)} />
     </section>
