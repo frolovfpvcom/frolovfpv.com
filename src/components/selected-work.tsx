@@ -28,7 +28,7 @@ export function SelectedWork() {
       className="mx-auto max-w-3xl text-center"
     >
       <h1 className="text-5xl md:text-7xl font-black tracking-tight">{t.title}</h1>
-      <p className="mt-8 text-lg md:text-xl leading-relaxed text-skov-950/70">{t.lead}</p>
+      <p className="mt-8 text-lg md:text-xl leading-relaxed text-foreground/70">{t.lead}</p>
       <Link
         href="/kontakt"
         className="group mt-10 inline-flex items-center gap-3 rounded-full bg-primary px-7 py-3.5 text-sm font-bold text-primary-foreground shadow-[0_15px_35px_-15px_rgba(58,53,41,0.8)] transition-all duration-300 hover:scale-105 hover:bg-skov-700"

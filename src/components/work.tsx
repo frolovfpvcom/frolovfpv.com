@@ -194,7 +194,7 @@ export function Work() {
           className="mb-40 text-center md:mb-16"
         >
           <p className="text-xs font-bold uppercase tracking-[0.35em] text-ild-600">{t.title}</p>
-          <p className="mx-auto mt-3 max-w-md text-lg text-skov-950/70">{t.lead}</p>
+          <p className="mx-auto mt-3 max-w-md text-lg text-foreground/70">{t.lead}</p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-48 md:gap-y-24">

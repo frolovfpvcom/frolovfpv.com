@@ -55,7 +55,7 @@ const texts = {
 };
 
 const field =
-  "w-full rounded-2xl border border-skov-950/10 bg-popover/70 px-4 py-3 text-skov-950 placeholder:text-skov-900/35 focus:border-skov-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-skov-500/15 transition-all";
+  "w-full rounded-2xl border border-border bg-background/60 px-4 py-3 text-foreground placeholder:text-foreground/35 focus:border-skov-500 focus:bg-background focus:outline-none focus:ring-4 focus:ring-skov-500/15 transition-all";
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
@@ -97,12 +97,12 @@ export function ContactForm() {
             <br />
             <span className="text-skov-500">{t.accent}</span>
           </h1>
-          <p className="mt-6 text-skov-950/70 text-lg leading-relaxed">
+          <p className="mt-6 text-foreground/70 text-lg leading-relaxed">
             {t.lead}
           </p>
           <a
             href={`mailto:${EMAIL}`}
-            className="mt-8 inline-flex items-center gap-3 font-medium text-skov-600 hover:text-skov-800 transition-colors"
+            className="mt-8 inline-flex items-center gap-3 font-medium text-primary hover:text-foreground transition-colors"
           >
             <Mail size={18} />
             {EMAIL}
@@ -118,25 +118,25 @@ export function ContactForm() {
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <label className="block">
-              <span className="mb-2 block text-sm font-medium text-skov-950/70">{t.name}</span>
+              <span className="mb-2 block text-sm font-medium text-foreground/70">{t.name}</span>
               <input name="name" required autoComplete="name" className={field} placeholder={t.namePh} />
             </label>
             <label className="block">
-              <span className="mb-2 block text-sm font-medium text-skov-950/70">{t.email}</span>
+              <span className="mb-2 block text-sm font-medium text-foreground/70">{t.email}</span>
               <input name="email" type="email" required autoComplete="email" className={field} placeholder={t.emailPh} />
             </label>
             <label className="block">
-              <span className="mb-2 block text-sm font-medium text-skov-950/70">{t.phone}</span>
+              <span className="mb-2 block text-sm font-medium text-foreground/70">{t.phone}</span>
               <input name="phone" type="tel" autoComplete="tel" className={field} placeholder={t.optional} />
             </label>
             <label className="block">
-              <span className="mb-2 block text-sm font-medium text-skov-950/70">{t.when}</span>
+              <span className="mb-2 block text-sm font-medium text-foreground/70">{t.when}</span>
               <input name="date" className={field} placeholder={t.whenPh} />
             </label>
           </div>
 
           <label className="block">
-            <span className="mb-2 block text-sm font-medium text-skov-950/70">{t.type}</span>
+            <span className="mb-2 block text-sm font-medium text-foreground/70">{t.type}</span>
             <select name="type" className={`${field} appearance-none`} key={t.types[0]} defaultValue={t.types[0]}>
               {t.types.map((type) => (
                 <option key={type} value={type} className="bg-popover">
@@ -147,7 +147,7 @@ export function ContactForm() {
           </label>
 
           <label className="block">
-            <span className="mb-2 block text-sm font-medium text-skov-950/70">{t.message}</span>
+            <span className="mb-2 block text-sm font-medium text-foreground/70">{t.message}</span>
             <textarea
               name="message"
               required
@@ -166,7 +166,7 @@ export function ContactForm() {
           </button>
 
           {sent && (
-            <p className="text-sm font-medium text-skov-950/70">
+            <p className="text-sm font-medium text-foreground/70">
               {t.sent} {EMAIL}.
             </p>
           )}

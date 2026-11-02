@@ -103,7 +103,7 @@ export function Statement() {
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(closest-side, color-mix(in oklab, var(--popover) 80%, transparent) 0%, color-mix(in oklab, var(--popover) 55%, transparent) 30%, color-mix(in oklab, var(--popover) 28%, transparent) 55%, color-mix(in oklab, var(--popover) 10%, transparent) 75%, color-mix(in oklab, var(--popover) 3%, transparent) 90%, transparent 100%)",
+            "radial-gradient(closest-side, color-mix(in oklab, var(--primary) 11%, transparent) 0%, color-mix(in oklab, var(--primary) 7%, transparent) 30%, color-mix(in oklab, var(--primary) 3.5%, transparent) 55%, color-mix(in oklab, var(--primary) 1.2%, transparent) 75%, color-mix(in oklab, var(--primary) 0.4%, transparent) 90%, transparent 100%)",
         }}
       />
       <div ref={ref} className="mx-auto max-w-5xl">

@@ -153,8 +153,8 @@ export function ClipStrip() {
           </div>
         </motion.div>
 
-        <div className="mx-6 mt-10 h-1 overflow-hidden rounded-full bg-skov-100 md:mx-16">
-          <motion.div style={{ scaleX: progress }} className="h-full origin-left rounded-full bg-skov-500" />
+        <div className="mx-6 mt-10 h-1 overflow-hidden rounded-full bg-muted md:mx-16">
+          <motion.div style={{ scaleX: progress }} className="h-full origin-left rounded-full bg-primary" />
         </div>
       </div>
     </section>

@@ -584,7 +584,7 @@ export function GalleryWall() {
               aria-current={i === active}
               onClick={() => goTo(i)}
               className="h-1.5 rounded-full transition-all duration-300"
-              style={{ width: i === active ? 22 : 6, background: i === active ? "#8d9d4f" : "rgba(89,109,70,.25)" }}
+              style={{ width: i === active ? 22 : 6, background: i === active ? "#ffe3b0" : "rgba(255,227,176,.25)" }}
             />
           ))}
         </div>
@@ -596,7 +596,7 @@ export function GalleryWall() {
           className="mt-5"
         >
           <p className="text-base font-bold">{project.title[lang]}</p>
-          <p className="mt-1 text-sm text-skov-900/60 md:text-base">
+          <p className="mt-1 text-sm text-foreground/60 md:text-base">
             {project.meta[lang]} ·{" "}
             <button
               type="button"
@@ -728,11 +728,11 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
       <div
         ref={backdropRef}
         onClick={close}
-        className="absolute inset-0 bg-[#e4d7b0]"
+        className="absolute inset-0 bg-background"
         style={{
           opacity: 0,
           backgroundImage:
-            "radial-gradient(60% 55% at 35% 45%, rgba(255,226,140,.3), rgba(255,226,140,0) 70%), radial-gradient(40% 40% at 75% 50%, rgba(219,200,148,.6), rgba(219,200,148,0) 70%)",
+            "radial-gradient(60% 55% at 35% 45%, rgba(255,227,176,.12), rgba(255,227,176,0) 70%), radial-gradient(40% 40% at 75% 50%, rgba(14,110,114,.35), rgba(14,110,114,0) 70%)",
         }}
       />
 
@@ -740,7 +740,7 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
         ref={closeRef}
         type="button"
         onClick={close}
-        className="absolute right-5 top-5 z-10 inline-flex items-center gap-2 rounded-full border border-skov-950/10 bg-popover/80 px-4 py-2 text-sm font-medium text-skov-950 shadow-sm backdrop-blur transition hover:bg-white"
+        className="absolute right-5 top-5 z-10 inline-flex items-center gap-2 rounded-full border border-border bg-popover/80 px-4 py-2 text-sm font-medium text-foreground shadow-sm backdrop-blur transition hover:bg-card"
       >
         <X size={14} /> {t.close}
       </button>
@@ -764,12 +764,12 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
           <p className="font-mono text-xs tracking-[0.3em] text-skov-500">
             {String(opened.index + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
           </p>
-          <h2 className="mt-3 text-3xl font-black tracking-tight text-skov-950">{project.title[lang]}</h2>
-          <p className="mt-2 text-sm text-skov-900/60">{project.meta[lang]}</p>
-          <p className="mt-5 text-[15px] leading-relaxed text-skov-950/80">{project.description[lang]}</p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight text-foreground">{project.title[lang]}</h2>
+          <p className="mt-2 text-sm text-foreground/60">{project.meta[lang]}</p>
+          <p className="mt-5 text-[15px] leading-relaxed text-foreground/80">{project.description[lang]}</p>
           <div className="mt-5 flex flex-wrap gap-2">
             {project.tags[lang].map((tag) => (
-              <span key={tag} className="rounded-full border border-border/60 bg-card px-3 py-1 text-xs text-skov-700">
+              <span key={tag} className="rounded-full border border-border/60 bg-card px-3 py-1 text-xs text-muted-foreground">
                 {tag}
               </span>
             ))}
@@ -784,7 +784,7 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
                   aria-selected={tab === k}
                   onClick={() => setTab(k)}
                   className={`border-b pb-1 transition-colors ${
-                    tab === k ? "border-skov-500 text-skov-950 font-bold" : "border-transparent text-skov-900/50 hover:text-skov-900"
+                    tab === k ? "border-skov-500 text-foreground font-bold" : "border-transparent text-foreground/50 hover:text-foreground"
                   }`}
                 >
                   {t[k]}

@@ -65,7 +65,7 @@ export function About() {
           >
             {t.title}
           </motion.h1>
-          <div className="mt-8 space-y-5 text-lg leading-relaxed text-skov-950/75">
+          <div className="mt-8 space-y-5 text-lg leading-relaxed text-foreground/75">
             {t.body.map((p, i) => (
               <motion.p
                 key={p}

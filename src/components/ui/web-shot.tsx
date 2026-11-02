@@ -39,8 +39,8 @@ export function WebShotLayer({
   leanRef,
   idleMs = 5000,
   threads = 6,
-  ink = "#f3ead2",
-  glow = "#e9d38a",
+  ink = "#ffe3b0",
+  glow = "#fff0d4",
 }: {
   /** The positioned element the threads live in; this layer must be its direct child. */
   areaRef: RefObject<HTMLElement | null>;
@@ -443,8 +443,8 @@ export function WebShotLayer({
         <svg width="22" height="26" viewBox="0 0 22 26" className="drop-shadow-[0_2px_3px_rgba(0,0,0,0.45)]">
           <path
             d="M1.5 1.5 L1.5 20.5 L6.6 15.7 L10.2 23.6 L13.6 22.1 L10.1 14.4 L17.2 14.4 Z"
-            fill="#f3ead2"
-            stroke="#3a3529"
+            fill="#ffe3b0"
+            stroke="#141210"
             strokeWidth="1.5"
             strokeLinejoin="round"
           />
