@@ -45,13 +45,26 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  // A new page starts at the top. Once it has rendered, let the transition open it.
+  // Have every page ready before anyone clicks, so the switch never waits on the network.
+  useEffect(() => {
+    ["/", "/arbejde", "/ommig", "/kontakt"].forEach((href) => router.prefetch(href));
+  }, [router]);
+
+  // A new page starts at the top. Once it has rendered and the pictures at the top
+  // are decoded, let the transition open it, so it unfolds as a finished page.
   useEffect(() => {
     lenis?.scrollTo(0, { immediate: true, force: true });
     const done = pending.current;
     if (!done) return;
     pending.current = null;
-    requestAnimationFrame(() => done());
+    const visible = Array.from(document.images).filter(
+      (img) => img.getBoundingClientRect().top < window.innerHeight,
+    );
+    const ready = Promise.all(visible.map((img) => img.decode().catch(() => {})));
+    const cap = new Promise((r) => setTimeout(r, 350));
+    Promise.race([ready, cap]).then(() =>
+      requestAnimationFrame(() => requestAnimationFrame(() => done())),
+    );
   }, [pathname]);
 
   const navigate = useCallback(

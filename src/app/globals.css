@@ -1,10 +1,11 @@
 @import "tailwindcss";
 @import "lenis/dist/lenis.css";
 
-/* Lyst, glad tema: næsten hvid himmel, mørk navy tekst og Peters klare blå som accent. */
+/* Lyst, varmt tema, der passer til de grønne og gule optagelser:
+   cremet baggrund, mørkegrøn tekst, solgul og varm orange som accenter. */
 :root {
-  --background: #f5f8ff;
-  --foreground: #010818;
+  --background: #faf7ec;
+  --foreground: #0d1c09;
 }
 
 @theme inline {
@@ -12,19 +13,31 @@
   --color-foreground: var(--foreground);
 }
 
-/* Peters blå palet, fra næsten hvid til næsten sort navy. 500 er den markerede klare blå. */
 @theme {
-  --color-blaa-50: #e6effe;
-  --color-blaa-100: #b9d1ff;
-  --color-blaa-200: #8cb3fe;
-  --color-blaa-300: #5f96fb;
-  --color-blaa-400: #3278fa;
-  --color-blaa-500: #0454e7;
-  --color-blaa-600: #044acc;
-  --color-blaa-700: #033a9f;
-  --color-blaa-800: #022a72;
-  --color-blaa-900: #011947;
-  --color-blaa-950: #010818;
+  /* skov: fra lys mos til næsten sort skovgrøn */
+  --color-skov-50: #f2f5e8;
+  --color-skov-100: #e1e9cc;
+  --color-skov-200: #c4d59e;
+  --color-skov-300: #a2bd6c;
+  --color-skov-400: #7d9f45;
+  --color-skov-500: #4e7f2c;
+  --color-skov-600: #3c6a22;
+  --color-skov-700: #2d531b;
+  --color-skov-800: #224016;
+  --color-skov-900: #182e10;
+  --color-skov-950: #0d1c09;
+
+  /* sol: varm gul som aftenlyset i videoerne */
+  --color-sol-100: #fff3c4;
+  --color-sol-200: #ffe58a;
+  --color-sol-300: #fdd44f;
+  --color-sol-400: #f7c12a;
+  --color-sol-500: #e9a815;
+
+  /* ild: orange og rød, brugt sparsomt */
+  --color-ild-400: #f28a3c;
+  --color-ild-500: #e8692a;
+  --color-ild-600: #c94f1f;
 }
 
 @theme inline {
@@ -39,8 +52,8 @@ body {
 }
 
 ::selection {
-  background: #0454e7;
-  color: #fff;
+  background: #f7c12a;
+  color: #0d1c09;
 }
 
 @keyframes fade-in {
@@ -49,15 +62,17 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
-   Sideskift: macOS "genie". Den gamle side suges ind i midten af toppen af
-   skærmen, og den nye folder sig ud derfra som en tragt og fylder skærmen.
+   Sideskift: macOS "genie". Hele siden vipper ind i en tragt og suges op i ét
+   punkt øverst i midten af skærmen. Et øjeblik er den væk, og så kommer den
+   nye side ud af samme punkt og folder sig ud til fuld skærm.
+   Kun transform og opacity animeres, så det kører glat, også på iPhone.
    --------------------------------------------------------------------------- */
 
 ::view-transition {
   pointer-events: none;
   background:
-    radial-gradient(70% 60% at 50% 0%, #b9d1ff 0%, rgba(185, 209, 255, 0) 70%),
-    linear-gradient(180deg, #e6effe 0%, #f5f8ff 100%);
+    radial-gradient(60% 45% at 50% 0%, rgba(247, 193, 42, 0.45) 0%, rgba(247, 193, 42, 0) 70%),
+    #faf7ec;
 }
 
 /* Menuen bliver stående, mens siden skifter. */
@@ -72,52 +87,63 @@ body {
   animation: none;
 }
 
+html.genie::view-transition-group(root) {
+  animation: none;
+}
+
 html.genie::view-transition-old(root),
 html.genie::view-transition-new(root) {
   transform-origin: 50% 0%;
   mix-blend-mode: normal;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
 }
 
 html.genie::view-transition-old(root) {
-  animation: genie-out 380ms cubic-bezier(0.55, 0, 0.75, 0.2) both;
+  animation: genie-out 340ms cubic-bezier(0.55, 0.05, 0.85, 0.3) both;
 }
 
 html.genie::view-transition-new(root) {
-  animation: genie-in 460ms cubic-bezier(0.16, 1, 0.3, 1) 320ms both;
+  /* starts just after the old page has vanished */
+  animation: genie-in 440ms cubic-bezier(0.2, 0.9, 0.3, 1) 400ms both;
 }
 
+/* Bottom tilts toward the viewer while everything shrinks into the top centre:
+   wide at the bottom, narrow at the top, ending in a single point. */
 @keyframes genie-out {
   0% {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 45%, 100% 100%, 0% 100%, 0% 45%);
-    transform: none;
+    transform: scale(1, 1) perspective(1400px) rotateX(0deg);
     opacity: 1;
   }
-  45% {
-    clip-path: polygon(30% 0%, 70% 0%, 96% 38%, 100% 100%, 0% 100%, 4% 38%);
-    transform: scale(0.94, 0.8);
+  40% {
+    transform: scale(0.62, 0.7) perspective(1400px) rotateX(38deg);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.16, 0.3) perspective(1400px) rotateX(52deg);
     opacity: 1;
   }
   100% {
-    clip-path: polygon(49.6% 0%, 50.4% 0%, 50.6% 30%, 52% 100%, 48% 100%, 49.4% 30%);
-    transform: scale(0.35, 0.02);
-    opacity: 0.4;
+    transform: scale(0, 0) perspective(1400px) rotateX(52deg);
+    opacity: 0;
   }
 }
 
 @keyframes genie-in {
   0% {
-    clip-path: polygon(49.6% 0%, 50.4% 0%, 50.6% 30%, 52% 100%, 48% 100%, 49.4% 30%);
-    transform: scale(0.35, 0.02);
-    opacity: 0.4;
+    transform: scale(0, 0) perspective(1400px) rotateX(52deg);
+    opacity: 0;
   }
-  50% {
-    clip-path: polygon(30% 0%, 70% 0%, 96% 38%, 100% 100%, 0% 100%, 4% 38%);
-    transform: scale(0.94, 0.85);
+  25% {
+    transform: scale(0.16, 0.3) perspective(1400px) rotateX(52deg);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.62, 0.7) perspective(1400px) rotateX(38deg);
     opacity: 1;
   }
   100% {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 45%, 100% 100%, 0% 100%, 0% 45%);
-    transform: none;
+    transform: scale(1, 1) perspective(1400px) rotateX(0deg);
     opacity: 1;
   }
 }

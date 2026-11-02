@@ -11,7 +11,7 @@ export default function Home() {
     <main>
       <Hero />
       {/* the rest of the page slides up over the intro video like a curtain */}
-      <div className="relative z-10 bg-background md:-mt-12 md:rounded-t-[3rem] md:shadow-[0_-30px_60px_-30px_rgba(1,8,24,0.5)]">
+      <div className="relative z-10 bg-background md:-mt-12 md:rounded-t-[3rem] md:shadow-[0_-30px_60px_-30px_rgba(13,28,9,0.5)]">
         <GalleryWall />
         <Statement />
         <VideoReveal />

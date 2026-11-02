@@ -72,7 +72,7 @@ export function ClipStrip() {
     <section ref={section} className="relative" style={{ height: `calc(100svh + ${distance}px)` }}>
       <div className="sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden">
         <div className="mb-8 px-6 md:mb-12 md:px-16">
-          <p className="text-xs font-bold uppercase tracking-[0.35em] text-blaa-500">{t.eyebrow}</p>
+          <p className="text-xs font-bold uppercase tracking-[0.35em] text-ild-600">{t.eyebrow}</p>
           <h2 className="mt-3 text-4xl md:text-6xl font-black tracking-tight">{t.title}</h2>
         </div>
 
@@ -81,7 +81,7 @@ export function ClipStrip() {
             <motion.article
               key={clip.video}
               style={{ skewX: skew }}
-              className="group relative h-[52svh] w-[78vw] shrink-0 overflow-hidden rounded-[28px] bg-blaa-900 shadow-[0_30px_80px_-30px_rgba(1,25,71,0.55)] md:h-[58svh] md:w-[42vw]"
+              className="group relative h-[52svh] w-[78vw] shrink-0 overflow-hidden rounded-[28px] bg-skov-900 shadow-[0_30px_80px_-30px_rgba(24,46,16,0.55)] md:h-[58svh] md:w-[42vw]"
             >
               <video
                 src={clip.video}
@@ -94,7 +94,7 @@ export function ClipStrip() {
                 // the Peugeot clips have black side bars baked in; zoom just past them
                 className="h-full w-full scale-[1.12] object-cover transition-transform duration-700 group-hover:scale-[1.2]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-blaa-950/75 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-skov-950/75 via-transparent to-transparent" />
               <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-6 text-white md:p-8">
                 <div>
                   <p className="font-mono text-xs tracking-[0.3em] text-white/70">
@@ -108,13 +108,13 @@ export function ClipStrip() {
 
           <motion.div
             style={{ skewX: skew }}
-            className="relative flex h-[52svh] w-[78vw] shrink-0 flex-col justify-between overflow-hidden rounded-[28px] bg-blaa-500 p-8 text-white md:h-[58svh] md:w-[34vw] md:p-10"
+            className="relative flex h-[52svh] w-[78vw] shrink-0 flex-col justify-between overflow-hidden rounded-[28px] bg-sol-400 p-8 text-skov-950 md:h-[58svh] md:w-[34vw] md:p-10"
           >
-            <div aria-hidden="true" className="absolute -right-16 -top-16 size-64 rounded-full bg-blaa-300/50 blur-2xl" />
+            <div aria-hidden="true" className="absolute -right-16 -top-16 size-64 rounded-full bg-ild-400/50 blur-2xl" />
             <p className="relative text-4xl md:text-6xl font-black tracking-tight leading-[1]">{t.next}</p>
             <GenieLink
               href="/kontakt"
-              className="group relative inline-flex w-fit items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-blaa-600 transition-transform duration-300 hover:scale-105"
+              className="group relative inline-flex w-fit items-center gap-2 rounded-full bg-skov-900 px-6 py-3.5 text-sm font-bold text-white transition-transform duration-300 hover:scale-105"
             >
               {t.cta}
               <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -122,8 +122,8 @@ export function ClipStrip() {
           </motion.div>
         </motion.div>
 
-        <div className="mx-6 mt-10 h-1 overflow-hidden rounded-full bg-blaa-100 md:mx-16">
-          <motion.div style={{ width: progress }} className="h-full rounded-full bg-blaa-500" />
+        <div className="mx-6 mt-10 h-1 overflow-hidden rounded-full bg-skov-100 md:mx-16">
+          <motion.div style={{ width: progress }} className="h-full rounded-full bg-skov-500" />
         </div>
       </div>
     </section>

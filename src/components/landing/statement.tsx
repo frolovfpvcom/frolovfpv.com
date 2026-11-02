@@ -33,7 +33,7 @@ function Word({
   const opacity = useTransform(progress, range, [0.14, 1]);
   const y = useTransform(progress, range, [18, 0]);
   return (
-    <motion.span style={{ opacity, y }} className={`inline-block mr-[0.25em] ${highlight ? "text-blaa-500" : ""}`}>
+    <motion.span style={{ opacity, y }} className={`inline-block mr-[0.25em] ${highlight ? "text-ild-500" : ""}`}>
       {word}
     </motion.span>
   );
@@ -53,10 +53,10 @@ export function Statement() {
         aria-hidden="true"
         animate={{ x: ["-10%", "10%", "-10%"], y: ["0%", "8%", "0%"] }}
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[70vmin] w-[90vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blaa-100/60 blur-3xl"
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[70vmin] w-[90vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-sol-200/60 blur-3xl"
       />
       <div ref={ref} className="mx-auto max-w-5xl">
-        <p className="mb-8 text-xs font-bold uppercase tracking-[0.35em] text-blaa-500">{t.eyebrow}</p>
+        <p className="mb-8 text-xs font-bold uppercase tracking-[0.35em] text-ild-600">{t.eyebrow}</p>
         <p className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05]">
           {words.map((w, i) => (
             <Word

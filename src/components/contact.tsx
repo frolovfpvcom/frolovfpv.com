@@ -57,20 +57,20 @@ export function Contact() {
     <section ref={ref} id="contact" className="px-3 pb-3 pt-24 md:px-6 md:pb-6 md:pt-32">
       <motion.div
         style={{ scale, borderRadius: radius }}
-        className="relative overflow-hidden bg-gradient-to-br from-blaa-400 via-blaa-500 to-blaa-700 px-6 py-24 text-white md:px-16 md:py-36"
+        className="relative overflow-hidden bg-gradient-to-br from-skov-700 via-skov-800 to-skov-950 px-6 py-24 text-white md:px-16 md:py-36"
       >
         {/* bright clouds drifting around in the panel */}
         <motion.div
           aria-hidden="true"
           animate={{ x: [0, 80, 0], y: [0, -40, 0] }}
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-          className="pointer-events-none absolute -left-24 -top-24 size-96 rounded-full bg-blaa-200/50 blur-3xl"
+          className="pointer-events-none absolute -left-24 -top-24 size-96 rounded-full bg-sol-300/35 blur-3xl"
         />
         <motion.div
           aria-hidden="true"
           animate={{ x: [0, -60, 0], y: [0, 50, 0] }}
           transition={{ duration: 17, repeat: Infinity, ease: "easeInOut" }}
-          className="pointer-events-none absolute -bottom-32 right-0 size-[28rem] rounded-full bg-white/25 blur-3xl"
+          className="pointer-events-none absolute -bottom-32 right-0 size-[28rem] rounded-full bg-ild-500/30 blur-3xl"
         />
 
         <div className="relative mx-auto max-w-5xl text-center">
@@ -103,7 +103,7 @@ export function Contact() {
             <MagneticButton>
               <GenieLink
                 href="/kontakt"
-                className="group inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 text-base font-bold text-blaa-600 shadow-[0_20px_50px_-15px_rgba(1,8,24,0.5)] transition-transform duration-300 hover:scale-105"
+                className="group inline-flex items-center gap-3 rounded-full bg-sol-400 px-8 py-4 text-base font-bold text-skov-950 shadow-[0_20px_50px_-15px_rgba(13,28,9,0.5)] transition-transform duration-300 hover:scale-105"
               >
                 <Mail size={18} />
                 {t.cta}

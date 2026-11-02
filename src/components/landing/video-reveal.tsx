@@ -42,12 +42,12 @@ export function VideoReveal() {
             playsInline
             className="h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-blaa-950/50 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-skov-950/50 via-transparent to-transparent" />
         </motion.div>
 
         <motion.div
           style={{ opacity: wordsOpacity }}
-          className="pointer-events-none relative z-10 flex w-full flex-col items-center gap-[2vw] px-4 text-[17vw] md:flex-row md:justify-center md:gap-[3vw] md:text-[9vw] font-black uppercase leading-none tracking-tighter text-blaa-500 [text-shadow:0_4px_30px_rgba(255,255,255,0.35)]"
+          className="pointer-events-none relative z-10 flex w-full flex-col items-center gap-[2vw] px-4 text-[17vw] md:flex-row md:justify-center md:gap-[3vw] md:text-[9vw] font-black uppercase leading-none tracking-tighter text-ild-500 [text-shadow:0_4px_30px_rgba(13,28,9,0.25)]"
         >
           <motion.span style={{ x: leftX }}>{t.left}</motion.span>
           <motion.span style={{ x: rightX }}>{t.right}</motion.span>

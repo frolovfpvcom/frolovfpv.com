@@ -49,7 +49,7 @@ export function Services() {
           <h2 className="text-4xl md:text-6xl font-black tracking-tight">
             {t.title}
           </h2>
-          <p className="mt-4 text-lg text-blaa-950/70 max-w-md">{t.lead}</p>
+          <p className="mt-4 text-lg text-skov-950/70 max-w-md">{t.lead}</p>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -65,13 +65,13 @@ export function Services() {
                 delay: i * 0.1,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="group rounded-3xl bg-white p-7 shadow-[0_20px_40px_-25px_rgba(1,25,71,0.45)] transition-all duration-300 hover:-translate-y-2 hover:bg-blaa-500 hover:text-white hover:shadow-[0_30px_60px_-25px_rgba(4,84,231,0.8)]"
+              className="group rounded-3xl bg-white p-7 shadow-[0_20px_40px_-25px_rgba(24,46,16,0.45)] transition-all duration-300 hover:-translate-y-2 hover:bg-skov-800 hover:text-white hover:shadow-[0_30px_60px_-25px_rgba(24,46,16,0.8)]"
             >
-              <span className="mb-5 grid size-12 place-items-center rounded-2xl bg-blaa-50 text-blaa-500 transition-colors duration-300 group-hover:bg-white/20 group-hover:text-white">
+              <span className="mb-5 grid size-12 place-items-center rounded-2xl bg-sol-100 text-skov-700 transition-colors duration-300 group-hover:bg-sol-400 group-hover:text-skov-950">
                 <Icon size={24} />
               </span>
               <h3 className="text-lg font-bold mb-2">{service.title}</h3>
-              <p className="text-sm text-blaa-950/65 leading-relaxed transition-colors duration-300 group-hover:text-white/85">
+              <p className="text-sm text-skov-950/65 leading-relaxed transition-colors duration-300 group-hover:text-white/85">
                 {service.description}
               </p>
             </motion.div>

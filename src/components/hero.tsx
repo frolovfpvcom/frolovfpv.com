@@ -65,7 +65,7 @@ export function Hero() {
   return (
     <section
       ref={ref}
-      className="relative w-full overflow-hidden bg-background pt-20 md:bg-blaa-950 md:pt-0 md:h-[100svh] md:min-h-[560px]"
+      className="relative w-full overflow-hidden bg-background pt-20 md:bg-skov-950 md:pt-0 md:h-[100svh] md:min-h-[560px]"
     >
       {/* On desktop the intro video fills the whole first screen with the menu and
           text on top. On phones it shows the full 16:9 frame under the menu, with
@@ -89,8 +89,8 @@ export function Hero() {
       </motion.div>
 
       {/* Darken the top for the menu and the bottom for the headline. */}
-      <div className="absolute inset-x-0 top-0 hidden md:block h-40 bg-gradient-to-b from-blaa-950/55 to-transparent" />
-      <div className="absolute inset-0 hidden md:block bg-gradient-to-t from-blaa-950/80 via-blaa-950/15 to-transparent" />
+      <div className="absolute inset-x-0 top-0 hidden md:block h-40 bg-gradient-to-b from-skov-950/55 to-transparent" />
+      <div className="absolute inset-0 hidden md:block bg-gradient-to-t from-skov-950/80 via-skov-950/15 to-transparent" />
 
       <motion.div
         style={desktop ? { y: textY, opacity: textOpacity } : undefined}
@@ -100,7 +100,7 @@ export function Hero() {
           <h1 className="overflow-hidden text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95]">
             <Letters text={t.title} delay={0.3} />
             <br />
-            <span className="text-blaa-500 md:text-blaa-200">
+            <span className="text-skov-600 md:text-sol-300">
               <Letters text={t.accent} delay={0.6} />
             </span>
           </h1>
@@ -109,7 +109,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.1, ease: EASE }}
-            className="mt-5 text-blaa-900/70 md:text-white/85 text-base md:text-lg max-w-md mx-auto"
+            className="mt-5 text-skov-900/70 md:text-white/85 text-base md:text-lg max-w-md mx-auto"
           >
             {t.lead}
           </motion.p>

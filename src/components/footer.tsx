@@ -23,11 +23,11 @@ export function Footer() {
   return (
     <footer className="py-8 px-6">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p className="text-sm text-blaa-900/50">
+        <p className="text-sm text-skov-900/50">
           &copy; {new Date().getFullYear()} Frolov FPV. {t.rights}
         </p>
-        <div className="flex items-center gap-6 text-sm text-blaa-900/60">
-          <Link href="/cookies" className="hover:text-blaa-500 transition-colors duration-200">
+        <div className="flex items-center gap-6 text-sm text-skov-900/60">
+          <Link href="/cookies" className="hover:text-skov-500 transition-colors duration-200">
             {t.cookies}
           </Link>
           <a
@@ -35,7 +35,7 @@ export function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
-            className="flex items-center gap-2 hover:text-blaa-500 transition-colors duration-200"
+            className="flex items-center gap-2 hover:text-skov-500 transition-colors duration-200"
           >
             <InstagramIcon />
             @frolovfpv

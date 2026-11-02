@@ -63,13 +63,13 @@ export function About() {
         {/* the photo of Peter, framed big with a blue glow behind it */}
         <motion.div
           ref={photoRef}
-          initial={{ opacity: 0, scale: 0.92, rotate: -3 }}
+          initial={false}
           animate={{ opacity: 1, scale: 1, rotate: -2 }}
           transition={{ duration: 1, ease }}
           className="relative mx-auto w-full max-w-md"
         >
-          <div aria-hidden="true" className="absolute -inset-6 rounded-[44px] bg-gradient-to-br from-blaa-200 via-blaa-400 to-blaa-600 opacity-60 blur-2xl" />
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[36px] border-[6px] border-white bg-blaa-100 shadow-[0_40px_80px_-30px_rgba(1,25,71,0.6)]">
+          <div aria-hidden="true" className="absolute -inset-6 rounded-[44px] bg-gradient-to-br from-sol-300 via-ild-400 to-skov-500 opacity-60 blur-2xl" />
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[36px] border-[6px] border-white bg-skov-100 shadow-[0_40px_80px_-30px_rgba(24,46,16,0.6)]">
             <motion.img
               src="/images/portrait.jpg"
               alt={t.alt}
@@ -82,26 +82,26 @@ export function About() {
 
         <div>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease }}
-            className="text-xs font-bold uppercase tracking-[0.35em] text-blaa-500"
+            className="text-xs font-bold uppercase tracking-[0.35em] text-ild-600"
           >
             {t.eyebrow}
           </motion.p>
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease }}
             className="mt-4 text-5xl md:text-7xl font-black tracking-tight"
           >
             {t.title}
           </motion.h1>
-          <div className="mt-8 space-y-5 text-lg leading-relaxed text-blaa-950/75">
+          <div className="mt-8 space-y-5 text-lg leading-relaxed text-skov-950/75">
             {t.body.map((p, i) => (
               <motion.p
                 key={p}
-                initial={{ opacity: 0, y: 20 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.35 + i * 0.1, ease }}
               >
@@ -114,17 +114,17 @@ export function About() {
             {stats.map((stat, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 + i * 0.1, ease }}
                 whileHover={{ y: -6, rotate: i === 1 ? 0 : i === 0 ? -2 : 2 }}
-                className="rounded-3xl bg-white p-5 text-center shadow-[0_20px_40px_-25px_rgba(1,25,71,0.45)] md:p-6"
+                className="rounded-3xl bg-white p-5 text-center shadow-[0_20px_40px_-25px_rgba(24,46,16,0.45)] md:p-6"
               >
-                <stat.icon size={22} className="mx-auto mb-3 text-blaa-500" />
-                <p className="text-3xl font-black text-blaa-950">
+                <stat.icon size={22} className="mx-auto mb-3 text-skov-500" />
+                <p className="text-3xl font-black text-skov-950">
                   <CountUp to={stat.value} />
                 </p>
-                <p className="mt-1 text-xs uppercase tracking-wide text-blaa-900/55">{t.stats[i]}</p>
+                <p className="mt-1 text-xs uppercase tracking-wide text-skov-900/55">{t.stats[i]}</p>
               </motion.div>
             ))}
           </div>

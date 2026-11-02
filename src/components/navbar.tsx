@@ -62,8 +62,8 @@ export function Navbar() {
 
   const light = home && overHero && !mobileOpen;
   // on phones the video sits below the menu, so the menu is navy there too
-  const tone = light ? "text-blaa-950 md:text-white" : "text-blaa-950";
-  const accent = light ? "text-blaa-500 md:text-blaa-200" : "text-blaa-500";
+  const tone = light ? "text-skov-950 md:text-white" : "text-skov-950";
+  const accent = light ? "text-skov-600 md:text-sol-300" : "text-skov-600";
 
   return (
     <motion.nav
@@ -118,7 +118,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -12, scale: 0.97 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="md:hidden mx-4 origin-top rounded-3xl bg-white/90 shadow-[0_20px_60px_-20px_rgba(4,84,231,0.45)] backdrop-blur-xl"
+            className="md:hidden mx-4 origin-top rounded-3xl bg-white/90 shadow-[0_20px_60px_-20px_rgba(60,106,34,0.45)] backdrop-blur-xl"
           >
             <div className="px-6 py-5 flex flex-col gap-4">
               {links.map((link) => (
@@ -126,7 +126,7 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="text-xl font-bold text-blaa-950 hover:text-blaa-500 transition-colors"
+                  className="text-xl font-bold text-skov-950 hover:text-skov-600 transition-colors"
                 >
                   {link.label}
                 </GenieLink>
