@@ -93,16 +93,17 @@ export function Statement() {
 
   return (
     <section className="relative px-6 py-28 md:py-44 overflow-hidden">
-      {/* soft warm light drifting behind the text */}
+      {/* soft warm light drifting behind the text. It is exactly as big as the section and has already
+          faded to nothing at its own edge, so the section never cuts it off with a visible line,
+          whatever the screen size. */}
       <motion.div
         aria-hidden="true"
-        animate={{ x: ["-10%", "10%", "-10%"], y: ["0%", "8%", "0%"] }}
+        animate={{ x: ["-4%", "4%", "-4%"] }}
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[85vmin] w-[110vmin] -translate-x-1/2 -translate-y-1/2"
-        // a gradient that is already see-through at its own edge, so the section never cuts it off with a hard line
+        className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(closest-side, color-mix(in oklab, var(--popover) 80%, transparent) 0%, color-mix(in oklab, var(--popover) 45%, transparent) 45%, color-mix(in oklab, var(--popover) 12%, transparent) 75%, transparent 100%)",
+            "radial-gradient(closest-side, color-mix(in oklab, var(--popover) 80%, transparent) 0%, color-mix(in oklab, var(--popover) 55%, transparent) 30%, color-mix(in oklab, var(--popover) 28%, transparent) 55%, color-mix(in oklab, var(--popover) 10%, transparent) 75%, color-mix(in oklab, var(--popover) 3%, transparent) 90%, transparent 100%)",
         }}
       />
       <div ref={ref} className="mx-auto max-w-5xl">
