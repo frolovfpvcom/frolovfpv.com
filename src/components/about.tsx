@@ -9,18 +9,18 @@ const texts = {
   da: {
     title: "Om mig",
     body: [
-      "Jeg er FPV-dronepilot og filmfotograf med en passion for at fange perspektiver, der rykker grænserne for, hvad luftoptagelser kan fortælle.",
-      "Hver flyvning er en mulighed for at skabe noget unikt — jeg fletter mig gennem omgivelserne med præcision og kreativitet og leverer optagelser, der føles medrivende og levende.",
-      "Uanset om det er jagt gennem bjergterræn, dyk ud over bygninger eller glidende flyvninger gennem interiører — bringer jeg et filmisk blik til hvert projekt.",
+      "Goddag, mit navn er Peter, jeg er 17 år gammel og jeg flyver med Fpv droner, det har jeg gjort i 3 år nu.",
+      "Førhen har jeg fløjet med fjernstyrede fly i en del år. Så stoppede jeg med det, og fandt Fpv droner. Jeg var solgt på stedet.",
+      "Den bedste måde at beskrive hvordan det er at flyve sådan en drone er bare at få folk til at forstille sig hvordan det ville være hvis de var en fugl (med en topfart på 200t km/t) og flyve der oppe, i luften",
     ],
     alt: "Peter Frolov med FPV-briller på",
   },
   en: {
     title: "About me",
     body: [
-      "I'm an FPV drone pilot and cinematographer with a passion for capturing perspectives that push the limits of what aerial footage can tell.",
-      "Every flight is a chance to create something unique — I weave through the surroundings with precision and creativity and deliver footage that feels immersive and alive.",
-      "Whether it's chasing through mountain terrain, diving off buildings or gliding through interiors — I bring a cinematic eye to every project.",
+      "Hi, my name is Peter, I'm 17 years old and I fly FPV drones. I've been doing it for 3 years now.",
+      "Before that I flew remote-controlled planes for quite a few years. Then I stopped, and found FPV drones. I was sold on the spot.",
+      "The best way to describe what flying a drone like that is like is to get people to imagine what it would be like if they were a bird (with a top speed of 200 km/h), flying up there in the air.",
     ],
     alt: "Peter Frolov wearing FPV goggles",
   },
