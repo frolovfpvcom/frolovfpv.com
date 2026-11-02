@@ -6,8 +6,8 @@ import { useT } from "@/lib/lang";
 import { useLazyVideo } from "@/lib/lazy-video";
 
 const texts = {
-  da: { left: "Ind i", right: "billedet", caption: "Ind i billedet · 4K" },
-  en: { left: "Into", right: "the shot", caption: "Into the shot · 4K" },
+  da: { left: "Ind i", right: "billedet" },
+  en: { left: "Into", right: "the shot" },
 };
 
 // slow at first, then faster and faster: the pull of getting sucked in
@@ -69,8 +69,6 @@ export function VideoReveal() {
   const warpScale = useMap(scrollYProgress, [0.1, IN], [0.55, 2.4], { ease: suck });
   const warpOpacity = useMap(scrollYProgress, [0.1, 0.28, IN + 0.02], [0, 0.85, 0]);
   const tunnelOpacity = useMap(scrollYProgress, [0.15, 0.36, IN + 0.06], [0, 1, 0]);
-
-  const captionOpacity = useMap(scrollYProgress, [IN + 0.1, IN + 0.18], [0, 1]);
 
   // the clip waits on its first frame until you are inside it, then runs from the start
   useMotionValueEvent(scrollYProgress, "change", (p) => {
@@ -137,12 +135,6 @@ export function VideoReveal() {
           <span>{t.right}</span>
         </motion.div>
 
-        <motion.p
-          style={{ opacity: captionOpacity }}
-          className="absolute bottom-10 left-6 md:left-10 z-10 font-mono text-xs uppercase tracking-[0.3em] text-white/85"
-        >
-          {t.caption}
-        </motion.p>
       </div>
     </section>
   );
