@@ -48,8 +48,8 @@ const projects: Project[] = [
     category: { da: "Natur", en: "Nature" },
     meta: { da: "Natur · 4K · 0:13", en: "Nature · 4K · 0:13" },
     description: {
-      da: "Cruiser igennem der ud af",
-      en: "Cruising right through it",
+      da: "Svæver igennem den lokale danske natur, der er nogle små guldklumper gemt rundt i byen",
+      en: "Gliding through the local Danish countryside. There are little hidden gems all around town",
     },
     tags: { da: ["4K", "Natur"], en: ["4K", "Nature"] },
   },
