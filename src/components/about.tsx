@@ -13,7 +13,6 @@ const texts = {
       "Hver flyvning er en mulighed for at skabe noget unikt — jeg fletter mig gennem omgivelserne med præcision og kreativitet og leverer optagelser, der føles medrivende og levende.",
       "Uanset om det er jagt gennem bjergterræn, dyk ud over bygninger eller glidende flyvninger gennem interiører — bringer jeg et filmisk blik til hvert projekt.",
     ],
-    eyebrow: "Hej, jeg hedder Peter",
     alt: "Portræt af Peter Frolov",
   },
   en: {
@@ -23,7 +22,6 @@ const texts = {
       "Every flight is a chance to create something unique — I weave through the surroundings with precision and creativity and deliver footage that feels immersive and alive.",
       "Whether it's chasing through mountain terrain, diving off buildings or gliding through interiors — I bring a cinematic eye to every project.",
     ],
-    eyebrow: "Hi, I'm Peter",
     alt: "Portrait of Peter Frolov",
   },
 };
@@ -59,19 +57,11 @@ export function About() {
         </motion.div>
 
         <div>
-          <motion.p
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15, ease }}
-            className="text-xs font-bold uppercase tracking-[0.35em] text-ild-600"
-          >
-            {t.eyebrow}
-          </motion.p>
           <motion.h1
             initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease }}
-            className="mt-4 text-5xl md:text-7xl font-black tracking-tight"
+            className="text-5xl md:text-7xl font-black tracking-tight"
           >
             {t.title}
           </motion.h1>
