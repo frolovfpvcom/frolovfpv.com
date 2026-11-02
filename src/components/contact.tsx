@@ -53,7 +53,7 @@ export function Contact() {
           className="pointer-events-none absolute -bottom-32 right-0 size-[28rem] rounded-full bg-ild-500/30 blur-3xl"
         />
 
-        {/* silk threads from the button to the mouse, and the auto-click after 10 s standing still */}
+        {/* silk threads from the button to the mouse, and the auto-click after 5 s standing still */}
         <WebShotLayer areaRef={panel} targetRef={btnBox} leanRef={btnLean} />
 
         <div className="relative mx-auto max-w-5xl text-center">

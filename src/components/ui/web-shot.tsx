@@ -23,7 +23,9 @@ import { useEffect, useRef, type RefObject } from "react";
 const SEGS = 16;
 const SPREAD = 17;
 const DAMP = 0.9;
-const GRAVITY = 0.03;
+const GRAVITY = 0.008;
+/* One hard tug on the cursor every TUG_MS; the tugs grow as the mouse stands still. */
+const TUG_MS = 850;
 const GLIDE_MS = 1100;
 
 type Pt = { x: number; y: number; px: number; py: number };
@@ -35,8 +37,8 @@ export function WebShotLayer({
   areaRef,
   targetRef,
   leanRef,
-  idleMs = 10000,
-  threads = 5,
+  idleMs = 5000,
+  threads = 6,
   ink = "#f3ead2",
 }: {
   /** The positioned element the threads live in; this layer must be its direct child. */
@@ -111,7 +113,7 @@ export function WebShotLayer({
       ctx.strokeStyle = ink;
       ctx.lineCap = "round";
       ctx.globalAlpha = 0.9;
-      ctx.lineWidth = 1.2;
+      ctx.lineWidth = 1.5;
       for (const s of list) {
         ctx.beginPath();
         path(s.pts);
@@ -180,6 +182,7 @@ export function WebShotLayer({
       let cx = px;
       let cy = py;
       let active = inside && !overBtn;
+      let strain = 0;
       if (auto) {
         const u = Math.min(1, (now - auto.t0) / GLIDE_MS);
         const e = ease(u);
@@ -191,10 +194,23 @@ export function WebShotLayer({
           press();
         }
       } else if (active) {
+        // Only a show: the threads yank the drawn cursor toward the button in hard tugs and it
+        // fights back to where the mouse really is. The longer it stands still, the harder they pull.
         const c = cap(px, py);
-        const pull = Math.min(22, Math.max(0, c.dist) * 0.09);
-        cx = px - c.nx * pull;
-        cy = py - c.ny * pull;
+        const still = Math.min(1, (now - pointer.lastMove) / idleMs);
+        const ph = (now % TUG_MS) / TUG_MS;
+        const tug =
+          ph < 0.18
+            ? 1 - Math.pow(1 - ph / 0.18, 3)
+            : Math.exp(-(ph - 0.18) * 7) * Math.cos((ph - 0.18) * 16);
+        const amp = 16 + 34 * still;
+        const room = Math.max(0, c.dist) * 0.7;
+        const pull = Math.min(room, 8 + amp * tug);
+        const t = now / 1000;
+        const shake = (1 + 2 * still) * (Math.sin(t * 53) + Math.sin(t * 71)) * 0.6;
+        cx = px - c.nx * pull + c.ny * shake;
+        cy = py - c.ny * pull - c.nx * shake;
+        strain = tug;
       }
 
       showCursor(Boolean(auto) || (inside && !overBtn));
@@ -212,7 +228,7 @@ export function WebShotLayer({
         const dx = hold.x - bcx;
         const dy = hold.y - bcy;
         const d = Math.hypot(dx, dy) || 1;
-        const m = Math.min(12, d * 0.04) * ext;
+        const m = Math.min(10 + 10 * Math.max(0, strain), d * 0.05) * ext;
         lean.style.transform = `translate3d(${(dx / d) * m}px, ${(dy / d) * m}px, 0)`;
       } else {
         lean.style.transform = "";
@@ -255,8 +271,10 @@ export function WebShotLayer({
           q.y += vy + GRAVITY * ext;
         }
         const tip = pts[pts.length - 1];
-        tip.x += (s.ax + (dx / d) * len - tip.x) * s.lag;
-        tip.y += (s.ay + (dy / d) * len - tip.y) * s.lag;
+        // shooting out they trail a little; once they have hold, the tips stay stuck to the cursor
+        const grip = Math.max(s.lag, ext * ext * 0.95);
+        tip.x += (s.ax + (dx / d) * len - tip.x) * grip;
+        tip.y += (s.ay + (dy / d) * len - tip.y) * grip;
         pts[0].x = pts[0].px = s.ax;
         pts[0].y = pts[0].py = s.ay;
         for (let it = 0; it < 6; it++) {
