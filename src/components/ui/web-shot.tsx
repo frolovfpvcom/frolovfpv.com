@@ -40,6 +40,7 @@ export function WebShotLayer({
   idleMs = 5000,
   threads = 6,
   ink = "#f3ead2",
+  glow = "#e9d38a",
 }: {
   /** The positioned element the threads live in; this layer must be its direct child. */
   areaRef: RefObject<HTMLElement | null>;
@@ -50,6 +51,7 @@ export function WebShotLayer({
   idleMs?: number;
   threads?: number;
   ink?: string;
+  glow?: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -74,6 +76,9 @@ export function WebShotLayer({
     let raf = 0;
     let ext = 0;
     let shown = false;
+    let flow = 0;
+    let force = 0;
+    let last = 0;
     const pointer = { x: 0, y: 0, known: false, lastMove: 0 };
     const hold = { x: 0, y: 0 };
     let auto: { t0: number; fx: number; fy: number; pressed: boolean } | null = null;
@@ -108,32 +113,77 @@ export function WebShotLayer({
       ctx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y);
     };
 
-    const draw = () => {
+    // Where along a thread (0 = button, 1 = cursor) a point sits.
+    const along = (pts: Pt[], f: number) => {
+      const x = f * (pts.length - 1);
+      const j = Math.min(pts.length - 2, Math.floor(x));
+      const u = x - j;
+      return { x: pts[j].x + (pts[j + 1].x - pts[j].x) * u, y: pts[j].y + (pts[j + 1].y - pts[j].y) * u };
+    };
+
+    /* Drawn as a force, not as string: a soft beam, light flowing along every thread from the
+       cursor into the button, sparks riding it, and rings closing in on the cursor. The harder
+       the pull (`force`), the faster and brighter it all runs. */
+    const draw = (now: number) => {
       ctx.save();
-      ctx.strokeStyle = ink;
       ctx.lineCap = "round";
-      ctx.globalAlpha = 0.9;
-      ctx.lineWidth = 1.5;
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = ink;
+
+      // the beam: wide, soft and faint
+      ctx.globalAlpha = 0.1 * ext * (0.7 + force);
+      ctx.lineWidth = 10;
       for (const s of list) {
         ctx.beginPath();
         path(s.pts);
         ctx.stroke();
       }
-      // the cross strands that make it a web
-      if (ext > 0.35) {
-        ctx.lineWidth = 0.8;
-        ctx.globalAlpha = 0.65 * Math.min(1, (ext - 0.35) * 3);
-        for (const at of [0.4, 0.62, 0.84]) {
-          const j = Math.round(at * (SEGS - 1));
-          for (let i = 0; i < list.length - 1; i++) {
-            const a = list[i].pts[j];
-            const b = list[i + 1].pts[j];
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.quadraticCurveTo((a.x + b.x) / 2, (a.y + b.y) / 2 + 3, b.x, b.y);
-            ctx.stroke();
-          }
+
+      // the threads themselves, thin
+      ctx.globalAlpha = 0.4 * ext;
+      ctx.lineWidth = 1;
+      for (const s of list) {
+        ctx.beginPath();
+        path(s.pts);
+        ctx.stroke();
+      }
+
+      // light flowing toward the button (the dash pattern slides back toward the start of the path)
+      ctx.shadowColor = glow;
+      ctx.shadowBlur = 10;
+      ctx.globalAlpha = 0.95 * ext;
+      ctx.lineWidth = 2.2;
+      ctx.setLineDash([4, 18]);
+      ctx.lineDashOffset = flow;
+      for (const s of list) {
+        ctx.beginPath();
+        path(s.pts);
+        ctx.stroke();
+      }
+      ctx.setLineDash([]);
+
+      // sparks riding the threads in
+      ctx.fillStyle = ink;
+      list.forEach((s, i) => {
+        for (let m = 0; m < 2; m++) {
+          const f = 1 - ((flow / 260 + i * 0.37 + m * 0.5) % 1);
+          const q = along(s.pts, f);
+          ctx.globalAlpha = ext * Math.min(1, f * 4);
+          ctx.beginPath();
+          ctx.arc(q.x, q.y, 1.6 + 1.4 * f, 0, Math.PI * 2);
+          ctx.fill();
         }
+      });
+
+      // rings closing in on the cursor, as if it is being sucked along
+      ctx.shadowBlur = 6;
+      ctx.lineWidth = 1.4;
+      for (let m = 0; m < 2; m++) {
+        const ph = ((now / (700 - 300 * force)) + m * 0.5) % 1;
+        ctx.globalAlpha = ext * 0.8 * ph;
+        ctx.beginPath();
+        ctx.arc(hold.x, hold.y, 4 + 30 * (1 - ph), 0, Math.PI * 2);
+        ctx.stroke();
       }
       ctx.restore();
     };
@@ -215,6 +265,13 @@ export function WebShotLayer({
 
       showCursor(Boolean(auto) || (inside && !overBtn));
       cur.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+
+      // how hard it pulls right now: builds while the mouse stands still, spikes on every tug
+      const stillFor = Math.min(1, (now - pointer.lastMove) / idleMs);
+      force = Math.min(1, (auto ? 1 : 0.25 + 0.6 * stillFor) + 0.25 * Math.max(0, strain));
+      const dt = last ? Math.min(50, now - last) : 16;
+      last = now;
+      flow += dt * (0.12 + 0.5 * force);
 
       if (active) {
         hold.x = cx;
@@ -301,7 +358,7 @@ export function WebShotLayer({
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
-      if (ext > 0.01) draw();
+      if (ext > 0.01) draw(now);
 
       if (inside || ext > 0 || auto) kick();
       else for (const s of list) s.seeded = false;
@@ -371,7 +428,7 @@ export function WebShotLayer({
       area.style.cursor = "";
       lean.style.transform = "";
     };
-  }, [areaRef, targetRef, leanRef, idleMs, threads, ink]);
+  }, [areaRef, targetRef, leanRef, idleMs, threads, ink, glow]);
 
   return (
     <>
