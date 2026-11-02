@@ -44,7 +44,7 @@ export function Navbar() {
   const home = pathname === "/";
 
   // No bar behind the menu, ever: logo and links float on top of the page.
-  // White over the intro video on the front page, navy everywhere else.
+  // White over the intro video on the front page, dark green everywhere else.
   // Slides away while scrolling down and comes back when scrolling up or at the top.
   useEffect(() => {
     let lastY = window.scrollY;
@@ -61,9 +61,8 @@ export function Navbar() {
   }, [pathname]);
 
   const light = home && overHero && !mobileOpen;
-  // on phones the video sits below the menu, so the menu is navy there too
-  const tone = light ? "text-skov-950 md:text-white" : "text-skov-950";
-  const accent = light ? "text-skov-600 md:text-sol-300" : "text-skov-600";
+  const tone = light ? "text-white" : "text-skov-950";
+  const accent = light ? "text-sol-300" : "text-skov-600";
 
   return (
     <motion.nav
