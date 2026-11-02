@@ -1165,6 +1165,20 @@ canvas.gf-art[data-ready] { opacity: 1; filter: none; }
   transition-delay: calc(.15s + var(--gf-depth) * 60ms);
 }
 .gf-root[data-layout="stack"][data-open] .gf-sheet-head { opacity: 0; }
+/* on phones the files keep their full size: they slide up and a little to the right, overlapping like a deck */
+@media (max-width: 767px) {
+  .gf-root[data-layout="stack"][data-open] .gf-sheet {
+    transform:
+      translate(calc(34px + var(--gf-depth) * 16px), calc(-150px - var(--gf-depth) * 96px))
+      rotate(calc(-1.5deg + var(--gf-depth) * 1deg));
+  }
+  .gf-root[data-layout="stack"][data-open] .gf-sheet:hover,
+  .gf-root[data-layout="stack"][data-open] .gf-sheet:focus-visible {
+    transform:
+      translate(calc(34px + var(--gf-depth) * 16px), calc(-156px - var(--gf-depth) * 96px))
+      rotate(calc(-1.5deg + var(--gf-depth) * 1deg));
+  }
+}
 .gf-sheet-head { transition: opacity .3s var(--gf-ease); }
 .gf-sheet-art {
   position: absolute;

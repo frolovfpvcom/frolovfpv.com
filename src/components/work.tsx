@@ -191,13 +191,13 @@ export function Work() {
           initial={{ opacity: 0, y: 20 }}
           animate={headerInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16 text-center"
+          className="mb-32 text-center md:mb-16"
         >
           <p className="text-xs font-bold uppercase tracking-[0.35em] text-ild-600">{t.title}</p>
           <p className="mx-auto mt-3 max-w-md text-lg text-skov-950/70">{t.lead}</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-40 md:gap-y-24">
           {folders.map((folder) => (
             <FolderCell key={folder.seed} folder={folder} onOpenClip={setClip} />
           ))}
