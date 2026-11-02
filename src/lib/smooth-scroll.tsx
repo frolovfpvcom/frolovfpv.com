@@ -17,6 +17,9 @@ import {
 
 let lenis: Lenis | null = null;
 
+/** The page's smooth scroll, for parts that need to hold the page still for a moment. */
+export const getLenis = () => lenis;
+
 /* The genie: the page itself, cut to what is on screen, tilts into a funnel and is
    sucked into one point at the top, three quarters of the way across. A beat later the
    new page comes out of the same point and unfolds to fill the screen. Only transform

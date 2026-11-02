@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { cubicBezier, motion, transform, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "motion/react";
+import { animate, cubicBezier, motion, transform, useMotionValue, useTransform, type MotionValue } from "motion/react";
 import { useT } from "@/lib/lang";
 import { useLazyVideo } from "@/lib/lazy-video";
+import { getLenis } from "@/lib/smooth-scroll";
 
 const texts = {
   da: { left: "Ind i", right: "billedet" },
@@ -13,23 +14,22 @@ const texts = {
 // slow at first, then faster and faster: the pull of getting sucked in
 const suck = cubicBezier(0.6, 0, 0.9, 0.35);
 
-// how far into the section the picture has swallowed the screen
-const IN = 0.42;
+// how long the pull takes, in seconds
+const PULL = 1.9;
+// where along the pull the window has swallowed the whole screen
+const IN = 0.84;
 
 type Opts = { ease?: ((t: number) => number) | ((t: number) => number)[] };
-/**
- * Maps scroll progress to a value in plain JS on every frame. Motion would otherwise hand plain
- * opacity/scale mappings to the browser's own scroll timeline, which got the in-between values
- * wrong here (the words came back after they had faded out).
- */
 function useMap(p: MotionValue<number>, input: number[], output: number[], opts?: Opts) {
   return useTransform(p, (v) => transform(v, input, output, opts));
 }
 
 /**
- * "Ind i billedet": a small window with the clip in it. Scrolling pulls you towards it faster
- * and faster, you fly through the words, warp lines rush past, and the window swallows the
- * whole screen. Only then does the clip start, from the beginning, as if you are now flying it.
+ * "Ind i billedet": a small window with the clip in it, behind the words. As soon as you reach
+ * it, it pulls you in by itself, no more scrolling needed: faster and faster you fly through the
+ * words, warp lines rush past, and the window swallows the whole screen. The page holds still
+ * while that happens. Then the clip starts from the beginning, as if you are now flying it, and
+ * you scroll on. Scrolling back up resets it, so it happens again next time.
  */
 export function VideoReveal() {
   const t = useT(texts);
@@ -37,7 +37,8 @@ export function VideoReveal() {
   const video = useRef<HTMLVideoElement>(null);
   // loads after the first screen is done (or when it comes close); playing is started below
   useLazyVideo(video, "150%", false);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  // 0 = small window behind the words, 1 = inside the picture
+  const pull = useMotionValue(0);
 
   // a phone screen is tall, so its window is a tall card instead of a wide one
   const [phone, setPhone] = useState(false);
@@ -50,40 +51,97 @@ export function VideoReveal() {
   }, []);
 
   // the window opening up until it is the whole screen
-  const insetY = useMap(scrollYProgress, [0, IN], [phone ? 27 : 29, 0], { ease: suck });
-  const insetX = useMap(scrollYProgress, [0, IN], [phone ? 16 : 33, 0], { ease: suck });
-  const radius = useMap(scrollYProgress, [0, IN], [36, 0], { ease: suck });
+  const insetY = useMap(pull, [0, IN], [phone ? 27 : 29, 0], { ease: suck });
+  const insetX = useMap(pull, [0, IN], [phone ? 16 : 33, 0], { ease: suck });
+  const radius = useMap(pull, [0, IN], [36, 0], { ease: suck });
   const clipPath = useTransform(
     [insetY, insetX, radius],
     ([y, x, r]) => `inset(${y}% ${x}% ${y}% ${x}% round ${r}px)`,
   );
   // the picture itself rushes towards you, pushes a little past and settles
-  const scale = useMap(scrollYProgress, [0, IN, IN + 0.08], [0.7, 1.08, 1], { ease: [suck, (v: number) => v] });
+  const scale = useMap(pull, [0, IN, 1], [0.7, 1.08, 1], { ease: [suck, (v: number) => v] });
 
   // flying straight through the words
-  const wordsScale = useMap(scrollYProgress, [0, 0.3], [1, 7], { ease: suck });
-  const wordsOpacity = useMap(scrollYProgress, [0.14, 0.3], [1, 0]);
-  const wordsBlur = useTransform(scrollYProgress, (v) => `blur(${transform(v, [0.12, 0.3], [0, 10])}px)`);
+  const wordsScale = useMap(pull, [0, 0.6], [1, 7], { ease: suck });
+  const wordsOpacity = useMap(pull, [0.3, 0.6], [1, 0]);
+  const wordsBlur = useTransform(pull, (v) => `blur(${transform(v, [0.26, 0.6], [0, 10])}px)`);
 
   // warp lines and a dark tunnel edge while you are pulled in
-  const warpScale = useMap(scrollYProgress, [0.1, IN], [0.55, 2.4], { ease: suck });
-  const warpOpacity = useMap(scrollYProgress, [0.1, 0.28, IN + 0.02], [0, 0.85, 0]);
-  const tunnelOpacity = useMap(scrollYProgress, [0.15, 0.36, IN + 0.06], [0, 1, 0]);
+  const warpScale = useMap(pull, [0.15, IN], [0.55, 2.4], { ease: suck });
+  const warpOpacity = useMap(pull, [0.15, 0.55, 0.88], [0, 0.85, 0]);
+  const tunnelOpacity = useMap(pull, [0.25, 0.7, 0.98], [0, 1, 0]);
 
-  // the clip waits on its first frame until you are inside it, then runs from the start
-  useMotionValueEvent(scrollYProgress, "change", (p) => {
+  useEffect(() => {
+    const el = ref.current;
     const v = video.current;
-    if (!v) return;
-    if (p >= IN) {
-      if (v.paused) v.play().catch(() => {});
-    } else if (p < IN - 0.12 && (!v.paused || v.currentTime > 0)) {
+    if (!el || !v) return;
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let state: "out" | "pulling" | "in" = "out";
+    let run: ReturnType<typeof animate> | null = null;
+
+    const startClip = () => {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    };
+
+    const pullIn = () => {
+      state = "pulling";
+      const lenis = getLenis();
+      // bring the window to the middle of the screen and hold the page still while you are pulled in
+      lenis?.scrollTo(el, { duration: 0.35, lock: true, force: true, onComplete: () => {
+        if (state === "pulling") lenis.stop();
+      } });
+      run = animate(pull, 1, {
+        duration: still ? 0 : PULL,
+        ease: "linear",
+        onComplete: () => {
+          state = "in";
+          lenis?.start();
+          startClip();
+        },
+      });
+    };
+
+    const reset = () => {
+      run?.stop();
+      getLenis()?.start();
+      state = "out";
       v.pause();
       v.currentTime = 0;
-    }
-  });
+      animate(pull, 0, { duration: 0.5, ease: "easeOut" });
+    };
+
+    const check = () => {
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const onScreen = r.bottom > 0 && r.top < vh;
+      if (state === "out" && onScreen && r.top <= vh * 0.15) {
+        if (r.top < -vh * 0.5) {
+          // coming back from further down: already inside the picture
+          pull.set(1);
+          state = "in";
+          startClip();
+        } else pullIn();
+      } else if (state !== "out" && r.top > vh * 0.45) {
+        reset();
+      } else if (state === "in") {
+        // only play while it can be seen
+        if (onScreen && v.paused) v.play().catch(() => {});
+        if (!onScreen && !v.paused) v.pause();
+      }
+    };
+
+    check();
+    window.addEventListener("scroll", check, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", check);
+      run?.stop();
+      getLenis()?.start();
+    };
+  }, [pull]);
 
   return (
-    <section ref={ref} className="relative h-[300vh]">
+    <section ref={ref} className="relative h-[200vh]">
       <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden">
         <motion.div style={{ clipPath }} className="absolute inset-0 will-change-[clip-path]">
           <motion.video
