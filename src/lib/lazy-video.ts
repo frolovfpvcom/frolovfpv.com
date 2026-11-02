@@ -10,7 +10,12 @@ import { useEffect, type RefObject } from "react";
  * once the page has finished loading and gone quiet, or as soon as it gets close to the screen,
  * whichever comes first, and it only plays while it is actually on screen.
  */
-export function useLazyVideo(ref: RefObject<HTMLVideoElement | null>, near = "150%") {
+export function useLazyVideo(
+  ref: RefObject<HTMLVideoElement | null>,
+  near = "150%",
+  /** false: only take care of loading, the component starts and stops the clip itself */
+  autoPlay = true,
+) {
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
@@ -36,7 +41,7 @@ export function useLazyVideo(ref: RefObject<HTMLVideoElement | null>, near = "15
       for (const e of entries) {
         if (e.isIntersecting) {
           start();
-          v.play().catch(() => {});
+          if (autoPlay) v.play().catch(() => {});
         } else {
           v.pause();
         }
@@ -58,5 +63,5 @@ export function useLazyVideo(ref: RefObject<HTMLVideoElement | null>, near = "15
       window.clearTimeout(idle);
       window.removeEventListener("load", warm);
     };
-  }, [ref, near]);
+  }, [ref, near, autoPlay]);
 }
