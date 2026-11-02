@@ -1,10 +1,11 @@
 "use client";
 
-import { motion, useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { Mail, ArrowUpRight } from "lucide-react";
 import { useT } from "@/lib/lang";
 import { GenieLink } from "@/lib/smooth-scroll";
+import { WebShotLayer } from "@/components/ui/web-shot";
 
 const texts = {
   da: {
@@ -19,33 +20,11 @@ const texts = {
   },
 };
 
-/** A button that leans toward the cursor when it comes close. */
-function MagneticButton({ children }: { children: React.ReactNode }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 220, damping: 15 });
-  const sy = useSpring(y, { stiffness: 220, damping: 15 });
-  return (
-    <motion.div
-      style={{ x: sx, y: sy }}
-      onPointerMove={(e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        x.set((e.clientX - r.left - r.width / 2) * 0.35);
-        y.set((e.clientY - r.top - r.height / 2) * 0.35);
-      }}
-      onPointerLeave={() => {
-        x.set(0);
-        y.set(0);
-      }}
-      className="inline-block p-4 -m-4"
-    >
-      {children}
-    </motion.div>
-  );
-}
-
 export function Contact() {
   const ref = useRef<HTMLElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
+  const btnBox = useRef<HTMLDivElement>(null);
+  const btnLean = useRef<HTMLDivElement>(null);
   const t = useT(texts);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end end"] });
   // the panel grows out of the page as it comes into view
@@ -56,6 +35,7 @@ export function Contact() {
   return (
     <section ref={ref} id="contact" className="px-3 pb-3 pt-24 md:px-6 md:pb-6 md:pt-32">
       <motion.div
+        ref={panel}
         style={{ scale, borderRadius: radius }}
         className="relative overflow-hidden bg-gradient-to-br from-skov-700 via-skov-800 to-skov-950 px-6 py-24 text-white md:px-16 md:py-36"
       >
@@ -72,6 +52,9 @@ export function Contact() {
           transition={{ duration: 17, repeat: Infinity, ease: "easeInOut" }}
           className="pointer-events-none absolute -bottom-32 right-0 size-[28rem] rounded-full bg-ild-500/30 blur-3xl"
         />
+
+        {/* silk threads from the button to the mouse, and the auto-click after 10 s standing still */}
+        <WebShotLayer areaRef={panel} targetRef={btnBox} leanRef={btnLean} />
 
         <div className="relative mx-auto max-w-5xl text-center">
           <h2 className="text-5xl md:text-8xl font-black tracking-tight leading-[0.95]">
@@ -99,20 +82,28 @@ export function Contact() {
             {t.lead}
           </motion.p>
 
-          <div className="mt-12">
-            <MagneticButton>
-              <GenieLink
-                href="/kontakt"
-                className="group inline-flex items-center gap-3 rounded-full bg-sol-400 px-8 py-4 text-base font-bold text-skov-950 shadow-[0_20px_50px_-15px_rgba(58,53,41,0.5)] transition-transform duration-300 hover:scale-105"
-              >
-                <Mail size={18} />
-                {t.cta}
-                <ArrowUpRight
-                  size={16}
-                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                />
-              </GenieLink>
-            </MagneticButton>
+          <div className="mt-12 flex justify-center">
+            <div ref={btnBox} className="inline-flex">
+              <div ref={btnLean} className="inline-flex will-change-transform">
+                <GenieLink
+                  href="/kontakt"
+                  className="group relative inline-flex h-14 items-center gap-3 overflow-hidden rounded-full px-8 text-base font-bold text-skov-950 ring-1 ring-inset ring-white/70 backdrop-blur-md transition-transform duration-300 hover:scale-105 active:scale-95 shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.3),inset_0_-12px_18px_-10px_rgb(0_0_0/0.14),inset_0_10px_16px_-8px_rgb(255_255_255/0.55),0_14px_32px_-12px_rgb(0_0_0/0.45),0_1px_3px_rgb(0_0_0/0.12)]"
+                  style={{ backgroundColor: "color-mix(in oklab, #dbc894 92%, transparent)" }}
+                >
+                  {/* glass highlights */}
+                  <span aria-hidden="true" className="pointer-events-none absolute inset-x-[7%] top-[2px] h-[48%] rounded-full bg-gradient-to-b from-white/75 to-white/0" />
+                  <span aria-hidden="true" className="pointer-events-none absolute inset-x-[20%] bottom-[2px] h-[34%] rounded-full bg-gradient-to-t from-white/45 to-white/0 blur-[2px]" />
+                  <span className="relative inline-flex items-center gap-3 [text-shadow:0_1px_0_rgb(255_255_255/0.6)]">
+                    <Mail size={18} />
+                    {t.cta}
+                    <ArrowUpRight
+                      size={16}
+                      className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    />
+                  </span>
+                </GenieLink>
+              </div>
+            </div>
           </div>
         </div>
       </motion.div>
