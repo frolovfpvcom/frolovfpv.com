@@ -46,12 +46,12 @@ const projects: Project[] = [
     frame: "white",
     title: { da: "Peugeot shenanigans", en: "Peugeot shenanigans" },
     category: { da: "Bil", en: "Car" },
-    meta: { da: "Reklame · 4K", en: "Commercial · 4K" },
+    meta: { da: "4K", en: "4K" },
     description: {
       da: "FPV-drone tæt langs bilen på en grusplads. Lave, hurtige linjer, der får en stillestående bil til at føles levende.",
       en: "An FPV drone tight along the car on a gravel lot. Low, fast lines that make a parked car feel alive.",
     },
-    tags: { da: ["4K", "FPV", "Reklame"], en: ["4K", "FPV", "Commercial"] },
+    tags: { da: ["4K", "FPV"], en: ["4K", "FPV"] },
   },
   {
     image: "/projekter/panoram.jpg",
@@ -74,7 +74,7 @@ const projects: Project[] = [
     frame: "black",
     title: { da: "Rundt om bilen", en: "Around the car" },
     category: { da: "Bil", en: "Car" },
-    meta: { da: "Reklame · 4K", en: "Commercial · 4K" },
+    meta: { da: "4K", en: "4K" },
     description: {
       da: "Et langt, glidende kredsløb om bilen, der viser den fra alle sider i ét skud.",
       en: "One long, gliding orbit around the car that shows it from every side in a single shot.",
@@ -101,12 +101,12 @@ const projects: Project[] = [
     frame: "oak",
     title: { da: "Tæt på", en: "Up close" },
     category: { da: "Bil", en: "Car" },
-    meta: { da: "Reklame · 4K", en: "Commercial · 4K" },
+    meta: { da: "4K", en: "4K" },
     description: {
       da: "Dronen dykker ind over bilen og trækker væk igen. Bygget til at åbne eller lukke en film.",
       en: "The drone dives in over the car and pulls away again. Made to open or close a film.",
     },
-    tags: { da: ["4K", "FPV", "Reklame"], en: ["4K", "FPV", "Commercial"] },
+    tags: { da: ["4K", "FPV"], en: ["4K", "FPV"] },
   },
   {
     aspect: 16 / 10,

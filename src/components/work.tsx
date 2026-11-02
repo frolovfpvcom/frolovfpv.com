@@ -91,7 +91,7 @@ type Folder = GlassFolderProps & { label: string };
 const foldersByLang = (lang: Lang): Folder[] => [
   {
     label: "Surfin’",
-    meta: lang === "da" ? "Reklame · 3 klip" : "Commercial · 3 clips",
+    meta: lang === "da" ? "3 klip" : "3 clips",
     tone: "light",
     glass: "#d9d9dd",
     art: art.gray,
