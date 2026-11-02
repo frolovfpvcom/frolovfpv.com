@@ -17,12 +17,11 @@ import {
 
 let lenis: Lenis | null = null;
 
-/* The genie: the page turns into a plain white sheet that tilts into a funnel and is
+/* The genie: the page itself, cut to what is on screen, tilts into a funnel and is
    sucked into one point at the top, three quarters of the way across. A beat later the
-   new page's sheet comes out of the same point and unfolds to fill the screen, then
-   fades to show the page. Only a blank sheet moves, and only by transform and opacity,
-   so the animation runs on the GPU and keeps going while the new page renders. */
-const GENIE_ORIGIN = "75% 0%";
+   new page comes out of the same point and unfolds to fill the screen. Only transform
+   and opacity are animated, so it runs on the GPU. The new page is rendered while
+   nothing is moving, so React's work never lands in the middle of the animation. */
 const P = "perspective(1400px)";
 const genieOut: Keyframe[] = [
   { offset: 0, transform: `scale(1, 1) ${P} rotateX(0deg)`, opacity: 1 },
@@ -36,12 +35,11 @@ const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 const GenieContext = createContext<(href: string) => void>(() => {});
 
-export function SmoothScroll({ children }: { children: React.ReactNode }) {
+export function SmoothScroll({ header, children }: { header: React.ReactNode; children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const pending = useRef<(() => void) | null>(null);
-  const cover = useRef<HTMLDivElement>(null);
-  const sheet = useRef<HTMLDivElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
   const busy = useRef(false);
 
   useEffect(() => {
@@ -91,47 +89,48 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
         return;
       }
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const coverEl = cover.current;
-      const sheetEl = sheet.current;
-      if (reduced || !coverEl || !sheetEl || !coverEl.animate) {
+      const el = stage.current;
+      if (reduced || !el || !el.animate) {
         router.push(href);
         return;
       }
       if (busy.current) return;
       busy.current = true;
+      lenis?.stop();
 
-      // 1. The page goes white.
-      coverEl.style.display = "block";
-      await coverEl.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 90, fill: "forwards" }).finished;
+      // Cut the page to the visible screen and pin the funnel's point to the top of it.
+      // Window scrolling stays where it is, so scroll effects on the page don't jump.
+      const clip = (top: number) => {
+        const below = Math.max(0, el.offsetHeight - top - window.innerHeight);
+        el.style.clipPath = `inset(${top}px 0 ${below}px 0 round 28px)`;
+        el.style.transformOrigin = `75% ${top}px`;
+      };
+      clip(window.scrollY);
+      el.style.willChange = "transform, opacity";
 
-      // 2. Load the new page behind the cover while the white sheet is sucked away.
+      // 1. The page is sucked into the point.
+      await el.animate(genieOut, { duration: 340, easing: "cubic-bezier(0.55, 0.05, 0.85, 0.3)", fill: "forwards" })
+        .finished;
+
+      // 2. While it's gone, the new page renders (it's prefetched, so this is quick).
       const arrived = new Promise<void>((resolve) => {
         pending.current = resolve;
       });
       router.push(href);
-      const out = sheetEl.animate(genieOut, {
-        duration: 320,
-        easing: "cubic-bezier(0.55, 0.05, 0.85, 0.3)",
-        fill: "forwards",
-      });
-      await Promise.all([out.finished, Promise.race([arrived, wait(2500)])]);
+      await Promise.race([arrived, wait(2500)]);
       pending.current = null;
+      clip(0);
 
-      // 3. Gone for a moment, then the sheet comes back out of the same point and fills the screen.
-      await wait(60);
-      out.cancel();
-      await sheetEl.animate(genieIn, {
-        duration: 360,
-        easing: "cubic-bezier(0.2, 0.9, 0.3, 1)",
-        fill: "forwards",
-      }).finished;
-
-      // 4. The white fades away and the new page is there.
-      await coverEl.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, easing: "ease-out", fill: "forwards" })
+      // 3. The new page comes out of the same point and fills the screen.
+      el.getAnimations().forEach((anim) => anim.cancel());
+      await el.animate(genieIn, { duration: 420, easing: "cubic-bezier(0.2, 0.9, 0.3, 1)", fill: "forwards" })
         .finished;
-      coverEl.getAnimations().forEach((a) => a.cancel());
-      sheetEl.getAnimations().forEach((a) => a.cancel());
-      coverEl.style.display = "none";
+
+      el.getAnimations().forEach((anim) => anim.cancel());
+      el.style.clipPath = "";
+      el.style.transformOrigin = "";
+      el.style.willChange = "";
+      lenis?.start();
       busy.current = false;
     },
     [pathname, router],
@@ -139,21 +138,10 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
   return (
     <GenieContext.Provider value={navigate}>
-      {children}
-      {/* the white cover for the page switch; sits under the menu so the menu stays put */}
-      <div ref={cover} aria-hidden="true" className="fixed inset-0 z-40 hidden" style={{ opacity: 0 }}>
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(45% 40% at 75% 0%, rgba(247,193,42,.4) 0%, rgba(247,193,42,0) 70%), #faf7ec",
-          }}
-        />
-        <div
-          ref={sheet}
-          className="absolute inset-0 rounded-[28px] bg-white shadow-[0_30px_80px_-30px_rgba(24,46,16,0.45)]"
-          style={{ transformOrigin: GENIE_ORIGIN, willChange: "transform, opacity", backfaceVisibility: "hidden" }}
-        />
+      {header}
+      {/* the pages and footer; this is what the genie moves, the menu stays put */}
+      <div ref={stage} className="flex flex-1 flex-col bg-background">
+        {children}
       </div>
     </GenieContext.Provider>
   );
