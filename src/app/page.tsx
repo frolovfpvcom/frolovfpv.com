@@ -4,6 +4,7 @@ import { Statement } from "@/components/landing/statement";
 import { Marquee } from "@/components/landing/marquee";
 import { ClipStrip } from "@/components/landing/clip-strip";
 import { Contact } from "@/components/contact";
+import { Work } from "@/components/work";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <Marquee />
         <ClipStrip />
         <Contact />
+        <Work />
       </div>
     </main>
   );

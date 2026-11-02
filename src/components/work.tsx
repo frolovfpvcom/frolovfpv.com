@@ -163,16 +163,15 @@ export function Work() {
   const folders = foldersByLang(lang);
 
   return (
-    <section id="work" className="py-24 px-6 md:py-32">
-      <div className="max-w-7xl mx-auto">
-        {/* room above the folders on phones, where an opened folder's clips stack upwards */}
-        <div aria-hidden="true" className="h-40 md:h-0" />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-48 md:gap-y-24">
-          {folders.map((folder) => (
-            <FolderCell key={folder.seed} folder={folder} onOpenClip={setClip} />
-          ))}
-        </div>
+    <section id="work" className="px-3 pb-10 pt-44 md:px-6 md:pb-14 md:pt-24">
+      {/* the folders side by side in one row, close together without touching. On phones the
+          top padding leaves room for an opened folder's clips, which stack upwards. */}
+      <div className="mx-auto flex max-w-3xl items-end justify-center gap-4 md:gap-6">
+        {folders.map((folder) => (
+          <div key={folder.seed} className="min-w-0 max-w-[153px] flex-1">
+            <FolderCell folder={folder} onOpenClip={setClip} />
+          </div>
+        ))}
       </div>
       <ClipViewer selection={clip} onClose={() => setClip(null)} />
     </section>
