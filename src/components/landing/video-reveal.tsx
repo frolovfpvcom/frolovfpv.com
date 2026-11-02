@@ -39,7 +39,7 @@ export function VideoReveal() {
           <motion.video
             ref={video}
             style={{ scale }}
-            poster="/clips/panoram.jpg"
+            poster="/clips/pande-ram.jpg"
             preload="none"
             muted
             loop
@@ -47,8 +47,8 @@ export function VideoReveal() {
             className="h-full w-full object-cover"
           >
             {/* phones get a lighter 720p file, bigger screens the full 1080p one */}
-            <source src="/clips/panoram-720.mp4" type="video/mp4" media="(max-width: 767px)" />
-            <source src="/clips/panoram.mp4" type="video/mp4" />
+            <source src="/clips/pande-ram-720.mp4" type="video/mp4" media="(max-width: 767px)" />
+            <source src="/clips/pande-ram.mp4" type="video/mp4" />
           </motion.video>
           <div className="absolute inset-0 bg-gradient-to-t from-skov-950/50 via-transparent to-transparent" />
         </motion.div>

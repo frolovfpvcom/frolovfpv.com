@@ -9,7 +9,7 @@ import { GenieLink } from "@/lib/smooth-scroll";
 const clips = [
   { video: "/clips/peugeot/klip-1.mp4", image: "/clips/peugeot/klip-1.jpg" },
   // the same files as the big Panoram above, so it comes straight from the browser's cache
-  { video: "/clips/panoram.mp4", mobile: "/clips/panoram-720.mp4", image: "/clips/panoram.jpg" },
+  { video: "/clips/pande-ram.mp4", mobile: "/clips/pande-ram-720.mp4", image: "/clips/pande-ram.jpg" },
   { video: "/clips/peugeot/klip-2.mp4", image: "/clips/peugeot/klip-2.jpg" },
   { video: "/clips/peugeot/klip-3.mp4", image: "/clips/peugeot/klip-3.jpg" },
 ];

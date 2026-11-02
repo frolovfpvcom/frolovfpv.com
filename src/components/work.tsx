@@ -116,7 +116,7 @@ const foldersByLang = (lang: Lang): Folder[] => [
       { name: lang === "da" ? "Gennem parken" : "Through the park", blank: true },
       { name: lang === "da" ? "Nattelys" : "Night lights", blank: true },
       // last in the list = front of the folder and first in the opened stack
-      { name: "Panoram", meta: "4K · 0:33", video: "/clips/panoram.mp4", image: "/clips/panoram.jpg" },
+      { name: "Panoram", meta: "4K · 0:13", video: "/clips/pande-ram.mp4", image: "/clips/pande-ram.jpg" },
     ],
   },
   {
