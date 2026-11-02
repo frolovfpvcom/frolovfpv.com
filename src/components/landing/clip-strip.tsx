@@ -8,8 +8,8 @@ import { GenieLink } from "@/lib/smooth-scroll";
 
 const clips = [
   { video: "/clips/peugeot/klip-1.mp4", image: "/clips/peugeot/klip-1.jpg" },
-  // the cards are at most half a screen wide, so the 720p file is plenty here
-  { video: "/clips/panoram-720.mp4", image: "/clips/panoram.jpg" },
+  // the same files as the big Panoram above, so it comes straight from the browser's cache
+  { video: "/clips/panoram.mp4", mobile: "/clips/panoram-720.mp4", image: "/clips/panoram.jpg" },
   { video: "/clips/peugeot/klip-2.mp4", image: "/clips/peugeot/klip-2.jpg" },
   { video: "/clips/peugeot/klip-3.mp4", image: "/clips/peugeot/klip-3.jpg" },
 ];
@@ -82,7 +82,20 @@ export function ClipStrip() {
       { rootMargin: "0px 25% 0px 25%" },
     );
     videos.forEach((v) => io.observe(v));
-    return () => io.disconnect();
+    // Nothing is fetched on arrival; the clips start loading when the row gets close.
+    const near = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        videos.forEach((v) => (v.preload = "auto"));
+        near.disconnect();
+      },
+      { rootMargin: "100% 0px 100% 0px" },
+    );
+    if (section.current) near.observe(section.current);
+    return () => {
+      io.disconnect();
+      near.disconnect();
+    };
   }, []);
 
   return (
@@ -104,11 +117,15 @@ export function ClipStrip() {
                 muted
                 loop
                 playsInline
-                preload="metadata"
+                preload="none"
                 // the Peugeot clips have black side bars baked in; zoom just past them
                 className="h-full w-full scale-[1.12] object-cover transition-transform duration-700 group-hover:scale-[1.2]"
-                src={clip.video}
-              />
+              >
+                {"mobile" in clip && clip.mobile ? (
+                  <source src={clip.mobile} type="video/mp4" media="(max-width: 767px)" />
+                ) : null}
+                <source src={clip.video} type="video/mp4" />
+              </video>
               <div className="absolute inset-0 bg-gradient-to-t from-skov-950/75 via-transparent to-transparent" />
               <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-6 text-white md:p-8">
                 <div>

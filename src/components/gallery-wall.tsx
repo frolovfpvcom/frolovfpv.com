@@ -244,7 +244,7 @@ function Framed({
         <div className="relative h-full w-full overflow-hidden bg-neutral-900" style={{ boxShadow: "0 0 0 1px rgba(0,0,0,.15)" }}>
           {project.image ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={project.image} alt="" draggable={false} className="h-full w-full object-cover select-none" />
+            <img src={project.image} alt="" draggable={false} loading="eager" fetchPriority="high" decoding="async" className="h-full w-full object-cover select-none" />
           ) : (
             <div
               className="flex h-full w-full items-end p-[8%]"

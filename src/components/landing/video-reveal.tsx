@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useT } from "@/lib/lang";
+import { useLazyVideo } from "@/lib/lazy-video";
 
 const texts = {
   da: { left: "Ind i", right: "billedet", caption: "Panoram · 4K" },
@@ -13,6 +14,9 @@ const texts = {
 export function VideoReveal() {
   const t = useT(texts);
   const ref = useRef<HTMLElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
+  // loads after the first screen is done (or when it comes close), and plays only on screen
+  useLazyVideo(video);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
   const inset = useTransform(scrollYProgress, [0, 0.6], [24, 0]);
@@ -33,9 +37,10 @@ export function VideoReveal() {
       <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden">
         <motion.div style={{ clipPath }} className="absolute inset-0 will-change-[clip-path]">
           <motion.video
+            ref={video}
             style={{ scale }}
             poster="/clips/panoram.jpg"
-            autoPlay
+            preload="none"
             muted
             loop
             playsInline

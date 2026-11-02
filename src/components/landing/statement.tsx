@@ -80,7 +80,8 @@ function Word({
 export function Statement() {
   const t = useT(texts);
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.85", "end 0.45"] });
+  // all lit up, "wow." included, by the time the text sits in the middle of the screen
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.95", "end 0.8"] });
   const words = t.words.split(" ");
 
   return (
