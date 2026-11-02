@@ -8,7 +8,7 @@ import { GenieLink } from "@/lib/smooth-scroll";
 
 const clips = [
   { video: "/clips/peugeot/klip-1.mp4", image: "/clips/peugeot/klip-1.jpg" },
-  { video: "/clips/panoram.mp4", image: "/clips/panoram.jpg" },
+  { video: "/clips/panoram.mp4", mobile: "/clips/panoram-720.mp4", image: "/clips/panoram.jpg" },
   { video: "/clips/peugeot/klip-2.mp4", image: "/clips/peugeot/klip-2.jpg" },
   { video: "/clips/peugeot/klip-3.mp4", image: "/clips/peugeot/klip-3.jpg" },
 ];
@@ -84,7 +84,7 @@ export function ClipStrip() {
               className="group relative h-[52svh] w-[78vw] shrink-0 overflow-hidden rounded-[28px] bg-skov-900 shadow-[0_30px_80px_-30px_rgba(58,53,41,0.55)] md:h-[58svh] md:w-[42vw]"
             >
               <video
-                src={clip.video}
+                key={clip.video}
                 poster={clip.image}
                 autoPlay
                 muted
@@ -93,7 +93,12 @@ export function ClipStrip() {
                 preload="metadata"
                 // the Peugeot clips have black side bars baked in; zoom just past them
                 className="h-full w-full scale-[1.12] object-cover transition-transform duration-700 group-hover:scale-[1.2]"
-              />
+              >
+                {"mobile" in clip && clip.mobile ? (
+                  <source src={clip.mobile} type="video/mp4" media="(max-width: 767px)" />
+                ) : null}
+                <source src={clip.video} type="video/mp4" />
+              </video>
               <div className="absolute inset-0 bg-gradient-to-t from-skov-950/75 via-transparent to-transparent" />
               <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-6 text-white md:p-8">
                 <div>

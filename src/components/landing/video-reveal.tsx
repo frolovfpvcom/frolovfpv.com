@@ -34,14 +34,17 @@ export function VideoReveal() {
         <motion.div style={{ clipPath }} className="absolute inset-0 will-change-[clip-path]">
           <motion.video
             style={{ scale }}
-            src="/clips/panoram.mp4"
             poster="/clips/panoram.jpg"
             autoPlay
             muted
             loop
             playsInline
             className="h-full w-full object-cover"
-          />
+          >
+            {/* phones get a lighter 720p file, bigger screens the full 1080p one */}
+            <source src="/clips/panoram-720.mp4" type="video/mp4" media="(max-width: 767px)" />
+            <source src="/clips/panoram.mp4" type="video/mp4" />
+          </motion.video>
           <div className="absolute inset-0 bg-gradient-to-t from-skov-950/50 via-transparent to-transparent" />
         </motion.div>
 
