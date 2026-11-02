@@ -1,9 +1,10 @@
 "use client";
 
-import { motion, useInView } from "motion/react";
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
 import { useRef } from "react";
-import Link from "next/link";
+import { Mail, ArrowUpRight } from "lucide-react";
 import { useT } from "@/lib/lang";
+import { GenieLink } from "@/lib/smooth-scroll";
 
 const texts = {
   da: {
@@ -17,45 +18,104 @@ const texts = {
     cta: "Contact me",
   },
 };
-import { Mail, ArrowUpRight } from "lucide-react";
+
+/** A button that leans toward the cursor when it comes close. */
+function MagneticButton({ children }: { children: React.ReactNode }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const sx = useSpring(x, { stiffness: 220, damping: 15 });
+  const sy = useSpring(y, { stiffness: 220, damping: 15 });
+  return (
+    <motion.div
+      style={{ x: sx, y: sy }}
+      onPointerMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        x.set((e.clientX - r.left - r.width / 2) * 0.35);
+        y.set((e.clientY - r.top - r.height / 2) * 0.35);
+      }}
+      onPointerLeave={() => {
+        x.set(0);
+        y.set(0);
+      }}
+      className="inline-block p-4 -m-4"
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export function Contact() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const ref = useRef<HTMLElement>(null);
   const t = useT(texts);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end end"] });
+  // the panel grows out of the page as it comes into view
+  const scale = useTransform(scrollYProgress, [0, 0.7], [0.86, 1]);
+  const radius = useTransform(scrollYProgress, [0, 0.7], [80, 36]);
+  const words = t.title.split(" ");
 
   return (
-    <section id="contact" className="py-32 px-6 border-t border-white/[0.04]">
-      <div className="max-w-7xl mx-auto">
+    <section ref={ref} id="contact" className="px-3 pb-3 pt-24 md:px-6 md:pb-6 md:pt-32">
+      <motion.div
+        style={{ scale, borderRadius: radius }}
+        className="relative overflow-hidden bg-gradient-to-br from-blaa-400 via-blaa-500 to-blaa-700 px-6 py-24 text-white md:px-16 md:py-36"
+      >
+        {/* bright clouds drifting around in the panel */}
         <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-2xl"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-            {t.title}
-          </h2>
-          <p className="text-neutral-400 text-lg leading-relaxed mb-10">
-            {t.lead}
-          </p>
+          aria-hidden="true"
+          animate={{ x: [0, 80, 0], y: [0, -40, 0] }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          className="pointer-events-none absolute -left-24 -top-24 size-96 rounded-full bg-blaa-200/50 blur-3xl"
+        />
+        <motion.div
+          aria-hidden="true"
+          animate={{ x: [0, -60, 0], y: [0, 50, 0] }}
+          transition={{ duration: 17, repeat: Infinity, ease: "easeInOut" }}
+          className="pointer-events-none absolute -bottom-32 right-0 size-[28rem] rounded-full bg-white/25 blur-3xl"
+        />
 
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link
-              href="/kontakt"
-              className="group flex items-center gap-3 bg-white text-black px-6 py-3.5 rounded-full font-medium text-sm hover:bg-neutral-200 transition-colors duration-200"
-            >
-              <Mail size={16} />
-              {t.cta}
-              <ArrowUpRight
-                size={14}
-                className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"
-              />
-            </Link>
+        <div className="relative mx-auto max-w-5xl text-center">
+          <h2 className="text-5xl md:text-8xl font-black tracking-tight leading-[0.95]">
+            {words.map((w, i) => (
+              <span key={i} className="inline-block overflow-hidden pb-2 align-bottom">
+                <motion.span
+                  initial={{ y: "105%" }}
+                  whileInView={{ y: "0%" }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.9, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  className="inline-block mr-[0.22em]"
+                >
+                  {w}
+                </motion.span>
+              </span>
+            ))}
+          </h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="mx-auto mt-8 max-w-xl text-lg md:text-xl leading-relaxed text-white/85"
+          >
+            {t.lead}
+          </motion.p>
+
+          <div className="mt-12">
+            <MagneticButton>
+              <GenieLink
+                href="/kontakt"
+                className="group inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 text-base font-bold text-blaa-600 shadow-[0_20px_50px_-15px_rgba(1,8,24,0.5)] transition-transform duration-300 hover:scale-105"
+              >
+                <Mail size={18} />
+                {t.cta}
+                <ArrowUpRight
+                  size={16}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </GenieLink>
+            </MagneticButton>
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </section>
   );
 }

@@ -55,7 +55,7 @@ const texts = {
 };
 
 const field =
-  "w-full rounded-xl border border-white/[0.1] bg-white/[0.03] px-4 py-3 text-white placeholder:text-neutral-600 focus:border-white/40 focus:outline-none transition-colors";
+  "w-full rounded-2xl border border-blaa-950/10 bg-blaa-50/60 px-4 py-3 text-blaa-950 placeholder:text-blaa-900/35 focus:border-blaa-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blaa-500/15 transition-all";
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
@@ -91,18 +91,18 @@ export function ContactForm() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="text-xs text-neutral-500 uppercase tracking-[0.3em] mb-6">{t.label}</p>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+          <p className="text-xs font-bold text-blaa-500 uppercase tracking-[0.35em] mb-6">{t.label}</p>
+          <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[1]">
             {t.title}
             <br />
-            <span className="text-neutral-400">{t.accent}</span>
+            <span className="text-blaa-500">{t.accent}</span>
           </h1>
-          <p className="mt-6 text-neutral-400 text-lg leading-relaxed">
+          <p className="mt-6 text-blaa-950/70 text-lg leading-relaxed">
             {t.lead}
           </p>
           <a
             href={`mailto:${EMAIL}`}
-            className="mt-8 inline-flex items-center gap-3 text-neutral-300 hover:text-white transition-colors"
+            className="mt-8 inline-flex items-center gap-3 font-medium text-blaa-600 hover:text-blaa-800 transition-colors"
           >
             <Mail size={18} />
             {EMAIL}
@@ -114,32 +114,32 @@ export function ContactForm() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 md:p-8 space-y-5"
+          className="rounded-[32px] bg-white p-6 md:p-8 space-y-5 shadow-[0_40px_80px_-40px_rgba(1,25,71,0.5)]"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <label className="block">
-              <span className="mb-2 block text-sm text-neutral-400">{t.name}</span>
+              <span className="mb-2 block text-sm font-medium text-blaa-950/70">{t.name}</span>
               <input name="name" required autoComplete="name" className={field} placeholder={t.namePh} />
             </label>
             <label className="block">
-              <span className="mb-2 block text-sm text-neutral-400">{t.email}</span>
+              <span className="mb-2 block text-sm font-medium text-blaa-950/70">{t.email}</span>
               <input name="email" type="email" required autoComplete="email" className={field} placeholder={t.emailPh} />
             </label>
             <label className="block">
-              <span className="mb-2 block text-sm text-neutral-400">{t.phone}</span>
+              <span className="mb-2 block text-sm font-medium text-blaa-950/70">{t.phone}</span>
               <input name="phone" type="tel" autoComplete="tel" className={field} placeholder={t.optional} />
             </label>
             <label className="block">
-              <span className="mb-2 block text-sm text-neutral-400">{t.when}</span>
+              <span className="mb-2 block text-sm font-medium text-blaa-950/70">{t.when}</span>
               <input name="date" className={field} placeholder={t.whenPh} />
             </label>
           </div>
 
           <label className="block">
-            <span className="mb-2 block text-sm text-neutral-400">{t.type}</span>
+            <span className="mb-2 block text-sm font-medium text-blaa-950/70">{t.type}</span>
             <select name="type" className={`${field} appearance-none`} key={t.types[0]} defaultValue={t.types[0]}>
               {t.types.map((type) => (
-                <option key={type} value={type} className="bg-neutral-900">
+                <option key={type} value={type} className="bg-white">
                   {type}
                 </option>
               ))}
@@ -147,7 +147,7 @@ export function ContactForm() {
           </label>
 
           <label className="block">
-            <span className="mb-2 block text-sm text-neutral-400">{t.message}</span>
+            <span className="mb-2 block text-sm font-medium text-blaa-950/70">{t.message}</span>
             <textarea
               name="message"
               required
@@ -159,14 +159,14 @@ export function ContactForm() {
 
           <button
             type="submit"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-medium text-black hover:bg-neutral-200 transition-colors sm:w-auto"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-blaa-500 px-7 py-3.5 text-sm font-bold text-white shadow-[0_15px_35px_-15px_rgba(4,84,231,0.9)] transition-all duration-300 hover:scale-105 hover:bg-blaa-600 sm:w-auto"
           >
             <Send size={16} />
             {t.send}
           </button>
 
           {sent && (
-            <p className="text-sm text-neutral-400">
+            <p className="text-sm font-medium text-blaa-950/70">
               {t.sent} {EMAIL}.
             </p>
           )}

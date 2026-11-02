@@ -11,7 +11,7 @@ import {
   type MotionValue,
 } from "motion/react";
 import { ArrowUpRight, X } from "lucide-react";
-import Link from "next/link";
+import { GenieLink as Link } from "@/lib/smooth-scroll";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLang, useT, type Lang } from "@/lib/lang";
@@ -230,7 +230,7 @@ function Framed({
         width: height * project.aspect,
         height,
         padding: border,
-        boxShadow: `${look.outer.boxShadow}, 0 ${height * 0.08}px ${height * 0.2}px -${height * 0.04}px rgba(0,0,0,.75)`,
+        boxShadow: `${look.outer.boxShadow}, 0 ${height * 0.08}px ${height * 0.2}px -${height * 0.04}px rgba(1,25,71,.38)`,
       }}
     >
       <div
@@ -348,14 +348,14 @@ function HangingFrame({
       {/* the nail on the rail */}
       <div
         className="absolute left-1/2 -top-[14px] h-[18px] w-[5px] -translate-x-1/2 rounded-sm"
-        style={{ background: BRASS, boxShadow: "0 2px 3px rgba(0,0,0,.6)" }}
+        style={{ background: BRASS, boxShadow: "0 2px 3px rgba(1,25,71,.35)" }}
       />
       <motion.div className="relative" style={{ rotate, transformOrigin: "50% 0%" }}>
         {/* wires from the nail to the ends of the bar */}
         <svg className="absolute left-0 top-0 overflow-visible" width={width} height={wire} aria-hidden="true">
           <path
             d={`M ${width / 2} 2 L ${(width - barWidth) / 2 + 8} ${wire} M ${width / 2} 2 L ${(width + barWidth) / 2 - 8} ${wire}`}
-            stroke="rgba(200,200,200,.55)"
+            stroke="rgba(1,25,71,.35)"
             strokeWidth="1.2"
             fill="none"
           />
@@ -372,10 +372,10 @@ function HangingFrame({
           onClick={(e) => onPick(index, e.currentTarget, rotate.get())}
           whileHover={active ? { scale: 1.035, y: -4 } : { scale: 1.02 }}
           transition={{ type: "spring", stiffness: 300, damping: 22 }}
-          className="relative block cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+          className="relative block cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blaa-500/60"
           style={{ visibility: hidden ? "hidden" : "visible" }}
         >
-          <div className="transition-[filter] duration-500" style={{ filter: active ? "none" : "brightness(.72) saturate(.85)" }}>
+          <div className="transition-[filter] duration-500" style={{ filter: active ? "none" : "brightness(.93) saturate(.8)" }}>
             <Framed project={project} height={height} lit={active} />
           </div>
         </motion.button>
@@ -482,8 +482,8 @@ export function GalleryWall() {
   return (
     <section id="projekter" className="relative w-full scroll-mt-16 overflow-x-clip py-24 md:py-32">
       <div className="relative mx-auto max-w-3xl px-6 text-center">
-        <p className="text-[11px] uppercase tracking-[0.4em] text-neutral-400">{t.eyebrow}</p>
-        <h2 className="mt-4 text-2xl font-normal tracking-tight text-white md:text-4xl">{t.title}</h2>
+        <p className="text-xs font-bold uppercase tracking-[0.35em] text-blaa-500">{t.eyebrow}</p>
+        <h2 className="mt-4 text-3xl font-black tracking-tight md:text-5xl">{t.title}</h2>
       </div>
 
       {/* the rail */}
@@ -496,14 +496,14 @@ export function GalleryWall() {
             width: height * 3.2,
             height: height * 2.4,
             transform: "translate(-50%, -50%)",
-            background: "radial-gradient(closest-side, rgba(255,226,140,.10), rgba(255,226,140,0))",
+            background: "radial-gradient(closest-side, rgba(255,226,140,.35), rgba(255,226,140,0))",
           }}
         />
         <div
           className="h-[9px] w-full"
           style={{
             background: "linear-gradient(180deg,#3a3a3a 0%,#1c1c1c 45%,#0e0e0e 100%)",
-            boxShadow: "0 1px 0 rgba(255,255,255,.08) inset, 0 6px 14px rgba(0,0,0,.7)",
+            boxShadow: "0 1px 0 rgba(255,255,255,.08) inset, 0 6px 14px rgba(1,25,71,.3)",
           }}
         />
 
@@ -584,7 +584,7 @@ export function GalleryWall() {
               aria-current={i === active}
               onClick={() => goTo(i)}
               className="h-1.5 rounded-full transition-all duration-300"
-              style={{ width: i === active ? 22 : 6, background: i === active ? "#fff" : "rgba(255,255,255,.28)" }}
+              style={{ width: i === active ? 22 : 6, background: i === active ? "#0454e7" : "rgba(4,84,231,.25)" }}
             />
           ))}
         </div>
@@ -595,13 +595,13 @@ export function GalleryWall() {
           transition={{ duration: 0.35, ease: EASE }}
           className="mt-5"
         >
-          <p className="text-sm text-white">{project.title[lang]}</p>
-          <p className="mt-1 text-sm text-neutral-400 md:text-base">
+          <p className="text-base font-bold">{project.title[lang]}</p>
+          <p className="mt-1 text-sm text-blaa-900/60 md:text-base">
             {project.meta[lang]} ·{" "}
             <button
               type="button"
               onClick={() => frameEls.current[active] && setOpened({ index: active, origin: frameEls.current[active]!, rotation: 0 })}
-              className="text-neutral-200 underline-offset-4 hover:underline"
+              className="font-medium text-blaa-500 underline-offset-4 hover:underline"
             >
               {t.open}
             </button>
@@ -609,7 +609,7 @@ export function GalleryWall() {
         </motion.div>
         <Link
           href="/kontakt"
-          className="group mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition-colors duration-200 hover:bg-neutral-200"
+          className="group mt-6 inline-flex items-center gap-2 rounded-full bg-blaa-500 px-6 py-3 text-sm font-bold text-white shadow-[0_15px_35px_-15px_rgba(4,84,231,0.9)] transition-all duration-300 hover:scale-105 hover:bg-blaa-600"
         >
           {t.cta}
           <ArrowUpRight
@@ -728,11 +728,11 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
       <div
         ref={backdropRef}
         onClick={close}
-        className="absolute inset-0 bg-[#0a0a0a]"
+        className="absolute inset-0 bg-[#f5f8ff]"
         style={{
           opacity: 0,
           backgroundImage:
-            "radial-gradient(60% 55% at 35% 45%, rgba(255,226,140,.08), rgba(0,0,0,0) 70%), radial-gradient(40% 40% at 75% 50%, rgba(255,255,255,.03), rgba(0,0,0,0) 70%)",
+            "radial-gradient(60% 55% at 35% 45%, rgba(255,226,140,.3), rgba(255,226,140,0) 70%), radial-gradient(40% 40% at 75% 50%, rgba(185,209,255,.6), rgba(185,209,255,0) 70%)",
         }}
       />
 
@@ -740,12 +740,12 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
         ref={closeRef}
         type="button"
         onClick={close}
-        className="absolute right-5 top-5 z-10 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm text-neutral-200 backdrop-blur transition hover:bg-white/10"
+        className="absolute right-5 top-5 z-10 inline-flex items-center gap-2 rounded-full border border-blaa-950/10 bg-white/80 px-4 py-2 text-sm font-medium text-blaa-950 shadow-sm backdrop-blur transition hover:bg-white"
       >
         <X size={14} /> {t.close}
       </button>
 
-      <div className="pointer-events-none relative flex h-full flex-col items-center justify-center gap-8 overflow-y-auto px-6 py-20 md:flex-row md:gap-14">
+      <div data-lenis-prevent className="pointer-events-none relative flex h-full flex-col items-center justify-center gap-8 overflow-y-auto px-6 py-20 md:flex-row md:gap-14">
         {vp.w ? (
           <div ref={frameRef} className="pointer-events-auto flex shrink-0 flex-col items-center will-change-transform">
             {/* picture lamp */}
@@ -761,15 +761,15 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
         ) : null}
 
         <div ref={infoRef} className="pointer-events-auto w-full max-w-sm" style={{ opacity: 0 }}>
-          <p className="font-mono text-xs tracking-[0.3em] text-neutral-400">
+          <p className="font-mono text-xs tracking-[0.3em] text-blaa-500">
             {String(opened.index + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
           </p>
-          <h2 className="mt-3 text-3xl font-normal tracking-tight text-white">{project.title[lang]}</h2>
-          <p className="mt-2 text-sm text-neutral-400">{project.meta[lang]}</p>
-          <p className="mt-5 text-[15px] leading-relaxed text-neutral-300">{project.description[lang]}</p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight text-blaa-950">{project.title[lang]}</h2>
+          <p className="mt-2 text-sm text-blaa-900/60">{project.meta[lang]}</p>
+          <p className="mt-5 text-[15px] leading-relaxed text-blaa-950/80">{project.description[lang]}</p>
           <div className="mt-5 flex flex-wrap gap-2">
             {project.tags[lang].map((tag) => (
-              <span key={tag} className="rounded-full border border-white/12 px-3 py-1 text-xs text-neutral-300">
+              <span key={tag} className="rounded-full border border-blaa-500/20 bg-white px-3 py-1 text-xs text-blaa-700">
                 {tag}
               </span>
             ))}
@@ -784,7 +784,7 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
                   aria-selected={tab === k}
                   onClick={() => setTab(k)}
                   className={`border-b pb-1 transition-colors ${
-                    tab === k ? "border-white text-white" : "border-transparent text-neutral-500 hover:text-neutral-300"
+                    tab === k ? "border-blaa-500 text-blaa-950 font-bold" : "border-transparent text-blaa-900/50 hover:text-blaa-900"
                   }`}
                 >
                   {t[k]}
