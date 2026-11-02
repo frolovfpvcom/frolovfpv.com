@@ -1082,7 +1082,7 @@ canvas.gf-art[data-ready] { opacity: 1; filter: none; }
   z-index: 5;
   pointer-events: none;
   /* nothing hangs out of the bottom of the pocket, however tall the stack */
-  clip-path: inset(-400px -400px 10px -400px);
+  clip-path: inset(-900px -400px 10px -400px);
 }
 .gf-sheet-slot { display: contents; }
 .gf-sheet {
@@ -1165,6 +1165,22 @@ canvas.gf-art[data-ready] { opacity: 1; filter: none; }
   transition-delay: calc(.15s + var(--gf-depth) * 60ms);
 }
 .gf-root[data-layout="stack"][data-open] .gf-sheet-head { opacity: 0; }
+/* on phones the files keep their full size: they slide up and a little to the right, overlapping like a deck */
+@media (max-width: 767px) {
+  .gf-root[data-layout="stack"] { transition: margin-top .5s var(--gf-ease); }
+  .gf-root[data-layout="stack"][data-open] { margin-top: 64px; }
+  .gf-root[data-layout="stack"][data-open] .gf-sheet {
+    transform:
+      translate(calc(30px + var(--gf-depth) * 14px), calc(-212px - var(--gf-depth) * 172px))
+      rotate(calc(-1.5deg + var(--gf-depth) * 1deg));
+  }
+  .gf-root[data-layout="stack"][data-open] .gf-sheet:hover,
+  .gf-root[data-layout="stack"][data-open] .gf-sheet:focus-visible {
+    transform:
+      translate(calc(30px + var(--gf-depth) * 14px), calc(-218px - var(--gf-depth) * 172px))
+      rotate(calc(-1.5deg + var(--gf-depth) * 1deg));
+  }
+}
 .gf-sheet-head { transition: opacity .3s var(--gf-ease); }
 .gf-sheet-art {
   position: absolute;

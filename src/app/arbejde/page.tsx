@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SelectedWork } from "@/components/selected-work";
+import { Work } from "@/components/work";
 
 export const metadata: Metadata = {
   title: "Udvalgt arbejde | Frolov FPV",
@@ -8,8 +9,11 @@ export const metadata: Metadata = {
 
 export default function ArbejdePage() {
   return (
-    <main className="flex flex-1 items-center bg-black px-6 pt-36 pb-24 md:pt-44">
-      <SelectedWork />
+    <main className="flex-1 pt-36 md:pt-44">
+      <div className="px-6">
+        <SelectedWork />
+      </div>
+      <Work />
     </main>
   );
 }

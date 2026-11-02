@@ -91,7 +91,7 @@ type Folder = GlassFolderProps & { label: string };
 const foldersByLang = (lang: Lang): Folder[] => [
   {
     label: "Surfin’",
-    meta: lang === "da" ? "Reklame · 3 klip" : "Commercial · 3 clips",
+    meta: lang === "da" ? "3 klip" : "3 clips",
     tone: "light",
     glass: "#d9d9dd",
     art: art.gray,
@@ -179,27 +179,25 @@ export function Work() {
   const { lang } = useLang();
   const folders = foldersByLang(lang);
   const t = useT({
-    da: { title: "Udvalgt arbejde", lead: "En samling af flyvninger og historier fanget fra unikke perspektiver." },
-    en: { title: "Selected work", lead: "A collection of flights and stories captured from unique perspectives." },
+    da: { title: "Klip fra arkivet", lead: "En samling af flyvninger og historier fanget fra unikke perspektiver." },
+    en: { title: "From the archive", lead: "A collection of flights and stories captured from unique perspectives." },
   });
 
   return (
-    <section id="work" className="py-32 px-6">
+    <section id="work" className="py-24 px-6 md:py-32">
       <div className="max-w-7xl mx-auto">
         <motion.div
           ref={headerRef}
           initial={{ opacity: 0, y: 20 }}
           animate={headerInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16"
+          className="mb-40 text-center md:mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            {t.title}
-          </h2>
-          <p className="mt-3 text-neutral-400 max-w-md">{t.lead}</p>
+          <p className="text-xs font-bold uppercase tracking-[0.35em] text-ild-600">{t.title}</p>
+          <p className="mx-auto mt-3 max-w-md text-lg text-skov-950/70">{t.lead}</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-48 md:gap-y-24">
           {folders.map((folder) => (
             <FolderCell key={folder.seed} folder={folder} onOpenClip={setClip} />
           ))}

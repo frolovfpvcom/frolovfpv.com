@@ -1,13 +1,75 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 
+/* Peters tema (lyst): pergament-baggrund, brun tekst, olivengrøn som primær farve. */
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --card: #e7dbbf;
+  --ring: #9db18c;
+  --input: #dbc894;
+  --muted: #decea0;
+  --accent: #dbc894;
+  --border: #b19681;
+  --chart-1: #9db18c;
+  --chart-2: #8a9f7b;
+  --chart-3: #bac9b4;
+  --chart-4: #71856a;
+  --chart-5: #5e6e58;
+  --popover: #f3ead2;
+  --primary: #8d9d4f;
+  --secondary: #decea0;
+  --background: #e4d7b0;
+  --foreground: #5c4b3e;
+  --destructive: #d98b7e;
+  --muted-foreground: #85766a;
+  --primary-foreground: #fdfbf6;
 }
 
 @theme inline {
+  --color-card: var(--card);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-popover: var(--popover);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-destructive: var(--destructive);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+}
+
+/* The site's colour scales, all taken from Peter's theme (and its dark variant for the darkest steps). */
+@theme {
+  /* skov: lyse pergamenttoner, salviegrøn, oliven og de mørke brune */
+  --color-skov-50: #f3ead2;
+  --color-skov-100: #e7dbbf;
+  --color-skov-200: #bac9b4;
+  --color-skov-300: #9db18c;
+  --color-skov-400: #8a9f7b;
+  --color-skov-500: #8d9d4f;
+  --color-skov-600: #71856a;
+  --color-skov-700: #5e6e58;
+  --color-skov-800: #4a4439;
+  --color-skov-900: #3a3529;
+  --color-skov-950: #5c4b3e;
+
+  /* sol: de gyldne sand- og halmtoner */
+  --color-sol-100: #f3ead2;
+  --color-sol-200: #decea0;
+  --color-sol-300: #dbc894;
+  --color-sol-400: #dbc894;
+  --color-sol-500: #a18f5c;
+
+  /* ild: den varme rosa-terracotta */
+  --color-ild-400: #e3a497;
+  --color-ild-500: #d98b7e;
+  --color-ild-600: #b5766a;
+}
+
+@theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -18,8 +80,9 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
+::selection {
+  background: #dbc894;
+  color: #5c4b3e;
 }
 
 @keyframes fade-in {

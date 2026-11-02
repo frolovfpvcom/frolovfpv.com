@@ -1,8 +1,7 @@
 "use client";
 
-import { motion, useInView } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
-import { Compass, Zap, Film } from "lucide-react";
 
 import { useT } from "@/lib/lang";
 
@@ -14,7 +13,7 @@ const texts = {
       "Hver flyvning er en mulighed for at skabe noget unikt — jeg fletter mig gennem omgivelserne med præcision og kreativitet og leverer optagelser, der føles medrivende og levende.",
       "Uanset om det er jagt gennem bjergterræn, dyk ud over bygninger eller glidende flyvninger gennem interiører — bringer jeg et filmisk blik til hvert projekt.",
     ],
-    stats: ["Projekter", "Lokationer", "År i luften"],
+    alt: "Portræt af Peter Frolov",
   },
   en: {
     title: "About me",
@@ -23,67 +22,62 @@ const texts = {
       "Every flight is a chance to create something unique — I weave through the surroundings with precision and creativity and deliver footage that feels immersive and alive.",
       "Whether it's chasing through mountain terrain, diving off buildings or gliding through interiors — I bring a cinematic eye to every project.",
     ],
-    stats: ["Projects", "Locations", "Years in the air"],
+    alt: "Portrait of Peter Frolov",
   },
 };
 
-const stats = [
-  { icon: Film, value: "50+" },
-  { icon: Compass, value: "12+" },
-  { icon: Zap, value: "3+" },
-];
-
 export function About() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
   const t = useT(texts);
+  const photoRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: photoRef, offset: ["start end", "end start"] });
+  const photoY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  const ease = [0.16, 1, 0.3, 1] as const;
 
   return (
-    <section id="about" className="py-32 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section id="about" className="px-6 pt-36 pb-24 md:pt-44">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
+        {/* the photo of Peter, framed big with a warm glow behind it */}
         <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
+          ref={photoRef}
+          initial={false}
+          animate={{ opacity: 1, scale: 1, rotate: -2 }}
+          transition={{ duration: 1, ease }}
+          className="relative mx-auto w-full max-w-md"
         >
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
-              {t.title}
-            </h2>
-            <div className="space-y-4 text-neutral-400 leading-relaxed">
-              {t.body.map((p) => (
-                <p key={p}>{p}</p>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-3 gap-4">
-            {stats.map((stat, i) => (
-              <motion.div
-                key={stat.value}
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{
-                  duration: 0.5,
-                  delay: 0.2 + i * 0.1,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6 text-center"
-              >
-                <stat.icon
-                  size={22}
-                  className="mx-auto mb-3 text-neutral-500"
-                />
-                <p className="text-2xl font-bold">{stat.value}</p>
-                <p className="text-xs text-neutral-500 mt-1 uppercase tracking-wide">
-                  {t.stats[i]}
-                </p>
-              </motion.div>
-            ))}
+          <div aria-hidden="true" className="absolute -inset-6 rounded-[44px] bg-gradient-to-br from-sol-300 via-ild-400 to-skov-500 opacity-60 blur-2xl" />
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[36px] border-[6px] border-popover bg-skov-100 shadow-[0_40px_80px_-30px_rgba(58,53,41,0.6)]">
+            <motion.img
+              src="/images/portrait.jpg"
+              alt={t.alt}
+              draggable={false}
+              style={{ y: photoY, scale: 1.18 }}
+              className="h-full w-full object-cover"
+            />
           </div>
         </motion.div>
+
+        <div>
+          <motion.h1
+            initial={false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease }}
+            className="text-5xl md:text-7xl font-black tracking-tight"
+          >
+            {t.title}
+          </motion.h1>
+          <div className="mt-8 space-y-5 text-lg leading-relaxed text-skov-950/75">
+            {t.body.map((p, i) => (
+              <motion.p
+                key={p}
+                initial={false}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.35 + i * 0.1, ease }}
+              >
+                {p}
+              </motion.p>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

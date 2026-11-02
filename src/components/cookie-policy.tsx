@@ -28,8 +28,8 @@ export function CookiePolicy() {
   return (
     <section className="px-6 pt-36 pb-24 md:pt-44">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-8">{t.title}</h1>
-        <div className="space-y-5 text-neutral-400 text-lg leading-relaxed">
+        <h1 className="text-3xl md:text-4xl font-black tracking-tight mb-8">{t.title}</h1>
+        <div className="space-y-5 text-skov-950/70 text-lg leading-relaxed">
           {t.paragraphs.map((p) => (
             <p key={p}>{p}</p>
           ))}
