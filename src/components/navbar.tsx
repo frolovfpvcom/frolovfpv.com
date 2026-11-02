@@ -116,7 +116,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -12, scale: 0.97 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="md:hidden mx-4 origin-top rounded-3xl bg-white/90 shadow-[0_20px_60px_-20px_rgba(60,106,34,0.45)] backdrop-blur-xl"
+            className="md:hidden mx-4 origin-top rounded-3xl bg-popover/95 shadow-[0_20px_60px_-20px_rgba(89,109,70,0.45)] backdrop-blur-xl"
           >
             <div className="px-6 py-5 flex flex-col gap-4">
               {links.map((link) => (

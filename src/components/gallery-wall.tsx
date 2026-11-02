@@ -230,7 +230,7 @@ function Framed({
         width: height * project.aspect,
         height,
         padding: border,
-        boxShadow: `${look.outer.boxShadow}, 0 ${height * 0.08}px ${height * 0.2}px -${height * 0.04}px rgba(24,46,16,.38)`,
+        boxShadow: `${look.outer.boxShadow}, 0 ${height * 0.08}px ${height * 0.2}px -${height * 0.04}px rgba(58,53,41,.38)`,
       }}
     >
       <div
@@ -348,14 +348,14 @@ function HangingFrame({
       {/* the nail on the rail */}
       <div
         className="absolute left-1/2 -top-[14px] h-[18px] w-[5px] -translate-x-1/2 rounded-sm"
-        style={{ background: BRASS, boxShadow: "0 2px 3px rgba(24,46,16,.35)" }}
+        style={{ background: BRASS, boxShadow: "0 2px 3px rgba(58,53,41,.35)" }}
       />
       <motion.div className="relative" style={{ rotate, transformOrigin: "50% 0%" }}>
         {/* wires from the nail to the ends of the bar */}
         <svg className="absolute left-0 top-0 overflow-visible" width={width} height={wire} aria-hidden="true">
           <path
             d={`M ${width / 2} 2 L ${(width - barWidth) / 2 + 8} ${wire} M ${width / 2} 2 L ${(width + barWidth) / 2 - 8} ${wire}`}
-            stroke="rgba(24,46,16,.35)"
+            stroke="rgba(58,53,41,.35)"
             strokeWidth="1.2"
             fill="none"
           />
@@ -503,7 +503,7 @@ export function GalleryWall() {
           className="h-[9px] w-full"
           style={{
             background: "linear-gradient(180deg,#3a3a3a 0%,#1c1c1c 45%,#0e0e0e 100%)",
-            boxShadow: "0 1px 0 rgba(255,255,255,.08) inset, 0 6px 14px rgba(24,46,16,.3)",
+            boxShadow: "0 1px 0 rgba(255,255,255,.08) inset, 0 6px 14px rgba(58,53,41,.3)",
           }}
         />
 
@@ -584,7 +584,7 @@ export function GalleryWall() {
               aria-current={i === active}
               onClick={() => goTo(i)}
               className="h-1.5 rounded-full transition-all duration-300"
-              style={{ width: i === active ? 22 : 6, background: i === active ? "#3c6a22" : "rgba(60,106,34,.25)" }}
+              style={{ width: i === active ? 22 : 6, background: i === active ? "#8d9d4f" : "rgba(89,109,70,.25)" }}
             />
           ))}
         </div>
@@ -609,7 +609,7 @@ export function GalleryWall() {
         </motion.div>
         <Link
           href="/kontakt"
-          className="group mt-6 inline-flex items-center gap-2 rounded-full bg-skov-800 px-6 py-3 text-sm font-bold text-white shadow-[0_15px_35px_-15px_rgba(24,46,16,0.8)] transition-all duration-300 hover:scale-105 hover:bg-sol-400 hover:text-skov-950"
+          className="group mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground shadow-[0_15px_35px_-15px_rgba(58,53,41,0.8)] transition-all duration-300 hover:scale-105 hover:bg-skov-700"
         >
           {t.cta}
           <ArrowUpRight
@@ -728,11 +728,11 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
       <div
         ref={backdropRef}
         onClick={close}
-        className="absolute inset-0 bg-[#faf7ec]"
+        className="absolute inset-0 bg-[#e4d7b0]"
         style={{
           opacity: 0,
           backgroundImage:
-            "radial-gradient(60% 55% at 35% 45%, rgba(255,226,140,.3), rgba(255,226,140,0) 70%), radial-gradient(40% 40% at 75% 50%, rgba(247,193,42,.6), rgba(247,193,42,0) 70%)",
+            "radial-gradient(60% 55% at 35% 45%, rgba(255,226,140,.3), rgba(255,226,140,0) 70%), radial-gradient(40% 40% at 75% 50%, rgba(219,200,148,.6), rgba(219,200,148,0) 70%)",
         }}
       />
 
@@ -740,7 +740,7 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
         ref={closeRef}
         type="button"
         onClick={close}
-        className="absolute right-5 top-5 z-10 inline-flex items-center gap-2 rounded-full border border-skov-950/10 bg-white/80 px-4 py-2 text-sm font-medium text-skov-950 shadow-sm backdrop-blur transition hover:bg-white"
+        className="absolute right-5 top-5 z-10 inline-flex items-center gap-2 rounded-full border border-skov-950/10 bg-popover/80 px-4 py-2 text-sm font-medium text-skov-950 shadow-sm backdrop-blur transition hover:bg-white"
       >
         <X size={14} /> {t.close}
       </button>
@@ -769,7 +769,7 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
           <p className="mt-5 text-[15px] leading-relaxed text-skov-950/80">{project.description[lang]}</p>
           <div className="mt-5 flex flex-wrap gap-2">
             {project.tags[lang].map((tag) => (
-              <span key={tag} className="rounded-full border border-skov-500/20 bg-white px-3 py-1 text-xs text-skov-700">
+              <span key={tag} className="rounded-full border border-border/60 bg-card px-3 py-1 text-xs text-skov-700">
                 {tag}
               </span>
             ))}

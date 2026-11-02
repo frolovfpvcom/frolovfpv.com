@@ -65,7 +65,7 @@ export function Services() {
                 delay: i * 0.1,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="group rounded-3xl bg-white p-7 shadow-[0_20px_40px_-25px_rgba(24,46,16,0.45)] transition-all duration-300 hover:-translate-y-2 hover:bg-skov-800 hover:text-white hover:shadow-[0_30px_60px_-25px_rgba(24,46,16,0.8)]"
+              className="group rounded-3xl bg-card p-7 shadow-[0_20px_40px_-25px_rgba(58,53,41,0.45)] transition-all duration-300 hover:-translate-y-2 hover:bg-skov-800 hover:text-white hover:shadow-[0_30px_60px_-25px_rgba(58,53,41,0.8)]"
             >
               <span className="mb-5 grid size-12 place-items-center rounded-2xl bg-sol-100 text-skov-700 transition-colors duration-300 group-hover:bg-sol-400 group-hover:text-skov-950">
                 <Icon size={24} />

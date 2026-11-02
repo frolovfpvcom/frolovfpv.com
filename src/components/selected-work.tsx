@@ -31,7 +31,7 @@ export function SelectedWork() {
       <p className="mt-8 text-lg md:text-xl leading-relaxed text-skov-950/70">{t.lead}</p>
       <Link
         href="/kontakt"
-        className="group mt-10 inline-flex items-center gap-3 rounded-full bg-skov-800 px-7 py-3.5 text-sm font-bold text-white shadow-[0_15px_35px_-15px_rgba(24,46,16,0.8)] transition-all duration-300 hover:scale-105 hover:bg-sol-400 hover:text-skov-950"
+        className="group mt-10 inline-flex items-center gap-3 rounded-full bg-primary px-7 py-3.5 text-sm font-bold text-primary-foreground shadow-[0_15px_35px_-15px_rgba(58,53,41,0.8)] transition-all duration-300 hover:scale-105 hover:bg-skov-700"
       >
         {t.cta}
         <ArrowUpRight

@@ -103,7 +103,7 @@ export function Contact() {
             <MagneticButton>
               <GenieLink
                 href="/kontakt"
-                className="group inline-flex items-center gap-3 rounded-full bg-sol-400 px-8 py-4 text-base font-bold text-skov-950 shadow-[0_20px_50px_-15px_rgba(13,28,9,0.5)] transition-transform duration-300 hover:scale-105"
+                className="group inline-flex items-center gap-3 rounded-full bg-sol-400 px-8 py-4 text-base font-bold text-skov-950 shadow-[0_20px_50px_-15px_rgba(58,53,41,0.5)] transition-transform duration-300 hover:scale-105"
               >
                 <Mail size={18} />
                 {t.cta}

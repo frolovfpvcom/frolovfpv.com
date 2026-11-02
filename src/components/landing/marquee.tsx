@@ -67,10 +67,10 @@ export function Marquee() {
   return (
     <section aria-label={t.a.join(", ")} className="relative py-24 md:py-32 overflow-hidden">
       <div className="-rotate-3 scale-105">
-        <Band words={t.a} base={-2.2} className="bg-skov-800 text-sol-300 shadow-[0_30px_60px_-30px_rgba(24,46,16,0.8)]" />
+        <Band words={t.a} base={-2.2} className="bg-skov-800 text-sol-300 shadow-[0_30px_60px_-30px_rgba(58,53,41,0.8)]" />
       </div>
       <div className="mt-2 rotate-2 scale-105">
-        <Band words={t.b} base={1.6} className="bg-sol-400 text-skov-950" />
+        <Band words={t.b} base={1.6} className="bg-primary text-primary-foreground" />
       </div>
     </section>
   );

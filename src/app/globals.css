@@ -1,43 +1,72 @@
 @import "tailwindcss";
 @import "lenis/dist/lenis.css";
 
-/* Lyst, varmt tema, der passer til de grønne og gule optagelser:
-   cremet baggrund, mørkegrøn tekst, solgul og varm orange som accenter. */
+/* Peters tema (lyst): pergament-baggrund, brun tekst, olivengrøn som primær farve. */
 :root {
-  --background: #faf7ec;
-  --foreground: #0d1c09;
+  --card: #e7dbbf;
+  --ring: #9db18c;
+  --input: #dbc894;
+  --muted: #decea0;
+  --accent: #dbc894;
+  --border: #b19681;
+  --chart-1: #9db18c;
+  --chart-2: #8a9f7b;
+  --chart-3: #bac9b4;
+  --chart-4: #71856a;
+  --chart-5: #5e6e58;
+  --popover: #f3ead2;
+  --primary: #8d9d4f;
+  --secondary: #decea0;
+  --background: #e4d7b0;
+  --foreground: #5c4b3e;
+  --destructive: #d98b7e;
+  --muted-foreground: #85766a;
+  --primary-foreground: #fdfbf6;
 }
 
 @theme inline {
+  --color-card: var(--card);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-popover: var(--popover);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-destructive: var(--destructive);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary-foreground: var(--primary-foreground);
 }
 
+/* The site's colour scales, all taken from Peter's theme (and its dark variant for the darkest steps). */
 @theme {
-  /* skov: fra lys mos til næsten sort skovgrøn */
-  --color-skov-50: #f2f5e8;
-  --color-skov-100: #e1e9cc;
-  --color-skov-200: #c4d59e;
-  --color-skov-300: #a2bd6c;
-  --color-skov-400: #7d9f45;
-  --color-skov-500: #4e7f2c;
-  --color-skov-600: #3c6a22;
-  --color-skov-700: #2d531b;
-  --color-skov-800: #224016;
-  --color-skov-900: #182e10;
-  --color-skov-950: #0d1c09;
+  /* skov: lyse pergamenttoner, salviegrøn, oliven og de mørke brune */
+  --color-skov-50: #f3ead2;
+  --color-skov-100: #e7dbbf;
+  --color-skov-200: #bac9b4;
+  --color-skov-300: #9db18c;
+  --color-skov-400: #8a9f7b;
+  --color-skov-500: #8d9d4f;
+  --color-skov-600: #71856a;
+  --color-skov-700: #5e6e58;
+  --color-skov-800: #4a4439;
+  --color-skov-900: #3a3529;
+  --color-skov-950: #5c4b3e;
 
-  /* sol: varm gul som aftenlyset i videoerne */
-  --color-sol-100: #fff3c4;
-  --color-sol-200: #ffe58a;
-  --color-sol-300: #fdd44f;
-  --color-sol-400: #f7c12a;
-  --color-sol-500: #e9a815;
+  /* sol: de gyldne sand- og halmtoner */
+  --color-sol-100: #f3ead2;
+  --color-sol-200: #decea0;
+  --color-sol-300: #dbc894;
+  --color-sol-400: #dbc894;
+  --color-sol-500: #a18f5c;
 
-  /* ild: orange og rød, brugt sparsomt */
-  --color-ild-400: #f28a3c;
-  --color-ild-500: #e8692a;
-  --color-ild-600: #c94f1f;
+  /* ild: den varme rosa-terracotta */
+  --color-ild-400: #e3a497;
+  --color-ild-500: #d98b7e;
+  --color-ild-600: #b5766a;
 }
 
 @theme inline {
@@ -52,8 +81,8 @@ body {
 }
 
 ::selection {
-  background: #f7c12a;
-  color: #0d1c09;
+  background: #dbc894;
+  color: #5c4b3e;
 }
 
 @keyframes fade-in {

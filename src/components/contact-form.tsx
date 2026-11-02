@@ -55,7 +55,7 @@ const texts = {
 };
 
 const field =
-  "w-full rounded-2xl border border-skov-950/10 bg-skov-50/60 px-4 py-3 text-skov-950 placeholder:text-skov-900/35 focus:border-skov-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-skov-500/15 transition-all";
+  "w-full rounded-2xl border border-skov-950/10 bg-popover/70 px-4 py-3 text-skov-950 placeholder:text-skov-900/35 focus:border-skov-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-skov-500/15 transition-all";
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
@@ -114,7 +114,7 @@ export function ContactForm() {
           initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-[32px] bg-white p-6 md:p-8 space-y-5 shadow-[0_40px_80px_-40px_rgba(24,46,16,0.5)]"
+          className="rounded-[32px] bg-card p-6 md:p-8 space-y-5 shadow-[0_40px_80px_-40px_rgba(58,53,41,0.5)]"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <label className="block">
@@ -139,7 +139,7 @@ export function ContactForm() {
             <span className="mb-2 block text-sm font-medium text-skov-950/70">{t.type}</span>
             <select name="type" className={`${field} appearance-none`} key={t.types[0]} defaultValue={t.types[0]}>
               {t.types.map((type) => (
-                <option key={type} value={type} className="bg-white">
+                <option key={type} value={type} className="bg-popover">
                   {type}
                 </option>
               ))}
@@ -159,7 +159,7 @@ export function ContactForm() {
 
           <button
             type="submit"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-skov-800 px-7 py-3.5 text-sm font-bold text-white shadow-[0_15px_35px_-15px_rgba(24,46,16,0.8)] transition-all duration-300 hover:scale-105 hover:bg-sol-400 hover:text-skov-950 sm:w-auto"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-bold text-primary-foreground shadow-[0_15px_35px_-15px_rgba(58,53,41,0.8)] transition-all duration-300 hover:scale-105 hover:bg-skov-700 sm:w-auto"
           >
             <Send size={16} />
             {t.send}

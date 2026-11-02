@@ -81,7 +81,7 @@ export function ClipStrip() {
             <motion.article
               key={clip.video}
               style={{ skewX: skew }}
-              className="group relative h-[52svh] w-[78vw] shrink-0 overflow-hidden rounded-[28px] bg-skov-900 shadow-[0_30px_80px_-30px_rgba(24,46,16,0.55)] md:h-[58svh] md:w-[42vw]"
+              className="group relative h-[52svh] w-[78vw] shrink-0 overflow-hidden rounded-[28px] bg-skov-900 shadow-[0_30px_80px_-30px_rgba(58,53,41,0.55)] md:h-[58svh] md:w-[42vw]"
             >
               <video
                 src={clip.video}
@@ -108,7 +108,7 @@ export function ClipStrip() {
 
           <motion.div
             style={{ skewX: skew }}
-            className="relative flex h-[52svh] w-[78vw] shrink-0 flex-col justify-between overflow-hidden rounded-[28px] bg-sol-400 p-8 text-skov-950 md:h-[58svh] md:w-[34vw] md:p-10"
+            className="relative flex h-[52svh] w-[78vw] shrink-0 flex-col justify-between overflow-hidden rounded-[28px] bg-primary p-8 text-primary-foreground md:h-[58svh] md:w-[34vw] md:p-10"
           >
             <div aria-hidden="true" className="absolute -right-16 -top-16 size-64 rounded-full bg-ild-400/50 blur-2xl" />
             <p className="relative text-4xl md:text-6xl font-black tracking-tight leading-[1]">{t.next}</p>

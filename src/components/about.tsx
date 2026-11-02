@@ -69,7 +69,7 @@ export function About() {
           className="relative mx-auto w-full max-w-md"
         >
           <div aria-hidden="true" className="absolute -inset-6 rounded-[44px] bg-gradient-to-br from-sol-300 via-ild-400 to-skov-500 opacity-60 blur-2xl" />
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[36px] border-[6px] border-white bg-skov-100 shadow-[0_40px_80px_-30px_rgba(24,46,16,0.6)]">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[36px] border-[6px] border-popover bg-skov-100 shadow-[0_40px_80px_-30px_rgba(58,53,41,0.6)]">
             <motion.img
               src="/images/portrait.jpg"
               alt={t.alt}
@@ -118,7 +118,7 @@ export function About() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 + i * 0.1, ease }}
                 whileHover={{ y: -6, rotate: i === 1 ? 0 : i === 0 ? -2 : 2 }}
-                className="rounded-3xl bg-white p-5 text-center shadow-[0_20px_40px_-25px_rgba(24,46,16,0.45)] md:p-6"
+                className="rounded-3xl bg-card p-5 text-center shadow-[0_20px_40px_-25px_rgba(58,53,41,0.45)] md:p-6"
               >
                 <stat.icon size={22} className="mx-auto mb-3 text-skov-500" />
                 <p className="text-3xl font-black text-skov-950">
