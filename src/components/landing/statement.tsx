@@ -98,7 +98,12 @@ export function Statement() {
         aria-hidden="true"
         animate={{ x: ["-10%", "10%", "-10%"], y: ["0%", "8%", "0%"] }}
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[70vmin] w-[90vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-popover/70 blur-3xl"
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[85vmin] w-[110vmin] -translate-x-1/2 -translate-y-1/2"
+        // a gradient that is already see-through at its own edge, so the section never cuts it off with a hard line
+        style={{
+          background:
+            "radial-gradient(closest-side, color-mix(in oklab, var(--popover) 80%, transparent) 0%, color-mix(in oklab, var(--popover) 45%, transparent) 45%, color-mix(in oklab, var(--popover) 12%, transparent) 75%, transparent 100%)",
+        }}
       />
       <div ref={ref} className="mx-auto max-w-5xl">
         <p className="mb-8 text-xs font-bold uppercase tracking-[0.35em] text-ild-600">{t.eyebrow}</p>
