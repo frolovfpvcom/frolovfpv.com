@@ -40,20 +40,6 @@ type Project = {
 // Placeholder projects. Swap in real titles, texts and thumbnails as they come.
 const projects: Project[] = [
   {
-    image: "/projekter/peugeot-1.jpg",
-    video: "/clips/peugeot/klip-1.mp4",
-    aspect: 4 / 3,
-    frame: "white",
-    title: { da: "Peugeot shenanigans", en: "Peugeot shenanigans" },
-    category: { da: "Bil", en: "Car" },
-    meta: { da: "4K", en: "4K" },
-    description: {
-      da: "FPV-drone tæt langs bilen på en grusplads. Lave, hurtige linjer, der får en stillestående bil til at føles levende.",
-      en: "An FPV drone tight along the car on a gravel lot. Low, fast lines that make a parked car feel alive.",
-    },
-    tags: { da: ["4K", "FPV"], en: ["4K", "FPV"] },
-  },
-  {
     image: "/projekter/pande-ram.jpg",
     video: "/clips/pande-ram.mp4",
     aspect: 16 / 10,
@@ -68,20 +54,6 @@ const projects: Project[] = [
     tags: { da: ["4K", "Natur"], en: ["4K", "Nature"] },
   },
   {
-    image: "/projekter/peugeot-2.jpg",
-    video: "/clips/peugeot/klip-2.mp4",
-    aspect: 1,
-    frame: "black",
-    title: { da: "Rundt om bilen", en: "Around the car" },
-    category: { da: "Bil", en: "Car" },
-    meta: { da: "4K", en: "4K" },
-    description: {
-      da: "Et langt, glidende kredsløb om bilen, der viser den fra alle sider i ét skud.",
-      en: "One long, gliding orbit around the car that shows it from every side in a single shot.",
-    },
-    tags: { da: ["4K", "FPV", "Ét skud"], en: ["4K", "FPV", "One take"] },
-  },
-  {
     aspect: 4 / 5,
     frame: "white",
     tint: ["#1f3a2b", "#8fbf9a"],
@@ -93,20 +65,6 @@ const projects: Project[] = [
       en: "Placeholder. A project with a flight between the trees is coming here.",
     },
     tags: { da: ["Natur"], en: ["Nature"] },
-  },
-  {
-    image: "/projekter/peugeot-3.jpg",
-    video: "/clips/peugeot/klip-3.mp4",
-    aspect: 4 / 5,
-    frame: "oak",
-    title: { da: "Mask på", en: "Mask på" },
-    category: { da: "Bil", en: "Car" },
-    meta: { da: "4K", en: "4K" },
-    description: {
-      da: "Dronen dykker ind over bilen og trækker væk igen. Bygget til at åbne eller lukke en film.",
-      en: "The drone dives in over the car and pulls away again. Made to open or close a film.",
-    },
-    tags: { da: ["4K", "FPV"], en: ["4K", "FPV"] },
   },
   {
     aspect: 16 / 10,
@@ -175,7 +133,7 @@ const texts = {
 };
 
 const EASE = [0.16, 1, 0.3, 1] as const;
-const START = 2;
+const START = 0;
 const LAMP_ON = "linear-gradient(180deg,#fff6c8 0%,#f3d76a 45%,#c9a23c 100%)";
 const BRASS = "linear-gradient(180deg,#e9cf7a 0%,#b8923a 55%,#7d6122 100%)";
 
@@ -264,8 +222,7 @@ function Framed({
               muted
               loop
               playsInline
-              // the Peugeot clips have black side bars baked in; zoom just past them
-              className="absolute inset-0 h-full w-full scale-[1.08] object-cover"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           ) : null}
           {/* light from the lamp falling across the top of the picture */}

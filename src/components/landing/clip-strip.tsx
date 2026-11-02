@@ -7,11 +7,7 @@ import { useT } from "@/lib/lang";
 import { GenieLink } from "@/lib/smooth-scroll";
 
 const clips = [
-  { video: "/clips/peugeot/klip-1.mp4", image: "/clips/peugeot/klip-1.jpg" },
-  // the same files as the big Panoram above, so it comes straight from the browser's cache
   { video: "/clips/pande-ram.mp4", mobile: "/clips/pande-ram-720.mp4", image: "/clips/pande-ram.jpg" },
-  { video: "/clips/peugeot/klip-2.mp4", image: "/clips/peugeot/klip-2.jpg" },
-  { video: "/clips/peugeot/klip-3.mp4", image: "/clips/peugeot/klip-3.jpg" },
 ];
 
 const texts = {
@@ -19,10 +15,7 @@ const texts = {
     eyebrow: "Fra luften",
     title: "Scroll, og flyv med",
     cards: [
-      { title: "Peugeot shenanigans", tag: "4K" },
       { title: "Panoram", tag: "Natur" },
-      { title: "Rundt om bilen", tag: "4K" },
-      { title: "Mask på", tag: "4K" },
     ],
     next: "Dit projekt her?",
     cta: "Lad os tale",
@@ -31,10 +24,7 @@ const texts = {
     eyebrow: "From the air",
     title: "Scroll and fly along",
     cards: [
-      { title: "Peugeot shenanigans", tag: "4K" },
       { title: "Panoram", tag: "Nature" },
-      { title: "Around the car", tag: "4K" },
-      { title: "Mask på", tag: "4K" },
     ],
     next: "Your project here?",
     cta: "Let's talk",
@@ -118,8 +108,7 @@ export function ClipStrip() {
                 loop
                 playsInline
                 preload="none"
-                // the Peugeot clips have black side bars baked in; zoom just past them
-                className="h-full w-full scale-[1.12] object-cover transition-transform duration-700 group-hover:scale-[1.2]"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
               >
                 {"mobile" in clip && clip.mobile ? (
                   <source src={clip.mobile} type="video/mp4" media="(max-width: 767px)" />
