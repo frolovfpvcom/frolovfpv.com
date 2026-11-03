@@ -6,17 +6,15 @@ import { useT } from "@/lib/lang";
 
 const texts = {
   da: {
-    eyebrow: "Det her er FPV",
     words:
-      "Jeg flyver tæt på, hurtigt og lavt. Derhen hvor almindelige droner ikke tør, så dine billeder får folk til at sige wow.",
-    highlight: ["tæt", "hurtigt", "lavt.", "wow."],
+      "Kom helt tæt på. Derhen hvor almindelige droner ikke tør, så dine billeder får folk til at sige wow.",
+    highlight: ["tæt", "wow."],
     wow: "wow.",
   },
   en: {
-    eyebrow: "This is FPV",
     words:
-      "I fly close, fast and low. Where ordinary drones don't dare to go, so your footage makes people say wow.",
-    highlight: ["close,", "fast", "low.", "wow."],
+      "Get right up close. Where ordinary drones don't dare to go, so your footage makes people say wow.",
+    highlight: ["close.", "wow."],
     wow: "wow.",
   },
 };
@@ -107,7 +105,6 @@ export function Statement() {
         }}
       />
       <div ref={ref} className="mx-auto max-w-5xl">
-        <p className="mb-8 text-xs font-bold uppercase tracking-[0.35em] text-ild-600">{t.eyebrow}</p>
         <p className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05]">
           {words.map((w, i) => {
             const range: [number, number] = [i / words.length, (i + 1) / words.length];

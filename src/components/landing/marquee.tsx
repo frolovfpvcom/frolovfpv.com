@@ -16,11 +16,11 @@ import { useT } from "@/lib/lang";
 const texts = {
   da: {
     a: ["Reklame", "Events", "Natur", "Ejendomme", "Musikvideo", "Sport"],
-    b: ["Hurtigt", "Lavt", "Filmisk", "Ét skud", "4K"],
+    b: ["Hurtigt", "Filmisk", "Fly through", "4K"],
   },
   en: {
     a: ["Commercials", "Events", "Nature", "Real estate", "Music videos", "Sports"],
-    b: ["Fast", "Low", "Cinematic", "One take", "4K"],
+    b: ["Fast", "Cinematic", "Fly through", "4K"],
   },
 };
 
