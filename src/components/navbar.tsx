@@ -74,7 +74,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-6 py-3 grid grid-cols-[1fr_auto_1fr] items-center">
         <GenieLink href="/" aria-label={t.home} className="justify-self-start">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/kat-logo-tiger.png" alt="" className="h-14 w-auto md:h-20" />
+          <img src="/images/kat-logo-tiger.png" alt="" data-nav-logo className="h-14 w-auto md:h-20" />
         </GenieLink>
 
         <GenieLink href="/" className="text-2xl md:text-4xl font-black uppercase tracking-tight">

@@ -89,6 +89,14 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
+/* Kat-intro: only shown when the head script has said so; the menu's logo waits
+   until the cat has flown into its place. The animation hands over after ~10 s;
+   if scripts never run, the veil gives up on its own. */
+.cat-intro { display: none; }
+html[data-intro="play"] .cat-intro { display: block; animation: cat-intro-failsafe 0.4s 22s forwards; }
+html[data-intro="play"] [data-nav-logo] { opacity: 0; }
+@keyframes cat-intro-failsafe { to { opacity: 0; visibility: hidden; } }
+
 ::selection {
   background: #ffe3b0;
   color: #141210;

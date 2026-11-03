@@ -5,6 +5,7 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { LangProvider } from "@/lib/lang";
 import { SmoothScroll } from "@/lib/smooth-scroll";
+import { CatIntro } from "@/components/cat-intro";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,9 +28,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="da"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        {/* Decide before the first paint whether the cat intro plays: once per tab,
+            never with reduced motion, always with ?intro in the address. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var f=/[?&]intro(=|&|$)/.test(location.search),k="frolov-intro";if(f||(!sessionStorage.getItem(k)&&!matchMedia("(prefers-reduced-motion: reduce)").matches)){document.documentElement.setAttribute("data-intro","play");sessionStorage.setItem(k,"1")}}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <LangProvider>
+          <CatIntro />
           <SmoothScroll header={<Navbar />}>
             {children}
             <Footer />
