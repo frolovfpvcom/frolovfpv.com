@@ -67,17 +67,18 @@ const projects: Project[] = [
     tags: { da: ["Natur"], en: ["Nature"] },
   },
   {
-    aspect: 16 / 10,
+    image: "/projekter/testkorsel.jpg",
+    video: "/clips/testkorsel.mp4",
+    aspect: 4 / 3,
     frame: "black",
-    tint: ["#101a33", "#6b86c9"],
-    title: { da: "Nattelys", en: "Night lights" },
-    category: { da: "Kommer snart", en: "Coming soon" },
-    meta: { da: "By · kommer snart", en: "City · coming soon" },
+    title: { da: "Testkørsel", en: "Test drive" },
+    category: { da: "Bil", en: "Car" },
+    meta: { da: "Bil · 0:10", en: "Car · 0:10" },
     description: {
-      da: "Pladsholder. Her kommer et projekt med byen om natten.",
-      en: "Placeholder. A project with the city at night is coming here.",
+      da: "Test af bil på privat område.\nPs det er ikke reklame for nogen som helst bil producenter",
+      en: "Car test on private grounds.\nPS: this is not an ad for any car manufacturer",
     },
-    tags: { da: ["By", "Nat"], en: ["City", "Night"] },
+    tags: { da: ["Bil"], en: ["Car"] },
   },
   {
     aspect: 4 / 5,
@@ -723,7 +724,7 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
           </p>
           <h2 className="mt-3 text-3xl font-black tracking-tight text-foreground">{project.title[lang]}</h2>
           <p className="mt-2 text-sm text-foreground/60">{project.meta[lang]}</p>
-          <p className="mt-5 text-[15px] leading-relaxed text-foreground/80">{project.description[lang]}</p>
+          <p className="mt-5 text-[15px] leading-relaxed whitespace-pre-line text-foreground/80">{project.description[lang]}</p>
           <div className="mt-5 flex flex-wrap gap-2">
             {project.tags[lang].map((tag) => (
               <span key={tag} className="rounded-full border border-border/60 bg-card px-3 py-1 text-xs text-muted-foreground">
