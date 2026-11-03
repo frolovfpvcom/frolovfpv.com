@@ -35,7 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             never with reduced motion, always with ?intro in the address. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var f=/[?&]intro\b/.test(location.search),k="frolov-intro";if(f||(!sessionStorage.getItem(k)&&!matchMedia("(prefers-reduced-motion: reduce)").matches)){document.documentElement.setAttribute("data-intro","play");sessionStorage.setItem(k,"1")}}catch(e){}})()`,
+            __html: `(function(){try{var f=/[?&]intro(=|&|$)/.test(location.search),k="frolov-intro";if(f||(!sessionStorage.getItem(k)&&!matchMedia("(prefers-reduced-motion: reduce)").matches)){document.documentElement.setAttribute("data-intro","play");sessionStorage.setItem(k,"1")}}catch(e){}})()`,
           }}
         />
       </head>
