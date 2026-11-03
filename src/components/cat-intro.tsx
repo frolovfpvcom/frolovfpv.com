@@ -3,11 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useT } from "@/lib/lang";
 
-/* Kat-intro i 3D: første gang man kommer ind på siden hopper katten (logoet som en
-   figur med tykkelse) ind fra venstre på en hvid, sløret baggrund. En lille drone flyver
-   rundt om den i rummet, foran og bagved, og katten drejer efter den, til den snurrer
-   rundt, bliver svimmel og falder på ryggen. Den springer op med en skrue, rækker ud efter
-   dronen og flyver til sidst op i venstre hjørne, hvor logoet sidder, mens siden kommer frem.
+/* Kat-intro i 3D: første gang man kommer ind på siden går katten (logoet som en figur
+   med tykkelse) ind fra venstre på en hvid, sløret baggrund. En lille drone flyver rundt om
+   den, foran og bagved, og katten vender sig efter den, til den snurrer rundt, bliver
+   svimmel og falder på ryggen. Den springer op med en rulle, rækker ud efter dronen og
+   flyver til sidst op i venstre hjørne, hvor logoet sidder, mens siden kommer frem.
+   Bevægelserne er de samme som i den første, tegnede version.
 
    Figuren er logoet stablet i tynde lag (forside, mørk kant, bagside) i en CSS 3D-scene.
    Alt styres af ét ur i requestAnimationFrame og sættes direkte på elementerne, så React
@@ -21,12 +22,13 @@ const T = {
   droneIn: 2.0,
   orbit: 3.0,
   orbitFast: 4.5,
-  fall: 5.75,
-  land: 6.2,
-  hover: 5.75,
-  hoverEnd: 6.4,
-  jump: 7.6,
-  landUp: 8.25,
+  fall: 5.7,
+  land: 6.15,
+  hover: 5.7,
+  hoverEnd: 6.35,
+  crouch: 7.65,
+  jump: 7.85,
+  landUp: 8.45,
   fly: 9.35,
   flyEnd: 10.35,
   end: 10.45,
@@ -38,8 +40,10 @@ const GROUND = 120; // scene y of the floor (scene origin = screen centre)
 const LAYERS = 16; // slices that give the figure its thickness
 const SLICE = 1.5; // scene units between slices
 const PERSPECTIVE = 1300;
-const ORIGIN_Y = 0.2; // the eye sits a bit above the cat, so we look down at the floor
-const FALL_X = 62; // how far it tips back onto the floor
+const ORIGIN_Y = 0.25; // the eye sits a bit above the cat, so we look down at the floor
+const LIE = 160; // how far it rolls over when it falls on its back
+// The logo's outline (convex hull, 0..1), to find how low it reaches when it lies down.
+const HULL = [[0.018, 0.398], [0.138, 0.186], [0.175, 0.141], [0.488, 0.02], [0.821, 0.101], [0.868, 0.129], [0.88, 0.165], [0.706, 0.833], [0.536, 0.986], [0.184, 0.884], [0.16, 0.857], [0.03, 0.456]];
 
 const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const seg = (t: number, a: number, b: number) => clamp((t - a) / (b - a));
@@ -48,24 +52,8 @@ const easeIn = (p: number) => p * p * p;
 const easeOut = (p: number) => 1 - Math.pow(1 - p, 3);
 const easeInOut = (p: number) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
 const rad = (d: number) => (d * Math.PI) / 180;
-const deg = (r: number) => (r * 180) / Math.PI;
 
 type V3 = { x: number; y: number; z: number };
-
-/** CSS order "rotateY rotateX rotateZ": the point turns about Z first, then X, then Y. */
-function rotate3(p: V3, ry: number, rx: number, rz: number): V3 {
-  let { x, y, z } = p;
-  let c = Math.cos(rad(rz));
-  let s = Math.sin(rad(rz));
-  [x, y] = [x * c - y * s, x * s + y * c];
-  c = Math.cos(rad(rx));
-  s = Math.sin(rad(rx));
-  [y, z] = [y * c - z * s, y * s + z * c];
-  c = Math.cos(rad(ry));
-  s = Math.sin(rad(ry));
-  [x, z] = [x * c + z * s, -x * s + z * c];
-  return { x, y, z };
-}
 
 const texts = {
   da: { skip: "Spring over" },
@@ -143,8 +131,9 @@ export function CatIntro() {
     let raf = 0;
     let start = -1;
     let last = 0;
-    let look = 0; // the cat's smoothed turn toward the drone (deg)
-    let fallFrom = 0; // its turn when it starts to fall
+    let face = 1; // -1..1: which way the cat is turned; passes 0 (edge-on) as it turns
+    let fallFace = 1;
+    let fallTurn = 35;
     let lastK = 0;
     let finished = false;
 
@@ -223,158 +212,163 @@ export function CatIntro() {
         return { x: ox + (sx - ox) * f, y: oy + (sy - oy) * f, f };
       };
 
-      /* ---------- the drone ---------- */
-      const droneY = GROUND - H * 1.08;
+      /* ---------- the drone (same path as the first version, now in 3D) ---------- */
+      const standCy = GROUND - H / 2;
+      const orbitCy = standCy - 10;
       const orbitAngle = (tt: number) => {
         const slow = seg(tt, T.orbit, T.orbitFast);
         const fast = seg(tt, T.orbitFast, T.fall);
-        return 2 * Math.PI * (slow * 1.25) + 2 * Math.PI * (fast * fast * 2.4 + fast * 0.4);
+        return 2 * Math.PI * (slow * 1.25) + 2 * Math.PI * (fast * fast * 2.6 + fast * 0.4);
       };
-      const orbitPos = (tt: number): V3 & { a: number } => {
+      const orbitPos = (tt: number): V3 => {
         const a = orbitAngle(tt);
         const tight = seg(tt, T.orbitFast, T.fall);
-        const r = lerp(250, 175, tight);
-        return { x: r * Math.cos(a), y: droneY + Math.sin(tt * 3) * 10 + tight * 40, z: r * Math.sin(a), a };
+        const rx = lerp(210, 150, tight);
+        const ry = lerp(52, 40, tight);
+        const rz = lerp(190, 140, tight);
+        return { x: rx * Math.cos(a), y: orbitCy + ry * Math.sin(a), z: rz * Math.sin(a) };
       };
-      const hoverAbove: V3 = { x: 20, y: GROUND - 250, z: -80 };
-      const pawPt: V3 = { x: -W / 2 + W * 0.8, y: GROUND - H - 52, z: 0 };
-      const endOrbit = orbitPos(T.fall);
-      const endHeading = 180 - deg(endOrbit.a);
+      const hoverAbove: V3 = { x: 10, y: GROUND - 300, z: 0 };
+      const pawPt: V3 = { x: -W / 2 + W * 0.8, y: GROUND - H - 46, z: 0 };
 
       let d: V3;
-      let heading = 180;
-      let pitch = 62;
       let bank = 0;
       if (time < T.orbit) {
         const p = easeOut(seg(time, T.droneIn, T.orbit));
         const o = orbitPos(T.orbit);
-        d = { x: lerp(halfW + 160, o.x, p), y: lerp(-halfH - 120, o.y, p), z: lerp(-300, o.z, p) };
-        bank = lerp(-25, 0, p);
+        d = { x: lerp(halfW + 120, o.x, p), y: lerp(-halfH - 80, o.y, p), z: lerp(-150, o.z, p) };
+        bank = lerp(-22, 0, p);
       } else if (time < T.fall) {
-        const o = orbitPos(time);
-        d = o;
-        heading = 180 - deg(o.a);
-        bank = -10 - 18 * seg(time, T.orbitFast, T.fall);
+        d = orbitPos(time);
+        bank = clamp((orbitPos(time + 0.02).x - d.x) * 0.9, -26, 26);
       } else if (time < T.jump) {
+        const o = orbitPos(T.fall);
         const p = easeInOut(seg(time, T.hover, T.hoverEnd));
         d = {
-          x: lerp(endOrbit.x, hoverAbove.x, p) + Math.sin(time * 2.4) * 10 * p,
-          y: lerp(endOrbit.y, hoverAbove.y, p) + Math.sin(time * 3.1) * 8 * p,
-          z: lerp(endOrbit.z, hoverAbove.z, p),
+          x: lerp(o.x, hoverAbove.x, p) + Math.sin(time * 2.4) * 6 * p,
+          y: lerp(o.y, hoverAbove.y, p) + Math.sin(time * 3.1) * 5 * p,
+          z: lerp(o.z, hoverAbove.z, p),
         };
-        heading = endHeading;
-        pitch = lerp(62, 40, p);
+        bank = Math.sin(time * 2.4) * 5 * p;
       } else if (time < T.fly) {
-        const p = easeInOut(seg(time, T.jump, T.landUp + 0.1));
+        const p = easeInOut(seg(time, T.jump, T.landUp));
         d = {
-          x: lerp(hoverAbove.x, pawPt.x, p) + Math.sin(time * 2.2) * 6,
-          y: lerp(hoverAbove.y, pawPt.y, p) + Math.sin(time * 3.3) * 7,
-          z: lerp(hoverAbove.z, pawPt.z, p),
+          x: lerp(hoverAbove.x, pawPt.x, p) + Math.sin(time * 2.2) * 5,
+          y: lerp(hoverAbove.y, pawPt.y, p) + Math.sin(time * 3.3) * 6,
+          z: 0,
         };
-        heading = endHeading;
-        pitch = lerp(40, 62, p);
         bank = Math.sin(time * 2.2) * 6;
       } else {
         const p = easeIn(seg(time, T.fly, T.fly + 0.8));
-        d = { x: lerp(pawPt.x, halfW + 160, p), y: lerp(pawPt.y, -halfH - 140, p), z: lerp(0, -200, p) };
-        heading = endHeading;
-        bank = lerp(0, 30, p);
+        d = { x: lerp(pawPt.x, halfW + 140, p), y: lerp(pawPt.y, -halfH - 120, p), z: 0 };
+        bank = lerp(0, 24, p);
       }
       if (drone.current) {
-        drone.current.style.transform = `translate3d(${d.x * k}px, ${d.y * k}px, ${d.z * k}px) rotateY(${heading}deg) rotateX(${pitch}deg) rotateZ(${bank}deg)`;
+        drone.current.style.transform = `translate3d(${d.x * k}px, ${d.y * k}px, ${d.z * k}px) rotateY(180deg) rotateX(62deg) rotateZ(${bank}deg)`;
       }
       props.current.forEach((el, i) => set(el, "transform", `rotate(${(time * 2900 * (i % 3 === 0 ? 1 : -1)) % 360})`));
 
-      /* ---------- the cat ---------- */
+      /* ---------- the cat (the first version's moves, on the 3D figure) ---------- */
+      // Facing: +1 = turned toward the right, -1 = toward the left. In between it turns
+      // around in 3D, edge-on at 0, just like the first version flipped its drawing.
+      const turnOf = (f: number) => 35 + (110 * Math.acos(clamp(f, -1, 1))) / Math.PI;
+      // How far below its centre the figure reaches, for a given turn and tilt.
+      const lowest = (ryDeg: number, rotDeg: number) => {
+        const cy = Math.cos(rad(ryDeg));
+        const s = Math.sin(rad(rotDeg));
+        const c = Math.cos(rad(rotDeg));
+        return Math.max(...HULL.map(([u, v]) => (u - 0.5) * W * cy * s + (v - 0.5) * H * c));
+      };
+
       const startX = -halfW - W;
       const wp = seg(time, T.walkStart, T.walkEnd);
       const walkF = (p: number) => 1 - (1 - p) * (1 - p);
-      let x = lerp(startX, 0, walkF(wp));
-      let z = lerp(-320, 0, walkF(wp));
-      let y = 0; // height above the floor
-      let ry = 0;
-      let rx = 0;
-      let rz = 0;
+      const x = lerp(startX, 0, walkF(wp));
+      const speed = wp > 0 && wp < 1 ? 2 * (1 - wp) : 0;
+      const phase = ((x - startX) / 78) * Math.PI;
+      let cy = standCy;
+      let rot = 0;
+      let ry = turnOf(face);
       let sx = 1;
       let sy = 1;
-      const hopPhase = (time - T.walkStart) * Math.PI * 2.7;
 
       if (time < T.orbit) {
-        // Little hops in from the left, turned toward where it is going.
-        const moving = wp > 0 && wp < 1 ? clamp((1 - wp) * 3) : 0;
-        const hop = Math.abs(Math.sin(hopPhase));
-        y = -hop * 30 * moving;
-        rz = Math.sin(hopPhase) * 6 * moving;
-        sy = 1 - Math.pow(1 - hop, 6) * 0.08 * moving;
+        // Walks in from the left with a little hop and waddle in every step.
+        const moving = clamp(speed * 1.2);
+        face = 1;
+        ry = turnOf(face);
+        const hop = Math.abs(Math.sin(phase));
+        cy -= hop * 14 * moving;
+        rot = Math.sin(phase) * 4 * moving;
+        sy = 1 - Math.pow(1 - hop, 6) * 0.05 * moving;
         sx = 1 + (1 - sy) * 0.6;
-        ry = lerp(55, 0, easeInOut(seg(time, T.walkEnd - 0.7, T.walkEnd + 0.2)));
-        look = ry;
       } else if (time < T.fall) {
-        // Follows the drone with its eyes; in the fast laps it spins right round after it.
-        const o = orbitPos(time);
-        const fast = easeInOut(seg(time, T.orbitFast, T.orbitFast + 0.6));
-        const peek = 48 * Math.cos(o.a);
-        const spin = 90 - deg(o.a);
-        const target = lerp(peek, spin + Math.round((peek - spin) / 360) * 360 * (1 - fast), fast);
-        look += (target - look) * Math.min(1, dt * lerp(6, 30, fast));
-        ry = look;
-        rz = -5 * Math.cos(o.a) * (1 - fast);
-        const hop = Math.abs(Math.sin(time * 9));
-        y = -hop * 10 * fast;
-        fallFrom = ry;
+        // Turns after the drone; in the fast laps the turns get frantic.
+        const target = d.x >= 0 ? 1 : -1;
+        const turnRate = time < T.orbitFast ? 9 : 22;
+        const before = face;
+        face += (target - face) * Math.min(1, dt * turnRate);
+        const turning = Math.abs(face - before) / Math.max(dt, 0.001);
+        const paddle = clamp(turning / 8) + (time > T.orbitFast ? seg(time, T.orbitFast, T.fall) : 0);
+        cy -= Math.abs(Math.sin(time * 11)) * 6 * clamp(paddle);
+        ry = turnOf(face);
+        fallFace = face >= 0 ? 1 : -1;
+        fallTurn = turnOf(fallFace);
       } else if (time < T.jump) {
-        // Dizzy: wobble, turn back to the front and tip over backwards onto the floor.
-        const settle = easeOut(seg(time, T.fall, T.land));
-        const nearest = Math.round(fallFrom / 360) * 360;
-        ry = lerp(fallFrom, nearest, settle);
-        const p = easeIn(seg(time, T.fall + 0.1, T.land));
-        rx = FALL_X * p;
-        rz = Math.sin(seg(time, T.fall, T.fall + 0.3) * Math.PI) * 9;
-        const b = seg(time, T.land, T.land + 0.35);
-        y = -Math.sin(b * Math.PI) * 10 * (1 - b);
-        rx -= Math.sin(b * Math.PI) * 8 * (1 - b);
-        // Lying there wriggling.
-        if (time > T.land) rz = Math.sin(time * 13) * 4 * seg(time, T.land + 0.2, T.land + 0.5);
+        // Dizzy: wobble, tip over backwards and land on its back.
+        const wob = seg(time, T.fall, T.fall + 0.18);
+        face += (fallFace - face) * Math.min(1, dt * 20);
+        ry = turnOf(face);
+        const p = easeIn(seg(time, T.fall + 0.12, T.land));
+        rot = -fallFace * (Math.sin(wob * Math.PI) * 10 + LIE * p);
+        const restCy = GROUND - lowest(fallTurn, -fallFace * LIE) - 2;
+        cy = lerp(standCy, restCy, p) - Math.sin(p * Math.PI) * 26;
+        const b = seg(time, T.land, T.land + 0.3);
+        cy -= Math.sin(b * Math.PI) * 9 * (1 - b);
+        sy = 1 - Math.sin(b * Math.PI) * 0.08;
+        // Wriggling on its back, then a crouch before it springs up.
+        if (time > T.land) rot += Math.sin(time * 11) * 3.5 * seg(time, T.land + 0.15, T.land + 0.4);
+        const c = seg(time, T.crouch, T.jump);
+        sy *= 1 - Math.sin(c * Math.PI * 0.5) * 0.1;
       } else {
-        // Springs up with a full spin and lands reaching for the drone.
+        // Springs up with a roll and lands reaching for the drone.
         const p = seg(time, T.jump, T.landUp);
-        rx = FALL_X * (1 - easeOut(p));
-        y = -Math.sin(p * Math.PI) * 150;
-        ry = 360 * easeInOut(p);
+        const restCy = GROUND - lowest(fallTurn, -fallFace * LIE) - 2;
+        rot = -fallFace * lerp(LIE, 360, easeOut(p));
+        cy = lerp(restCy, standCy, easeInOut(p)) - Math.sin(p * Math.PI) * 120;
+        ry = lerp(fallTurn, 0, easeOut(p));
         const l = seg(time, T.landUp, T.landUp + 0.3);
         sy = 1 - Math.sin(l * Math.PI) * 0.07;
         sx = 1 + Math.sin(l * Math.PI) * 0.04;
-        // While it holds the pose it sways a little, so you see it is a real figure.
+        // Holding the pose: a little paw wiggle and a slow turn, so you see it is a figure.
         const hold = seg(time, T.landUp + 0.2, T.landUp + 0.5) * (1 - seg(time, T.fly - 0.45, T.fly - 0.05));
-        ry += Math.sin((time - T.landUp) * 3.2) * 16 * hold;
-        y += -Math.abs(Math.sin((time - T.landUp) * 4)) * 4 * hold;
+        rot += Math.sin((time - T.landUp) * 4) * 1.8 * hold;
+        ry += Math.sin((time - T.landUp) * 3.2) * 14 * hold;
       }
-      x = time >= T.orbit ? 0 : x;
-      z = time >= T.orbit ? 0 : z;
-      const catVisible = time < T.fly;
+      const z = lerp(-220, 0, walkF(wp));
       if (cat.current) {
-        cat.current.style.visibility = catVisible ? "visible" : "hidden";
-        cat.current.style.transform = `translate3d(${x * k}px, ${(GROUND + y) * k}px, ${z * k}px) rotateY(${ry}deg) rotateX(${rx}deg) rotateZ(${rz}deg) scale(${sx}, ${sy})`;
+        cat.current.style.visibility = time < T.fly ? "visible" : "hidden";
+        cat.current.style.transform = `translate3d(${x * k}px, ${cy * k}px, ${z * k}px) rotateZ(${rot}deg) rotateY(${ry}deg) translateY(${(H / 2) * k}px) scale(${sx}, ${sy})`;
       }
 
-      // Soft shadow on the floor, shrinking when the cat is in the air.
+      // Soft shadow on the floor, smaller when the cat is in the air.
+      const air = clamp((standCy - cy) / 160);
+      const lying = clamp(Math.abs(rot) / LIE) * (time >= T.fall ? 1 : 0);
       if (shadow.current) {
-        const air = clamp(-y / 160);
-        const lying = rx / FALL_X;
-        const s = (1 - air * 0.5) * (1 + lying * 0.5);
-        shadow.current.style.transform = `translate3d(${x * k}px, ${GROUND * k}px, ${(z - lying * 60) * k}px) rotateX(90deg) scale(${s * 1.15}, ${s * (0.75 + lying * 0.7)})`;
+        const s = (1 - air * 0.5) * (1 + lying * 0.4);
+        shadow.current.style.transform = `translate3d(${x * k}px, ${GROUND * k}px, ${z * k}px) rotateX(90deg) scale(${s * 1.15}, ${s * 0.75})`;
         shadow.current.style.opacity = String((0.5 - air * 0.25) * (1 - seg(time, T.fly, T.fly + 0.3)));
       }
 
-      // Points on the figure, for stars and puffs (projected to the screen).
-      const catPoint = (lx: number, ly: number) => {
-        const r = rotate3({ x: lx * sx, y: ly * sy, z: 0 }, ry, rx, rz);
-        return project({ x: x + r.x, y: GROUND + y + r.y, z: z + r.z });
-      };
-      const headPx = catPoint(-W * 0.08, -H * 0.8);
+      // The head on screen, for the dizzy stars.
+      const hx0 = (0.47 - 0.5) * W * sx * Math.cos(rad(ry));
+      const hz0 = -(0.47 - 0.5) * W * sx * Math.sin(rad(ry));
+      const hy0 = (0.2 - 0.5) * H * sy;
+      const hr = { x: hx0 * Math.cos(rad(rot)) - hy0 * Math.sin(rad(rot)), y: hx0 * Math.sin(rad(rot)) + hy0 * Math.cos(rad(rot)) };
+      const headPx = project({ x: x + hr.x, y: cy + hr.y, z: z + hz0 });
 
-      // Dizzy stars circle the head while it lies on the floor.
-      const sp = seg(time, T.land - 0.1, T.jump);
+      // Dizzy stars circle the head while it lies on its back.
+      const sp = seg(time, T.land, T.jump);
       stars.current.forEach((el, i) => {
         if (!el) return;
         const vis = sp > 0 && sp < 1;
@@ -382,10 +376,10 @@ export function CatIntro() {
         if (!vis) return;
         const a = time * 5 + (i * Math.PI * 2) / 3;
         const fade = Math.sin(sp * Math.PI) ** 0.4;
-        set(el, "transform", `translate(${headPx.x + Math.cos(a) * 52 * k} ${headPx.y - 30 * k + Math.sin(a) * 14 * k}) rotate(${time * 200}) scale(${fade * k})`);
+        set(el, "transform", `translate(${headPx.x + Math.cos(a) * 46 * k} ${headPx.y - 10 * k + Math.sin(a) * 14 * k}) rotate(${time * 200}) scale(${fade * k})`);
       });
 
-      // Little grey puffs: landing on the back and landing after the jump.
+      // Little grey puffs: landing on its back and landing after the jump.
       const puffAt = (i0: number, t0: number, c: { x: number; y: number }, big = 1) => {
         for (let j = 0; j < 5; j++) {
           const el = puffs.current[i0 + j];
@@ -402,7 +396,7 @@ export function CatIntro() {
           set(el, "opacity", 0.6 * (1 - p));
         }
       };
-      puffAt(0, T.land, project({ x: 0, y: GROUND - 4, z: -60 }), 1.2);
+      puffAt(0, T.land, project({ x: 0, y: GROUND - 4, z: 0 }), 1.2);
       puffAt(5, T.landUp - 0.02, project({ x: 0, y: GROUND - 4, z: 0 }), 1.1);
 
       /* ---------- the flight to the corner ---------- */
