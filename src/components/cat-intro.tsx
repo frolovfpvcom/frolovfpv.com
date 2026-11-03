@@ -10,7 +10,9 @@ import { useT } from "@/lib/lang";
    flyver til sidst op i venstre hjørne, hvor logoet sidder, mens siden kommer frem.
    Bevægelserne er de samme som i den første, tegnede version.
 
-   Figuren er logoet stablet i tynde lag (forside, mørk kant, bagside) i en CSS 3D-scene.
+   Figuren er logoet stablet i 16 lag langs Z-aksen (0 til -20px, de bagerste mørkere),
+   så den har en rigtig kant, når den drejer. Det er den samme 3D-figur hele vejen, også
+   når den til sidst flyver op på logoets plads i menuen.
    Alt styres af ét ur i requestAnimationFrame og sættes direkte på elementerne, så React
    ikke renderer for hver frame. Et lille script i <head> (se layout.tsx) afgør før første
    paint, om intro'en skal vises: én gang pr. fane, aldrig ved "reducer bevægelse", og
@@ -37,9 +39,9 @@ const T = {
 const LOGO_H = 235; // the cat's height in scene units
 const LOGO_RATIO = 167 / 227;
 const GROUND = 120; // scene y of the floor (scene origin = screen centre)
-const LAYERS = 16; // slices that give the figure its thickness
-const SLICE = 1.5; // scene units between slices
-const PERSPECTIVE = 1300;
+const LAYERS = 16; // copies of the logo stacked along Z give the figure its thickness
+const DEPTH = 20; // px from the front layer (0) to the back layer (-20px)
+const PERSPECTIVE = 1000; // px
 const ORIGIN_Y = 0.25; // the eye sits a bit above the cat, so we look down at the floor
 const LIE = 160; // how far it rolls over when it falls on its back
 // The logo's outline (convex hull, 0..1), to find how low it reaches when it lies down.
@@ -116,7 +118,6 @@ export function CatIntro() {
   const overlay = useRef<SVGSVGElement>(null);
   const stars = useRef<(SVGPathElement | null)[]>([]);
   const puffs = useRef<(SVGCircleElement | null)[]>([]);
-  const logo = useRef<HTMLImageElement>(null);
   const skipAt = useRef<number | null>(null);
 
   useEffect(() => {
@@ -134,6 +135,7 @@ export function CatIntro() {
     let face = 1; // -1..1: which way the cat is turned; passes 0 (edge-on) as it turns
     let fallFace = 1;
     let fallTurn = 35;
+    let tiltX = 0; // smoothed tilt back/forward toward the drone (deg)
     let lastK = 0;
     let finished = false;
 
@@ -186,7 +188,7 @@ export function CatIntro() {
           Object.assign(cat.current.style, { width: `${W * k}px`, height: `${H * k}px`, left: `${(-W * k) / 2}px`, top: `${-H * k}px` });
         }
         layers.current.forEach((el, i) => {
-          if (el) el.style.transform = `translateZ(${-i * SLICE * k}px)`;
+          if (el) el.style.transform = `translateZ(${(-i * DEPTH) / (LAYERS - 1)}px)`;
         });
         if (drone.current) {
           const dw = 96 * k;
@@ -197,7 +199,7 @@ export function CatIntro() {
           Object.assign(shadow.current.style, { width: `${sw}px`, height: `${sw}px`, left: `${-sw / 2}px`, top: `${-sw / 2}px` });
         }
         if (scene.current) {
-          scene.current.style.perspective = `${PERSPECTIVE * k}px`;
+          scene.current.style.perspective = `${PERSPECTIVE}px`;
           scene.current.style.perspectiveOrigin = `50% ${ORIGIN_Y * 100}%`;
         }
       }
@@ -208,7 +210,7 @@ export function CatIntro() {
         const oy = vh * ORIGIN_Y;
         const sx = vw / 2 + p.x * k;
         const sy = vh / 2 + p.y * k;
-        const f = PERSPECTIVE / (PERSPECTIVE - p.z);
+        const f = PERSPECTIVE / (PERSPECTIVE - p.z * k);
         return { x: ox + (sx - ox) * f, y: oy + (sy - oy) * f, f };
       };
 
@@ -345,18 +347,46 @@ export function CatIntro() {
         rot += Math.sin((time - T.landUp) * 4) * 1.8 * hold;
         ry += Math.sin((time - T.landUp) * 3.2) * 14 * hold;
       }
-      const z = lerp(-220, 0, walkF(wp));
-      if (cat.current) {
-        cat.current.style.visibility = time < T.fly ? "visible" : "hidden";
-        cat.current.style.transform = `translate3d(${x * k}px, ${cy * k}px, ${z * k}px) rotateZ(${rot}deg) rotateY(${ry}deg) translateY(${(H / 2) * k}px) scale(${sx}, ${sy})`;
+      // Tilts on the X axis too: leans back to look up at the drone, forward when it is close in front.
+      const headY = cy - H * 0.3;
+      const watching = time >= T.droneIn + 0.4 && time < T.fall ? 1 : time >= T.landUp ? 0.6 : 0;
+      const tiltTarget = watching * clamp(((headY - d.y) / 220) * 14 - (d.z / 190) * 6, -14, 16);
+      tiltX += (tiltTarget - tiltX) * Math.min(1, dt * 6);
+      let rx = tiltX;
+
+      let z = lerp(-220, 0, walkF(wp));
+      let px = x * k;
+      let py = cy * k;
+      let s3 = 1;
+      // Home: the 3D figure itself flies into the logo's place in the menu, with a turn.
+      const navEl = document.querySelector<HTMLElement>("[data-nav-logo]");
+      if (time >= T.fly && navEl) {
+        const n = navEl.getBoundingClientRect();
+        const p = easeInOut(seg(time, T.fly, T.flyEnd));
+        const sNav = n.height / (H * k);
+        const navX = n.left + (W * k * sNav) / 2 - vw / 2;
+        const navCy = n.top + H * k * sNav - vh / 2 - (H / 2) * k;
+        px = lerp(0, navX, p);
+        py = lerp(standCy * k, navCy, p) - Math.sin(p * Math.PI) * 60;
+        s3 = lerp(1, sNav, p);
+        ry = 360 * p;
+        rot = Math.sin(p * Math.PI) * -8;
+        rx = lerp(rx, 0, p);
+        z = 0;
       }
+      if (cat.current) {
+        cat.current.style.transform = `translate3d(${px}px, ${py}px, ${z * k}px) rotateZ(${rot}deg) rotateY(${ry}deg) rotateX(${rx}deg) translateY(${(H / 2) * k}px) scale3d(${sx * s3}, ${sy * s3}, ${s3})`;
+      }
+      // Light: the painted front is brightest when it faces you, darker as it turns away.
+      const front = layers.current[0];
+      if (front) front.style.filter = `brightness(${(0.86 + 0.16 * Math.max(0, Math.cos(rad(ry))) * Math.cos(rad(rx))).toFixed(3)})`;
 
       // Soft shadow on the floor, smaller when the cat is in the air.
       const air = clamp((standCy - cy) / 160);
       const lying = clamp(Math.abs(rot) / LIE) * (time >= T.fall ? 1 : 0);
       if (shadow.current) {
         const s = (1 - air * 0.5) * (1 + lying * 0.4);
-        shadow.current.style.transform = `translate3d(${x * k}px, ${GROUND * k}px, ${z * k}px) rotateX(90deg) scale(${s * 1.15}, ${s * 0.75})`;
+        shadow.current.style.transform = `translate3d(${x * k}px, ${GROUND * k}px, ${z * k}px) rotateX(75deg) scale(${s * 1.15}, ${s * 0.75})`;
         shadow.current.style.opacity = String((0.5 - air * 0.25) * (1 - seg(time, T.fly, T.fly + 0.3)));
       }
 
@@ -399,30 +429,10 @@ export function CatIntro() {
       puffAt(0, T.land, project({ x: 0, y: GROUND - 4, z: 0 }), 1.2);
       puffAt(5, T.landUp - 0.02, project({ x: 0, y: GROUND - 4, z: 0 }), 1.1);
 
-      /* ---------- the flight to the corner ---------- */
-      if (logo.current) {
-        const visible = time >= T.fly;
-        logo.current.style.visibility = visible ? "visible" : "hidden";
-        const navEl = document.querySelector<HTMLElement>("[data-nav-logo]");
-        if (visible && navEl) {
-          const tl = { x: vw / 2 - (W * k) / 2, y: vh / 2 + (GROUND - H) * k };
-          const w = W * k;
-          const h = H * k;
-          const n = navEl.getBoundingClientRect();
-          const p = easeInOut(seg(time, T.fly, T.flyEnd));
-          const lx = lerp(tl.x, n.left, p);
-          const ly = lerp(tl.y, n.top, p) - Math.sin(p * Math.PI) * 60;
-          const s = lerp(1, n.height / h, p);
-          logo.current.style.width = `${w}px`;
-          logo.current.style.height = `${h}px`;
-          logo.current.style.transform = `translate(${lx}px, ${ly}px) scale(${s}) rotate(${Math.sin(p * Math.PI) * -8}deg)`;
-        }
-      }
-
-      // The white veil and the scene fade away as the cat flies home.
+      // The white veil fades away to the video as the cat flies home (the cat itself stays).
       const fade = seg(time, T.fly + 0.25, T.flyEnd);
       if (bg.current) bg.current.style.opacity = String(1 - fade);
-      if (scene.current) scene.current.style.opacity = String(1 - fade);
+      if (drone.current) drone.current.style.opacity = String(1 - seg(time, T.fly + 0.3, T.fly + 0.8));
       if (overlay.current) overlay.current.style.opacity = String(1 - fade);
       if (root.current) root.current.style.pointerEvents = time > T.fly ? "none" : "";
 
@@ -468,10 +478,12 @@ export function CatIntro() {
                 ref={(el) => {
                   layers.current[i] = el;
                 }}
-                src={i === 0 || i === LAYERS - 1 ? "/images/kat-logo-tiger.svg" : "/images/kat-logo-tiger-side.svg"}
+                src="/images/kat-logo-tiger.svg"
                 alt=""
                 draggable={false}
                 className="absolute inset-0 h-full w-full max-w-none select-none"
+                // the layers behind the front get darker toward the back: the figure's edge
+                style={i === 0 ? undefined : { filter: `brightness(${(0.42 - (0.27 * i) / (LAYERS - 1)).toFixed(3)})` }}
               />
             ))}
           </div>
@@ -503,8 +515,6 @@ export function CatIntro() {
           />
         ))}
       </svg>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img ref={logo} src="/images/kat-logo-tiger.svg" alt="" className="pointer-events-none fixed top-0 left-0 max-w-none origin-top-left" style={{ visibility: "hidden" }} />
       <button
         type="button"
         onClick={() => (skipAt.current ??= performance.now())}
