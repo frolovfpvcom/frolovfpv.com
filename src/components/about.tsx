@@ -11,7 +11,7 @@ const texts = {
     body: [
       "Goddag, mit navn er Peter, jeg er 17 år gammel og jeg flyver med Fpv droner, det har jeg gjort i 3 år nu.",
       "Førhen har jeg fløjet med fjernstyrede fly i en del år. Så stoppede jeg med det, og fandt Fpv droner. Jeg var solgt på stedet.",
-      "Den bedste måde at beskrive hvordan det er at flyve sådan en drone er bare at få folk til at forstille sig hvordan det ville være hvis de var en fugl (med en topfart på 200t km/t) og flyve der oppe, i luften",
+      "Den bedste måde at beskrive hvordan det er at flyve sådan en drone er bare at få folk til at forstille sig hvordan det ville være hvis de var en fugl (med en topfart på 200 km/t) og flyve der oppe, i luften",
     ],
     alt: "Peter Frolov med FPV-briller på",
   },

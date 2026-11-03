@@ -9,7 +9,7 @@ const texts = {
   da: {
     title: "Udvalgt arbejde",
     lead: "Lige nu har jeg ikke noget udvalgt arbejde, MEN! Du kan blive den første! Kunne det ikke være lækkert at have din flotte video, som jeg laver for dig, rullende her?",
-    more: "Jeg specificerer mig primært i one shots. Dvs gennemflyvning af diverse ejendomme, institutioner osv. Noget som dette er ikke noget man ser meget af her hjemme. Så her er en unik mulighed for dig og dir firma, for at få fat i noget som det fleste andre danske virksomheder ikke har.",
+    more: "Jeg specificerer mig primært i one shots. Dvs gennemflyvning af diverse ejendomme, institutioner osv. Noget som dette er ikke noget man ser meget af her hjemme. Så her er en unik mulighed for dig og dit firma, for at få fat i noget som de fleste andre danske virksomheder ikke har.",
     cta: "Kontakt",
   },
   en: {
