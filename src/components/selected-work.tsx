@@ -9,11 +9,13 @@ const texts = {
   da: {
     title: "Udvalgt arbejde",
     lead: "Lige nu har jeg ikke noget udvalgt arbejde, MEN! Du kan blive den første! Kunne det ikke være lækkert at have din flotte video, som jeg laver for dig, rullende her?",
+    more: "Jeg specificerer mig primært i one shots. Dvs gennemflyvning af diverse ejendomme, institutioner osv. Noget som dette er ikke noget man ser meget af her hjemme. Så her er en unik mulighed for dig og dit firma, for at få fat i noget som de fleste andre danske virksomheder ikke har.",
     cta: "Kontakt",
   },
   en: {
     title: "Selected work",
     lead: "Right now I don't have any selected work, BUT! You could be the first! Wouldn't it be great to have the stunning video I make for you rolling right here?",
+    more: "I mainly specialise in one-shots, meaning fly-throughs of all kinds of properties, institutions and so on. You don't see much of this here in Denmark, so this is a unique chance for you and your company to get something most other Danish businesses don't have.",
     cta: "Contact",
   },
 };
@@ -29,6 +31,7 @@ export function SelectedWork() {
     >
       <h1 className="text-5xl md:text-7xl font-black tracking-tight">{t.title}</h1>
       <p className="mt-8 text-lg md:text-xl leading-relaxed text-foreground/70">{t.lead}</p>
+      <p className="mt-6 text-lg md:text-xl leading-relaxed text-foreground/70">{t.more}</p>
       <Link
         href="/kontakt"
         className="group mt-10 inline-flex items-center gap-3 rounded-full bg-primary px-7 py-3.5 text-sm font-bold text-primary-foreground shadow-[0_15px_35px_-15px_rgba(58,53,41,0.8)] transition-all duration-300 hover:scale-105 hover:bg-skov-700"
