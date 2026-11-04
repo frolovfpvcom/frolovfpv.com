@@ -7,13 +7,13 @@ import { useT } from "@/lib/lang";
 const texts = {
   da: {
     words:
-      "Kom helt tæt på. Derhen hvor almindelige droner ikke tør, så dine billeder får folk til at sige wow.",
+      "FPV-droner kommer helt tæt på. Derhen hvor almindelige droner ikke tør, som får folk til at sige wow.",
     highlight: ["tæt", "wow."],
     wow: "wow.",
   },
   en: {
     words:
-      "Get right up close. Where ordinary drones don't dare to go, so your footage makes people say wow.",
+      "FPV drones get right up close. Where ordinary drones don't dare to go, which makes people say wow.",
     highlight: ["close.", "wow."],
     wow: "wow.",
   },
