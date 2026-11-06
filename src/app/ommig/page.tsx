@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { About } from "@/components/about";
 import { Services } from "@/components/services";
 import { Contact } from "@/components/contact";
 
-export const metadata: Metadata = {
-  title: "Om mig | Frolov FPV",
-  description: "Mød Peter Frolov, FPV-dronepilot og filmfotograf, og se hvad han laver.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Om mig – Peter Frolov, FPV-dronepilot",
+  description:
+    "Mød Peter Frolov, 17-årig FPV-dronepilot bag Frolov FPV. Han har fløjet FPV-droner i 3 år og laver dronefilm til reels, ejendomme, events og natur.",
+  path: "/ommig",
+});
 
 export default function OmMigPage() {
   return (

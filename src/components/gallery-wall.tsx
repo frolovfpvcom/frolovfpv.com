@@ -15,6 +15,7 @@ import { GenieLink as Link } from "@/lib/smooth-scroll";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLang, useT, type Lang } from "@/lib/lang";
+import { PANORAM_FRAME, VIDEOS } from "@/lib/seo";
 
 /* ------------------------------------------------------------------ data -- */
 
@@ -25,6 +26,8 @@ type Project = {
   image?: string;
   /** Clip that plays in the frame on the "Video" tab. */
   video?: string;
+  /** What the picture shows, for search engines and screen readers. */
+  alt?: Record<Lang, string>;
   /** Width / height of the frame. */
   aspect: number;
   frame: FrameStyle;
@@ -40,8 +43,9 @@ type Project = {
 // Placeholder projects. Swap in real titles, texts and thumbnails as they come.
 const projects: Project[] = [
   {
-    image: "/projekter/pande-ram.jpg",
-    video: "/clips/pande-ram.mp4",
+    image: PANORAM_FRAME,
+    video: VIDEOS.panoram.src,
+    alt: { da: "Panoram, FPV-dronefilm i dansk natur af Frolov FPV", en: "Panoram, FPV drone film in Danish nature by Frolov FPV" },
     aspect: 16 / 10,
     frame: "oak",
     title: { da: "Panoram", en: "Panoram" },
@@ -67,8 +71,9 @@ const projects: Project[] = [
     tags: { da: ["Natur"], en: ["Nature"] },
   },
   {
-    image: "/projekter/testkorsel.jpg",
-    video: "/clips/testkorsel.mp4",
+    image: VIDEOS.testkoersel.poster,
+    video: VIDEOS.testkoersel.src,
+    alt: { da: "Testkørsel, bil filmet med FPV-drone af Frolov FPV", en: "Test drive, car filmed with an FPV drone by Frolov FPV" },
     aspect: 4 / 3,
     frame: "black",
     title: { da: "Testkørsel", en: "Test drive" },
@@ -203,7 +208,7 @@ function Framed({
         <div className="relative h-full w-full overflow-hidden bg-neutral-900" style={{ boxShadow: "0 0 0 1px rgba(0,0,0,.15)" }}>
           {project.image ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={project.image} alt="" draggable={false} loading="eager" fetchPriority="high" decoding="async" className="h-full w-full object-cover select-none" />
+            <img src={project.image} alt={project.alt?.[lang] ?? ""} draggable={false} loading="eager" fetchPriority="high" decoding="async" className="h-full w-full object-cover select-none" />
           ) : (
             <div
               className="flex h-full w-full items-end p-[8%]"

@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { ChevronDown } from "lucide-react";
 import { useT } from "@/lib/lang";
+import { VIDEOS } from "@/lib/seo";
 
 const texts = {
   da: {
@@ -70,15 +71,16 @@ export function Hero() {
           muted
           playsInline
           // the first frame shows at once while the clip loads
-          poster="/intro-4.jpg"
+          poster={VIDEOS.intro.poster}
+          aria-label={VIDEOS.intro.name}
           initial={{ opacity: 0, scale: 1.15 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.4, ease: EASE }}
           className="block h-full w-full object-cover"
         >
           {/* phones get a lighter 720p file, so the first screen starts quickly there too */}
-          <source src="/intro-4-720.mp4" type="video/mp4" media="(max-width: 767px)" />
-          <source src="/intro-4.mp4" type="video/mp4" />
+          <source src={VIDEOS.intro.mobile} type="video/mp4" media="(max-width: 767px)" />
+          <source src={VIDEOS.intro.src} type="video/mp4" />
         </motion.video>
       </motion.div>
 

@@ -5,9 +5,10 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { useT } from "@/lib/lang";
 import { GenieLink } from "@/lib/smooth-scroll";
+import { VIDEOS } from "@/lib/seo";
 
 const clips = [
-  { video: "/clips/pande-ram.mp4", mobile: "/clips/pande-ram-720.mp4", image: "/clips/pande-ram.jpg" },
+  { video: VIDEOS.panoram.src, mobile: VIDEOS.panoram.mobile, image: VIDEOS.panoram.poster, label: VIDEOS.panoram.name },
 ];
 
 const texts = {
@@ -104,6 +105,7 @@ export function ClipStrip() {
             >
               <video
                 poster={clip.image}
+                aria-label={clip.label}
                 muted
                 loop
                 playsInline

@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 
 import { useT } from "@/lib/lang";
+import { IMAGES } from "@/lib/seo";
 
 const texts = {
   da: {
@@ -13,7 +14,7 @@ const texts = {
       "Førhen har jeg fløjet med fjernstyrede fly i en del år. Så stoppede jeg med det, og fandt Fpv droner. Jeg var solgt på stedet.",
       "Den bedste måde at beskrive hvordan det er at flyve sådan en drone er bare at få folk til at forstille sig hvordan det ville være hvis de var en fugl (med en topfart på 200 km/t) og flyve der oppe, i luften",
     ],
-    alt: "Peter Frolov med FPV-briller på",
+    alt: IMAGES.portrait.alt,
   },
   en: {
     title: "About me",
@@ -22,7 +23,7 @@ const texts = {
       "Before that I flew remote-controlled planes for quite a few years. Then I stopped, and found FPV drones. I was sold on the spot.",
       "The best way to describe what flying a drone like that is like is to get people to imagine what it would be like if they were a bird (with a top speed of 200 km/h), flying up there in the air.",
     ],
-    alt: "Peter Frolov wearing FPV goggles",
+    alt: "Peter Frolov, FPV drone pilot, wearing FPV goggles",
   },
 };
 
@@ -47,7 +48,9 @@ export function About() {
           <div aria-hidden="true" className="absolute -inset-6 rounded-[44px] bg-gradient-to-br from-sol-300 via-ild-400 to-skov-500 opacity-60 blur-2xl" />
           <div className="relative aspect-[4/5] overflow-hidden rounded-[36px] border-[6px] border-popover bg-skov-100 shadow-[0_40px_80px_-30px_rgba(58,53,41,0.6)]">
             <motion.img
-              src="/images/portrait-fpv.jpg"
+              src={IMAGES.portrait.src}
+              width={IMAGES.portrait.width}
+              height={IMAGES.portrait.height}
               alt={t.alt}
               draggable={false}
               style={{ y: photoY, scale: 1.18 }}
