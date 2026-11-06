@@ -7,6 +7,7 @@ import GlassFolder, {
 } from "@/components/ui/glass-folder-cards";
 import { ClipViewer, type ClipSelection } from "@/components/clip-viewer";
 import { useLang, type Lang } from "@/lib/lang";
+import { VIDEOS } from "@/lib/seo";
 
 const art = {
   gray: {
@@ -101,7 +102,7 @@ const foldersByLang = (lang: Lang): Folder[] => [
       { name: lang === "da" ? "Gennem parken" : "Through the park", blank: true },
       { name: lang === "da" ? "Nattelys" : "Night lights", blank: true },
       // last in the list = front of the folder and first in the opened stack
-      { name: "Panoram", meta: "4K · 0:13", video: "/clips/pande-ram.mp4", image: "/clips/pande-ram.jpg" },
+      { name: "Panoram", meta: "4K · 0:13", video: VIDEOS.panoram.src, image: VIDEOS.panoram.poster },
     ],
   },
   {
