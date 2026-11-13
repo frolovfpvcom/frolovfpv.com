@@ -1,32 +1,32 @@
 @import "tailwindcss";
 @import "lenis/dist/lenis.css";
 
-/* Peters tema: "Taste in Motion Colour Slam" (mørkt). Varm næsten-sort baggrund, creme primær,
-   petroleumsblå sekundær og bordeaux accent. Koral (destructive) bruges kun til fejl. */
+/* Roligt, lyst tema: varm off-white baggrund, næsten-sort tekst, grå nuancer og én accent
+   (dyb skovgrøn, som passer til de grønne/gule naturoptagelser). Ingen orange. */
 :root {
-  --background: #141210;
-  --foreground: #fbf7ee;
-  --card: #23201d;
-  --card-foreground: #fbf7ee;
-  --popover: #23201d;
-  --popover-foreground: #fbf7ee;
-  --primary: #ffe3b0;
-  --primary-foreground: #141210;
-  --secondary: #0e6e72;
-  --secondary-foreground: #fbf7ee;
-  --accent: #8a1e50;
-  --accent-foreground: #fbf7ee;
-  --muted: #2a2622;
-  --muted-foreground: #b5ac9c;
-  --destructive: #d96a52;
-  --border: #3a342e;
-  --input: #3a342e;
-  --ring: #ffe3b0;
-  --chart-1: #ffe3b0;
-  --chart-2: #0e6e72;
-  --chart-3: #8a1e50;
-  --chart-4: #b5ac9c;
-  --chart-5: #d96a52;
+  --background: #f7f6f2;
+  --foreground: #1c1d1b;
+  --card: #ffffff;
+  --card-foreground: #1c1d1b;
+  --popover: #ffffff;
+  --popover-foreground: #1c1d1b;
+  --primary: #2f5a45;
+  --primary-foreground: #ffffff;
+  --secondary: #ecebe6;
+  --secondary-foreground: #1c1d1b;
+  --accent: #2f5a45;
+  --accent-foreground: #ffffff;
+  --muted: #ecebe6;
+  --muted-foreground: #6b6c66;
+  --destructive: #b4343a;
+  --border: #e2e0d9;
+  --input: #d9d6ce;
+  --ring: #2f5a45;
+  --chart-1: #2f5a45;
+  --chart-2: #6b6c66;
+  --chart-3: #9fb8a8;
+  --chart-4: #c9c6bd;
+  --chart-5: #1c1d1b;
 }
 
 @theme inline {
@@ -50,32 +50,32 @@
   --color-primary-foreground: var(--primary-foreground);
 }
 
-/* The site's colour scales, all taken from the theme. */
+/* The old colour scales, now mapped onto the calm theme: neutral greys plus the one green accent. */
 @theme {
-  /* skov: the warm dark browns of the surfaces, plus the petrol blue (500/600) for links and lines */
-  --color-skov-50: #23201d;
-  --color-skov-100: #2a2622;
-  --color-skov-200: #3a342e;
-  --color-skov-300: #3a342e;
-  --color-skov-400: #0e6e72;
-  --color-skov-500: #2a9599;
-  --color-skov-600: #5bb8ba;
-  --color-skov-700: #2a2622;
-  --color-skov-800: #23201d;
-  --color-skov-900: #1b1815;
-  --color-skov-950: #0c0a09;
+  /* skov: neutrals; 400-600 are the green accent (links, focus), 900/950 the dark ink used under the video */
+  --color-skov-50: #fafaf7;
+  --color-skov-100: #ecebe6;
+  --color-skov-200: #e2e0d9;
+  --color-skov-300: #cfccc3;
+  --color-skov-400: #4f7a64;
+  --color-skov-500: #2f5a45;
+  --color-skov-600: #244636;
+  --color-skov-700: #244636;
+  --color-skov-800: #2a2b28;
+  --color-skov-900: #1c1d1b;
+  --color-skov-950: #111210;
 
-  /* sol: the cream */
-  --color-sol-100: #2f2922;
-  --color-sol-200: #fff0d4;
-  --color-sol-300: #ffe3b0;
-  --color-sol-400: #ffe3b0;
-  --color-sol-500: #c9ad7c;
+  /* sol: soft light tones */
+  --color-sol-100: #f1f0eb;
+  --color-sol-200: #e2e0d9;
+  --color-sol-300: #ffffff;
+  --color-sol-400: #ffffff;
+  --color-sol-500: #cfccc3;
 
-  /* ild: the bordeaux accent; 600 is a lighter tint of it so it can be read as text on the dark background */
-  --color-ild-400: #b8417a;
-  --color-ild-500: #8a1e50;
-  --color-ild-600: #d9689a;
+  /* ild: the accent again, so old highlights become the one green */
+  --color-ild-400: #4f7a64;
+  --color-ild-500: #2f5a45;
+  --color-ild-600: #2f5a45;
 }
 
 @theme inline {
@@ -90,11 +90,16 @@ body {
 }
 
 ::selection {
-  background: #ffe3b0;
-  color: #141210;
+  background: #2f5a45;
+  color: #ffffff;
 }
 
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }

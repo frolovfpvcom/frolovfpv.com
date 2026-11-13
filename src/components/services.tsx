@@ -46,7 +46,7 @@ export function Services() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16"
         >
-          <h2 className="text-4xl md:text-6xl font-black tracking-tight">
+          <h2 className="text-3xl md:text-5xl font-semibold tracking-tight">
             {t.title}
           </h2>
           <p className="mt-4 text-lg text-foreground/70 max-w-md">{t.lead}</p>
@@ -62,16 +62,16 @@ export function Services() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{
                 duration: 0.6,
-                delay: i * 0.1,
+                delay: i * 0.05,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="group rounded-3xl bg-card p-7 shadow-[0_20px_40px_-25px_rgba(58,53,41,0.45)] transition-all duration-300 hover:-translate-y-2 hover:bg-secondary hover:text-white hover:shadow-[0_30px_60px_-25px_rgba(58,53,41,0.8)]"
+              className="rounded-2xl border border-border bg-card p-7"
             >
-              <span className="mb-5 grid size-12 place-items-center rounded-2xl bg-muted text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
-                <Icon size={24} />
+              <span className="mb-5 grid size-11 place-items-center rounded-xl bg-muted text-primary">
+                <Icon size={22} />
               </span>
-              <h3 className="text-lg font-bold mb-2">{service.title}</h3>
-              <p className="text-sm text-foreground/65 leading-relaxed transition-colors duration-300 group-hover:text-white/85">
+              <h3 className="text-lg font-semibold mb-2">{service.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 {service.description}
               </p>
             </motion.div>

@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
+import { motion } from "motion/react";
 
 import { useT } from "@/lib/lang";
 
@@ -28,44 +27,29 @@ const texts = {
 
 export function About() {
   const t = useT(texts);
-  const photoRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: photoRef, offset: ["start end", "end start"] });
-  const photoY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
   const ease = [0.16, 1, 0.3, 1] as const;
 
   return (
     <section id="about" className="px-6 pt-36 pb-24 md:pt-44">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
-        {/* the photo of Peter, framed big with a warm glow behind it */}
-        <motion.div
-          ref={photoRef}
-          initial={false}
-          animate={{ opacity: 1, scale: 1, rotate: -2 }}
-          transition={{ duration: 1, ease }}
-          className="relative mx-auto w-full max-w-md"
-        >
-          <div aria-hidden="true" className="absolute -inset-6 rounded-[44px] bg-gradient-to-br from-sol-300 via-ild-400 to-skov-500 opacity-60 blur-2xl" />
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[36px] border-[6px] border-popover bg-skov-100 shadow-[0_40px_80px_-30px_rgba(58,53,41,0.6)]">
-            <motion.img
-              src="/images/portrait-fpv.jpg"
-              alt={t.alt}
-              draggable={false}
-              style={{ y: photoY, scale: 1.18 }}
-              className="h-full w-full object-cover"
-            />
+        {/* the photo of Peter, plain and straight */}
+        <div className="relative mx-auto w-full max-w-md">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-muted">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/portrait-fpv.jpg" alt={t.alt} draggable={false} className="h-full w-full object-cover" />
           </div>
-        </motion.div>
+        </div>
 
         <div>
           <motion.h1
             initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease }}
-            className="text-5xl md:text-7xl font-black tracking-tight"
+            className="text-4xl md:text-6xl font-semibold tracking-tight"
           >
             {t.title}
           </motion.h1>
-          <div className="mt-8 space-y-5 text-lg leading-relaxed text-foreground/75">
+          <div className="mt-8 space-y-5 text-lg leading-relaxed text-muted-foreground">
             {t.body.map((p, i) => (
               <motion.p
                 key={p}

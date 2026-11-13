@@ -17,19 +17,18 @@ import {
 
 let lenis: Lenis | null = null;
 
-/* The genie: the page itself, cut to what is on screen, tilts into a funnel and is
-   sucked into one point at the top, three quarters of the way across. A beat later the
-   new page comes out of the same point and unfolds to fill the screen. Only transform
-   and opacity are animated, so it runs on the GPU. The new page is rendered while
-   nothing is moving, so React's work never lands in the middle of the animation. */
-const P = "perspective(1400px)";
+/* The page switch: a short, soft cross-fade (the old page fades out, the new one fades in
+   with a tiny lift). It used to be a macOS-style "genie" funnel; that was too much going on.
+   Only opacity and transform are animated, so it runs on the GPU. The names stay, so all
+   the links keep working unchanged. */
 const genieOut: Keyframe[] = [
-  { offset: 0, transform: `scale(1, 1) ${P} rotateX(0deg)`, opacity: 1 },
-  { offset: 0.4, transform: `scale(0.62, 0.7) ${P} rotateX(38deg)`, opacity: 1 },
-  { offset: 0.75, transform: `scale(0.16, 0.3) ${P} rotateX(52deg)`, opacity: 1 },
-  { offset: 1, transform: `scale(0, 0) ${P} rotateX(52deg)`, opacity: 0 },
+  { offset: 0, opacity: 1, transform: "translateY(0)" },
+  { offset: 1, opacity: 0, transform: "translateY(0)" },
 ];
-const genieIn: Keyframe[] = genieOut.map((k) => ({ ...k, offset: 1 - (k.offset as number) })).reverse();
+const genieIn: Keyframe[] = [
+  { offset: 0, opacity: 0, transform: "translateY(8px)" },
+  { offset: 1, opacity: 1, transform: "translateY(0)" },
+];
 
 const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
@@ -102,14 +101,14 @@ export function SmoothScroll({ header, children }: { header: React.ReactNode; ch
       // Window scrolling stays where it is, so scroll effects on the page don't jump.
       const clip = (top: number) => {
         const below = Math.max(0, el.offsetHeight - top - window.innerHeight);
-        el.style.clipPath = `inset(${top}px 0 ${below}px 0 round 28px)`;
+        el.style.clipPath = `inset(${top}px 0 ${below}px 0)`;
         el.style.transformOrigin = `75% ${top}px`;
       };
       clip(window.scrollY);
       el.style.willChange = "transform, opacity";
 
-      // 1. The page is sucked into the point.
-      await el.animate(genieOut, { duration: 340, easing: "cubic-bezier(0.55, 0.05, 0.85, 0.3)", fill: "forwards" })
+      // 1. The old page fades out.
+      await el.animate(genieOut, { duration: 180, easing: "ease-out", fill: "forwards" })
         .finished;
 
       // 2. While it's gone, the new page renders (it's prefetched, so this is quick).
@@ -121,9 +120,9 @@ export function SmoothScroll({ header, children }: { header: React.ReactNode; ch
       pending.current = null;
       clip(0);
 
-      // 3. The new page comes out of the same point and fills the screen.
+      // 3. The new page fades in.
       el.getAnimations().forEach((anim) => anim.cancel());
-      await el.animate(genieIn, { duration: 420, easing: "cubic-bezier(0.2, 0.9, 0.3, 1)", fill: "forwards" })
+      await el.animate(genieIn, { duration: 320, easing: "cubic-bezier(0.2, 0.9, 0.3, 1)", fill: "forwards" })
         .finished;
 
       el.getAnimations().forEach((anim) => anim.cancel());

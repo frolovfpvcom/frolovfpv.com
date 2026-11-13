@@ -91,8 +91,8 @@ export function ContactForm() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="text-xs font-bold text-ild-600 uppercase tracking-[0.35em] mb-6">{t.label}</p>
-          <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[1]">
+          <p className="text-sm font-medium text-muted-foreground mb-6">{t.label}</p>
+          <h1 className="text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05]">
             {t.title}
             <br />
             <span className="text-skov-500">{t.accent}</span>
@@ -114,7 +114,7 @@ export function ContactForm() {
           initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-[32px] bg-card p-6 md:p-8 space-y-5 shadow-[0_40px_80px_-40px_rgba(58,53,41,0.5)]"
+          className="rounded-3xl border border-border bg-card p-6 md:p-8 space-y-5"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <label className="block">
@@ -159,7 +159,7 @@ export function ContactForm() {
 
           <button
             type="submit"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-bold text-primary-foreground shadow-[0_15px_35px_-15px_rgba(58,53,41,0.8)] transition-all duration-300 hover:scale-105 hover:bg-skov-700 sm:w-auto"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-medium text-primary-foreground transition-colors duration-200 hover:bg-skov-700 sm:w-auto"
           >
             <Send size={16} />
             {t.send}

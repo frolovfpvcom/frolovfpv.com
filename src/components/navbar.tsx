@@ -25,7 +25,7 @@ function LangToggle() {
       onClick={() => setLang(next)}
       aria-label={t.switchTo}
       lang={next}
-      className="self-start whitespace-nowrap text-lg font-bold"
+      className="self-start whitespace-nowrap text-base font-medium"
     >
       <span className={lang === "da" ? "" : "opacity-45 hover:opacity-80"}>DA</span>
       <span className="opacity-40"> / </span>
@@ -62,7 +62,7 @@ export function Navbar() {
 
   const light = home && overHero && !mobileOpen;
   const tone = light ? "text-white" : "text-foreground";
-  const accent = "text-sol-300";
+  const accent = light ? "text-white/70" : "text-primary";
 
   return (
     <motion.nav
@@ -74,24 +74,24 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-6 py-3 grid grid-cols-[1fr_auto_1fr] items-center">
         <GenieLink href="/" aria-label={t.home} className="justify-self-start">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/kat-logo-tiger.png" alt="" className="h-14 w-auto md:h-20" />
+          <img src="/images/kat-logo-tiger.png" alt="" className="h-12 w-auto md:h-16" />
         </GenieLink>
 
-        <GenieLink href="/" className="text-2xl md:text-4xl font-black uppercase tracking-tight">
+        <GenieLink href="/" className="text-xl md:text-2xl font-semibold uppercase tracking-tight">
           FROLOV<span className={`transition-colors duration-300 ${accent}`}>FPV</span>
         </GenieLink>
 
-        <div className="hidden md:flex items-center gap-10 justify-self-end">
+        <div className="hidden md:flex items-center gap-8 justify-self-end">
           {links.map((link) => (
             <GenieLink
               key={link.href}
               href={link.href}
               aria-current={pathname === link.href ? "page" : undefined}
-              className="group relative text-lg font-bold"
+              className="group relative text-base font-medium"
             >
               {link.label}
               <span
-                className={`absolute -bottom-1 left-0 h-[3px] rounded-full bg-current transition-all duration-300 ${
+                className={`absolute -bottom-1 left-0 h-px bg-current transition-all duration-300 ${
                   pathname === link.href ? "w-full" : "w-0 group-hover:w-full"
                 }`}
               />
@@ -116,7 +116,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -12, scale: 0.97 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="md:hidden mx-4 origin-top rounded-3xl bg-popover/95 shadow-[0_20px_60px_-20px_rgba(89,109,70,0.45)] backdrop-blur-xl"
+            className="md:hidden mx-4 origin-top rounded-3xl bg-popover/95 border border-border shadow-[0_20px_50px_-25px_rgba(0,0,0,0.25)] backdrop-blur-xl"
           >
             <div className="px-6 py-5 flex flex-col gap-4">
               {links.map((link) => (
@@ -124,7 +124,7 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="text-xl font-bold text-foreground hover:text-primary transition-colors"
+                  className="text-xl font-medium text-foreground hover:text-primary transition-colors"
                 >
                   {link.label}
                 </GenieLink>

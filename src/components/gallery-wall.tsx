@@ -249,7 +249,7 @@ function Lamp({ width, lit }: { width: number; lit: boolean }) {
         style={{
           background: lit ? LAMP_ON : BRASS,
           boxShadow: lit
-            ? "0 0 10px 2px rgba(255,226,120,.75), 0 0 34px 8px rgba(255,214,90,.35), 0 6px 40px 12px rgba(255,220,120,.18)"
+            ? "0 0 8px 1px rgba(255,226,120,.45)"
             : "0 1px 2px rgba(0,0,0,.6)",
         }}
       />
@@ -440,28 +440,17 @@ export function GalleryWall() {
   return (
     <section id="projekter" className="relative w-full scroll-mt-16 overflow-x-clip py-24 md:py-32">
       <div className="relative mx-auto max-w-3xl px-6 text-center">
-        <p className="text-xs font-bold uppercase tracking-[0.35em] text-ild-600">{t.eyebrow}</p>
-        <h2 className="mt-4 text-3xl font-black tracking-tight md:text-5xl">{t.title}</h2>
+        <p className="text-sm font-medium text-muted-foreground">{t.eyebrow}</p>
+        <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl">{t.title}</h2>
       </div>
 
       {/* the rail */}
       <div className="relative mt-10 md:mt-12">
-        {/* soft wash of lamp light on the wall behind the active frame */}
-        <div
-          className="pointer-events-none absolute left-1/2"
-          style={{
-            top: stageHeight * 0.5,
-            width: height * 3.2,
-            height: height * 2.4,
-            transform: "translate(-50%, -50%)",
-            background: "radial-gradient(closest-side, rgba(255,226,140,.35), rgba(255,226,140,0))",
-          }}
-        />
         <div
           className="h-[9px] w-full"
           style={{
-            background: "linear-gradient(180deg,#3a3a3a 0%,#1c1c1c 45%,#0e0e0e 100%)",
-            boxShadow: "0 1px 0 rgba(255,255,255,.08) inset, 0 6px 14px rgba(58,53,41,.3)",
+            background: "linear-gradient(180deg,#d6d3cb 0%,#c3bfb5 55%,#b0aca2 100%)",
+            boxShadow: "0 1px 0 rgba(255,255,255,.6) inset, 0 4px 10px rgba(0,0,0,.06)",
           }}
         />
 
@@ -542,7 +531,7 @@ export function GalleryWall() {
               aria-current={i === active}
               onClick={() => goTo(i)}
               className="h-1.5 rounded-full transition-all duration-300"
-              style={{ width: i === active ? 22 : 6, background: i === active ? "#ffe3b0" : "rgba(255,227,176,.25)" }}
+              style={{ width: i === active ? 22 : 6, background: i === active ? "var(--primary)" : "var(--input)" }}
             />
           ))}
         </div>
@@ -567,7 +556,7 @@ export function GalleryWall() {
         </motion.div>
         <Link
           href="/kontakt"
-          className="group mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground shadow-[0_15px_35px_-15px_rgba(58,53,41,0.8)] transition-all duration-300 hover:scale-105 hover:bg-skov-700"
+          className="group mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors duration-200 hover:bg-skov-700"
         >
           {t.cta}
           <ArrowUpRight
@@ -690,7 +679,7 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
         style={{
           opacity: 0,
           backgroundImage:
-            "radial-gradient(60% 55% at 35% 45%, rgba(255,227,176,.12), rgba(255,227,176,0) 70%), radial-gradient(40% 40% at 75% 50%, rgba(14,110,114,.35), rgba(14,110,114,0) 70%)",
+            "none",
         }}
       />
 
@@ -698,7 +687,7 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
         ref={closeRef}
         type="button"
         onClick={close}
-        className="absolute right-5 top-5 z-10 inline-flex items-center gap-2 rounded-full border border-border bg-popover/80 px-4 py-2 text-sm font-medium text-foreground shadow-sm backdrop-blur transition hover:bg-card"
+        className="absolute right-5 top-5 z-10 inline-flex items-center gap-2 rounded-full border border-border bg-popover/80 px-4 py-2 text-sm font-medium text-foreground backdrop-blur transition hover:bg-card"
       >
         <X size={14} /> {t.close}
       </button>
@@ -722,7 +711,7 @@ function Detail({ opened, onClose }: { opened: Opened; onClose: () => void }) {
           <p className="font-mono text-xs tracking-[0.3em] text-skov-500">
             {String(opened.index + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
           </p>
-          <h2 className="mt-3 text-3xl font-black tracking-tight text-foreground">{project.title[lang]}</h2>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-foreground">{project.title[lang]}</h2>
           <p className="mt-2 text-sm text-foreground/60">{project.meta[lang]}</p>
           <p className="mt-5 text-[15px] leading-relaxed whitespace-pre-line text-foreground/80">{project.description[lang]}</p>
           <div className="mt-5 flex flex-wrap gap-2">
