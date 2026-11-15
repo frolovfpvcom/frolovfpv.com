@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { Mail, ArrowUpRight } from "lucide-react";
 import { useT } from "@/lib/lang";
 import { GenieLink } from "@/lib/smooth-scroll";
-import { WebShotLayer } from "@/components/ui/web-shot";
+import { SpiderShotLayer } from "@/components/ui/spider-shot";
 
 const texts = {
   da: {
@@ -53,8 +53,8 @@ export function Contact() {
           className="pointer-events-none absolute -bottom-32 right-0 size-[28rem] rounded-full bg-ild-500/40 blur-3xl"
         />
 
-        {/* silk threads from the button to the mouse, and the auto-click after 5 s standing still */}
-        <WebShotLayer areaRef={panel} targetRef={btnBox} leanRef={btnLean} />
+        {/* after 5 s standing still a stickman pops out of the button, webs the mouse and yanks it onto the button */}
+        <SpiderShotLayer areaRef={panel} targetRef={btnBox} leanRef={btnLean} />
 
         <div className="relative mx-auto max-w-5xl text-center">
           <h2 className="text-5xl md:text-8xl font-black tracking-tight leading-[0.95]">
