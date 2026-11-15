@@ -49,10 +49,6 @@ type Anim = {
 };
 
 const clamp01 = (u: number) => Math.min(1, Math.max(0, u));
-const outBack = (u: number) => {
-  const c = 1.9;
-  return 1 + (c + 1) * Math.pow(u - 1, 3) + c * Math.pow(u - 1, 2);
-};
 const outCubic = (u: number) => 1 - Math.pow(1 - u, 3);
 const inCubic = (u: number) => u * u * u;
 const inOut = (u: number) => (u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2);
@@ -74,6 +70,7 @@ export function SpiderShotLayer({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+  const arrowRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     const area = areaRef.current;
@@ -215,7 +212,7 @@ export function SpiderShotLayer({
           return;
         }
       } else {
-        e = outBack(clamp01(t / EMERGE));
+        e = outCubic(clamp01(t / EMERGE));
       }
       const aim = a.hidingAt ? 0 : inOut(clamp01((t - EMERGE) / AIM));
       const tShoot = t - EMERGE - AIM;
@@ -363,7 +360,9 @@ export function SpiderShotLayer({
 
     // The drawn cursor clicks, the button sinks in, and the link opens.
     const press = () => {
-      cur.animate([{ scale: "1" }, { scale: "0.8" }, { scale: "1" }], { duration: 220, easing: "ease-out" });
+      // Scale only the arrow, around its tip. Scaling the wrapper would also scale its translate
+      // and throw the cursor across the panel for a moment.
+      arrowRef.current?.animate([{ scale: "1" }, { scale: "0.85" }, { scale: "1" }], { duration: 200, easing: "ease-out" });
       ring.animate(
         [
           { opacity: 0.9, scale: "0.4" },
@@ -439,7 +438,12 @@ export function SpiderShotLayer({
         className="pointer-events-none absolute left-0 top-0 z-30 opacity-0"
       >
         <div ref={ringRef} className="absolute -left-4 -top-4 size-8 rounded-full border-2 border-sol-200 opacity-0" />
-        <svg width="22" height="26" viewBox="0 0 22 26" className="drop-shadow-[0_2px_3px_rgba(0,0,0,0.45)]">
+        <svg
+          ref={arrowRef}
+          width="22"
+          height="26"
+          viewBox="0 0 22 26"
+          className="origin-[1.5px_1.5px] drop-shadow-[0_2px_3px_rgba(0,0,0,0.45)]">
           <path
             d="M1.5 1.5 L1.5 20.5 L6.6 15.7 L10.2 23.6 L13.6 22.1 L10.1 14.4 L17.2 14.4 Z"
             fill="#ffe3b0"
