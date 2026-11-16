@@ -33,31 +33,46 @@ function LangToggle() {
   );
 }
 
-/* A plain white bar that stays at the top. A thin line shows under it once the page has scrolled. */
+/* A bar that stays at the top. On the front page it starts see-through with white text on top
+   of the full-screen intro video, and turns into the plain white bar once the video is passed.
+   Elsewhere it is white from the start; a thin line shows under it once the page has scrolled. */
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const pathname = usePathname();
   const t = useT(texts);
   const links = hrefs.map((href, i) => ({ href, label: t.links[i] }));
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+      setPastHero(window.scrollY > window.innerHeight - 90);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [pathname]);
 
+  // white text straight on the video, until the video has scrolled past
+  const onVideo = pathname === "/" && !pastHero && !mobileOpen;
+
   return (
     <nav
-      className={`fixed inset-x-0 top-0 z-50 bg-background/90 backdrop-blur-md transition-[border-color] duration-300 border-b ${
-        scrolled || mobileOpen ? "border-border" : "border-transparent"
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,color] duration-300 ${
+        onVideo
+          ? "border-transparent bg-transparent text-white [--muted-foreground:rgb(255_255_255/0.8)] [--foreground:#fff]"
+          : `bg-background/90 backdrop-blur-md ${scrolled || mobileOpen ? "border-border" : "border-transparent"}`
       }`}
     >
       <div className="mx-auto flex h-16 max-w-[1360px] items-center justify-between px-5 md:h-20 md:px-10">
         <GenieLink href="/" aria-label={t.home} className="flex items-center gap-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/kat-logo-tiger.png" alt="" className="h-10 w-auto md:h-11" />
+          <img
+            src="/images/kat-logo-tiger.png"
+            alt=""
+            className={`h-10 w-auto transition-[filter] duration-300 md:h-11 ${onVideo ? "invert" : ""}`}
+          />
           <span className="text-[15px] font-semibold tracking-tight">Frolov FPV</span>
         </GenieLink>
 
