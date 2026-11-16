@@ -1,14 +1,14 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { ArrowUpRight, Play } from "lucide-react";
 import { ClipViewer, type ClipSelection } from "@/components/clip-viewer";
 import { Reveal } from "@/components/ui/reveal";
 import { GenieLink } from "@/lib/smooth-scroll";
 import { useLang, useT, type Lang } from "@/lib/lang";
 
-/* What Peter sells to businesses: three services, each with an example clip, what the
-   customer gets, who it's for and a button that opens the contact form with it chosen. */
+/* What Peter sells to businesses: three services, each with what the customer gets, who it's
+   for, an example clip that opens big, and a button that opens the contact form with it chosen. */
 
 type Service = {
   /** Used in /kontakt?ydelse=… so the form opens with this service picked. */
@@ -162,21 +162,6 @@ function ServiceCard({
 }) {
   const t = useT(texts);
   const item = t.items[index];
-  const video = useRef<HTMLVideoElement>(null);
-
-  const start = () => {
-    const v = video.current;
-    if (!v) return;
-    v.preload = "auto";
-    v.play().catch(() => {});
-  };
-  const stop = () => {
-    const v = video.current;
-    if (!v) return;
-    v.pause();
-    v.currentTime = 0;
-  };
-
   const tone = tones[index];
 
   return (
@@ -185,45 +170,7 @@ function ServiceCard({
         className="flex h-full flex-col overflow-hidden rounded-2xl text-white"
         style={{ backgroundColor: tone.bg }}
       >
-        <button
-          type="button"
-          onMouseEnter={start}
-          onMouseLeave={stop}
-          onFocus={start}
-          onBlur={stop}
-          onClick={(e) => onOpen(e.currentTarget)}
-          aria-label={`${t.example}: ${item.title}`}
-          className="group relative block aspect-[4/3] w-full cursor-pointer overflow-hidden focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-white"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={service.image}
-            alt=""
-            loading="lazy"
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-          />
-          <video
-            ref={video}
-            src={service.video}
-            muted
-            loop
-            playsInline
-            preload="none"
-            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-          />
-          {/* the picture melts into the card's colour at the bottom */}
-          <span
-            aria-hidden="true"
-            className="absolute inset-x-0 bottom-0 h-1/3"
-            style={{ background: `linear-gradient(to top, ${tone.bg}, transparent)` }}
-          />
-          <span className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/90 px-3.5 py-1.5 text-[13px] text-neutral-900">
-            <Play size={12} fill="currentColor" />
-            {t.example}
-          </span>
-        </button>
-
-        <div className="flex flex-1 flex-col p-6 md:p-7">
+        <div className="flex flex-1 flex-col p-7 md:p-9">
           <p className="text-[12px] uppercase tracking-[0.16em]" style={{ color: tone.tint }}>
             0{index + 1} · {item.kicker}
           </p>
@@ -248,7 +195,7 @@ function ServiceCard({
           </p>
 
           {/* pushed to the bottom, so the three buttons line up side by side */}
-          <div className="mt-auto pt-7">
+          <div className="mt-auto flex flex-wrap items-center gap-x-6 gap-y-3 pt-8">
             <GenieLink
               href={`/kontakt?ydelse=${service.slug}`}
               className="group inline-flex h-12 items-center gap-2 rounded-full bg-white px-6 text-[15px] font-medium transition-opacity hover:opacity-85"
@@ -260,6 +207,14 @@ function ServiceCard({
                 className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
               />
             </GenieLink>
+            <button
+              type="button"
+              onClick={(e) => onOpen(e.currentTarget)}
+              className="inline-flex items-center gap-2 text-[15px] text-white/85 underline-offset-[6px] hover:text-white hover:underline"
+            >
+              <Play size={12} fill="currentColor" />
+              {t.example}
+            </button>
           </div>
         </div>
       </article>
