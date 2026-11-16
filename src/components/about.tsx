@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
+import { Reveal } from "@/components/ui/reveal";
 
 import { useT } from "@/lib/lang";
 
@@ -28,56 +27,26 @@ const texts = {
 
 export function About() {
   const t = useT(texts);
-  const photoRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: photoRef, offset: ["start end", "end start"] });
-  const photoY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
-  const ease = [0.16, 1, 0.3, 1] as const;
 
   return (
-    <section id="about" className="px-6 pt-36 pb-24 md:pt-44">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
-        {/* the photo of Peter, framed big with a warm glow behind it */}
-        <motion.div
-          ref={photoRef}
-          initial={false}
-          animate={{ opacity: 1, scale: 1, rotate: -2 }}
-          transition={{ duration: 1, ease }}
-          className="relative mx-auto w-full max-w-md"
-        >
-          <div aria-hidden="true" className="absolute -inset-6 rounded-[44px] bg-gradient-to-br from-sol-300 via-ild-400 to-skov-500 opacity-60 blur-2xl" />
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[36px] border-[6px] border-popover bg-skov-100 shadow-[0_40px_80px_-30px_rgba(58,53,41,0.6)]">
-            <motion.img
-              src="/images/portrait-fpv.jpg"
-              alt={t.alt}
-              draggable={false}
-              style={{ y: photoY, scale: 1.18 }}
-              className="h-full w-full object-cover"
-            />
-          </div>
-        </motion.div>
+    <section id="about" className="px-5 pb-8 pt-32 md:px-10 md:pt-44">
+      <div className="mx-auto grid max-w-[1360px] grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,420px)_1fr] lg:gap-20">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/portrait-fpv.jpg"
+          alt={t.alt}
+          draggable={false}
+          className="aspect-[4/5] w-full max-w-md rounded object-cover"
+        />
 
-        <div>
-          <motion.h1
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease }}
-            className="text-5xl md:text-7xl font-black tracking-tight"
-          >
-            {t.title}
-          </motion.h1>
-          <div className="mt-8 space-y-5 text-lg leading-relaxed text-foreground/75">
-            {t.body.map((p, i) => (
-              <motion.p
-                key={p}
-                initial={false}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.35 + i * 0.1, ease }}
-              >
-                {p}
-              </motion.p>
+        <Reveal>
+          <h1 className="font-serif text-6xl leading-none md:text-8xl">{t.title}</h1>
+          <div className="mt-8 max-w-[60ch] space-y-5 text-lg leading-relaxed text-muted-foreground">
+            {t.body.map((p) => (
+              <p key={p}>{p}</p>
             ))}
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

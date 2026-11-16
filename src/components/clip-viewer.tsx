@@ -253,7 +253,8 @@ function Media({ file }: { file: FolderFile }) {
         key={file.video}
         src={file.video}
         poster={file.image}
-        className="h-full w-full object-cover"
+        // the whole picture shows, also for clips that aren't 16:9
+        className="h-full w-full object-contain"
         autoPlay
         muted
         loop

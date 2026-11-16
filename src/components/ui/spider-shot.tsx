@@ -34,9 +34,9 @@ const HOLD = 50;
 const YANK = 150;
 const HIDE = 160;
 
-const INK = "#141210";
-const RIM = "rgba(255, 227, 176, 0.9)";
-const WEB = "#fbf7ee";
+const INK = "#111111";
+const RIM = "rgba(255, 255, 255, 0.95)";
+const WEB = "#111111";
 
 type Pt = { x: number; y: number };
 type Anim = {
@@ -357,8 +357,8 @@ export function SpiderShotLayer({
         ctx.globalAlpha = 1;
       }
 
-      // the figure, only the part that is out past the edge: a thin light rim so he reads on
-      // the dark panel, then solid ink
+      // the figure, only the part that is out past the edge: a thin white rim so he stands clear of
+      // the button, then solid ink
       ctx.save();
       ctx.beginPath();
       if (a.hang) ctx.rect(0, oy - 1, W, H);
@@ -470,17 +470,17 @@ export function SpiderShotLayer({
         aria-hidden="true"
         className="pointer-events-none absolute left-0 top-0 z-30 opacity-0"
       >
-        <div ref={ringRef} className="absolute -left-4 -top-4 size-8 rounded-full border-2 border-sol-200 opacity-0" />
+        <div ref={ringRef} className="absolute -left-4 -top-4 size-8 rounded-full border-2 border-neutral-900 opacity-0" />
         <svg
           ref={arrowRef}
           width="22"
           height="26"
           viewBox="0 0 22 26"
-          className="origin-[1.5px_1.5px] drop-shadow-[0_2px_3px_rgba(0,0,0,0.45)]">
+          className="origin-[1.5px_1.5px] drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">
           <path
             d="M1.5 1.5 L1.5 20.5 L6.6 15.7 L10.2 23.6 L13.6 22.1 L10.1 14.4 L17.2 14.4 Z"
-            fill="#ffe3b0"
-            stroke="#141210"
+            fill="#ffffff"
+            stroke="#111111"
             strokeWidth="1.5"
             strokeLinejoin="round"
           />

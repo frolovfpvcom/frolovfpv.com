@@ -13,23 +13,14 @@ import {
   type MouseEvent,
 } from "react";
 
-/* Blød scroll (Lenis) for hele siden og "genie"-sideskiftet mellem menuens sider. */
+/* Blød scroll (Lenis) for hele siden og et kort, blødt fade mellem menuens sider. */
 
 let lenis: Lenis | null = null;
 
-/* The genie: the page itself, cut to what is on screen, tilts into a funnel and is
-   sucked into one point at the top, three quarters of the way across. A beat later the
-   new page comes out of the same point and unfolds to fill the screen. Only transform
-   and opacity are animated, so it runs on the GPU. The new page is rendered while
-   nothing is moving, so React's work never lands in the middle of the animation. */
-const P = "perspective(1400px)";
-const genieOut: Keyframe[] = [
-  { offset: 0, transform: `scale(1, 1) ${P} rotateX(0deg)`, opacity: 1 },
-  { offset: 0.4, transform: `scale(0.62, 0.7) ${P} rotateX(38deg)`, opacity: 1 },
-  { offset: 0.75, transform: `scale(0.16, 0.3) ${P} rotateX(52deg)`, opacity: 1 },
-  { offset: 1, transform: `scale(0, 0) ${P} rotateX(52deg)`, opacity: 0 },
-];
-const genieIn: Keyframe[] = genieOut.map((k) => ({ ...k, offset: 1 - (k.offset as number) })).reverse();
+/* The page fades out, the new page renders while nothing is shown, and it fades in.
+   Only opacity is animated, so it runs on the GPU. */
+const fadeOut: Keyframe[] = [{ opacity: 1 }, { opacity: 0 }];
+const fadeIn: Keyframe[] = [{ opacity: 0 }, { opacity: 1 }];
 
 const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
@@ -98,19 +89,10 @@ export function SmoothScroll({ header, children }: { header: React.ReactNode; ch
       busy.current = true;
       lenis?.stop();
 
-      // Cut the page to the visible screen and pin the funnel's point to the top of it.
-      // Window scrolling stays where it is, so scroll effects on the page don't jump.
-      const clip = (top: number) => {
-        const below = Math.max(0, el.offsetHeight - top - window.innerHeight);
-        el.style.clipPath = `inset(${top}px 0 ${below}px 0 round 28px)`;
-        el.style.transformOrigin = `75% ${top}px`;
-      };
-      clip(window.scrollY);
-      el.style.willChange = "transform, opacity";
+      el.style.willChange = "opacity";
 
-      // 1. The page is sucked into the point.
-      await el.animate(genieOut, { duration: 340, easing: "cubic-bezier(0.55, 0.05, 0.85, 0.3)", fill: "forwards" })
-        .finished;
+      // 1. The page fades out.
+      await el.animate(fadeOut, { duration: 160, easing: "ease-out", fill: "forwards" }).finished;
 
       // 2. While it's gone, the new page renders (it's prefetched, so this is quick).
       const arrived = new Promise<void>((resolve) => {
@@ -119,16 +101,14 @@ export function SmoothScroll({ header, children }: { header: React.ReactNode; ch
       router.push(href);
       await Promise.race([arrived, wait(2500)]);
       pending.current = null;
-      clip(0);
 
-      // 3. The new page comes out of the same point and fills the screen.
+      // 3. The new page fades in.
       el.getAnimations().forEach((anim) => anim.cancel());
-      await el.animate(genieIn, { duration: 420, easing: "cubic-bezier(0.2, 0.9, 0.3, 1)", fill: "forwards" })
-        .finished;
+      el.style.opacity = "0";
+      await el.animate(fadeIn, { duration: 240, easing: "ease-out", fill: "forwards" }).finished;
 
       el.getAnimations().forEach((anim) => anim.cancel());
-      el.style.clipPath = "";
-      el.style.transformOrigin = "";
+      el.style.opacity = "";
       el.style.willChange = "";
       lenis?.start();
       busy.current = false;
@@ -139,7 +119,7 @@ export function SmoothScroll({ header, children }: { header: React.ReactNode; ch
   return (
     <GenieContext.Provider value={navigate}>
       {header}
-      {/* the pages and footer; this is what the genie moves, the menu stays put */}
+      {/* the pages and footer; this is what fades, the menu stays put */}
       <div ref={stage} className="flex flex-1 flex-col bg-background">
         {children}
       </div>
@@ -147,7 +127,7 @@ export function SmoothScroll({ header, children }: { header: React.ReactNode; ch
   );
 }
 
-/** A link to one of the site's own pages that opens it with the genie transition. */
+/** A link to one of the site's own pages that opens it with the fade. */
 export function GenieLink({ href, onClick, ...props }: ComponentProps<typeof NextLink> & { href: string }) {
   const navigate = useContext(GenieContext);
   return (

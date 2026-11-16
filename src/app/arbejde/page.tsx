@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SelectedWork } from "@/components/selected-work";
+import { Work } from "@/components/work";
 
 export const metadata: Metadata = {
   title: "Udvalgt arbejde | Frolov FPV",
@@ -8,10 +9,12 @@ export const metadata: Metadata = {
 
 export default function ArbejdePage() {
   return (
-    <main className="flex-1 pb-24 pt-36 md:pb-32 md:pt-44">
+    <main className="flex-1 pb-16 pt-32 md:pb-24 md:pt-44">
       <div className="px-6">
         <SelectedWork />
       </div>
+      {/* the folders with clips, under the text */}
+      <Work />
     </main>
   );
 }
