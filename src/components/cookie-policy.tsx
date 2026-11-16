@@ -7,6 +7,7 @@ const texts = {
     title: "Cookies",
     paragraphs: [
       "frolovfpv.com bruger ikke cookies til sporing, statistik eller reklamer.",
+      "Jeg tæller besøg anonymt med Vercel Web Analytics, så jeg kan se, hvor mange der kigger forbi, og hvilke sider de ser. Det sker uden cookies, og du kan ikke genkendes på tværs af dage eller andre hjemmesider.",
       "Siden gemmer kun dit valg af sprog (dansk eller engelsk) lokalt i din browser, så du ikke skal vælge det igen næste gang. Det er nødvendigt for, at siden virker, som du forventer, og deles ikke med nogen.",
       "Hvis du skriver til mig via kontaktformularen, bruges dine oplysninger kun til at svare dig.",
       "Du kan altid slette de gemte data ved at rydde dine browserdata for siden.",
@@ -16,6 +17,7 @@ const texts = {
     title: "Cookies",
     paragraphs: [
       "frolovfpv.com does not use cookies for tracking, analytics or advertising.",
+      "I count visits anonymously with Vercel Web Analytics, so I can see how many people stop by and which pages they view. This happens without cookies, and you cannot be recognised across days or other websites.",
       "The site only stores your language choice (Danish or English) locally in your browser, so you don't have to pick it again next time. This is needed for the site to work as you expect and is not shared with anyone.",
       "If you write to me through the contact form, your details are only used to reply to you.",
       "You can delete the stored data at any time by clearing your browser data for the site.",
