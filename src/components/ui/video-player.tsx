@@ -18,7 +18,18 @@ const clock = (s: number) => {
    and how much time is left. Drag the knob on the line (or anywhere on it) to spool through
    the clip yourself; on phones the knob is always there, on a computer it shows on hover.
    A tap on the picture pauses and plays. */
-export function VideoPlayer({ src, poster, className }: { src: string; poster?: string; className?: string }) {
+export function VideoPlayer({
+  src,
+  mobileSrc,
+  poster,
+  className,
+}: {
+  src: string;
+  /** A lighter copy for phones. */
+  mobileSrc?: string;
+  poster?: string;
+  className?: string;
+}) {
   const t = useT(texts);
   const video = useRef<HTMLVideoElement>(null);
   const track = useRef<HTMLDivElement>(null);
@@ -101,7 +112,6 @@ export function VideoPlayer({ src, poster, className }: { src: string; poster?: 
     <div className={`group/player relative h-full w-full ${className ?? ""}`}>
       <video
         ref={video}
-        src={src}
         poster={poster}
         onClick={toggle}
         onPlay={() => setPaused(false)}
@@ -113,7 +123,10 @@ export function VideoPlayer({ src, poster, className }: { src: string; poster?: 
         loop
         playsInline
         preload="auto"
-      />
+      >
+        {mobileSrc ? <source src={mobileSrc} type="video/mp4" media="(max-width: 767px)" /> : null}
+        <source src={src} type="video/mp4" />
+      </video>
 
       {paused && !held ? (
         <button
