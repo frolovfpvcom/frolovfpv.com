@@ -6,6 +6,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { createPortal } from "react-dom";
 import type { FolderFile } from "@/components/ui/glass-folder-cards";
 import { useT } from "@/lib/lang";
+import { VideoPlayer } from "@/components/ui/video-player";
 
 const texts = {
   da: { from: "fra", close: "Luk", prev: "Forrige klip", next: "Næste klip", clip: "Klip", of: "af", show: "Vis" },
@@ -108,6 +109,9 @@ function Viewer({ selection, onClose }: { selection: ClipSelection; onClose: () 
   // keys win over the folder's own Escape handler, which listens on document
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      // the seek line takes the arrow keys while it has focus
+      const onSlider = (document.activeElement as HTMLElement | null)?.getAttribute("role") === "slider";
+      if (onSlider && (e.key === "ArrowLeft" || e.key === "ArrowRight")) return;
       if (e.key === "Escape") {
         e.preventDefault();
         close();
@@ -115,7 +119,7 @@ function Viewer({ selection, onClose }: { selection: ClipSelection; onClose: () 
       else if (e.key === "ArrowLeft") go(-1);
       else if (e.key === "Tab") {
         // keep focus inside the dialog
-        const nodes = panelRef.current?.parentElement?.querySelectorAll<HTMLElement>("button, video[controls]");
+        const nodes = panelRef.current?.parentElement?.querySelectorAll<HTMLElement>("button, [role=slider]");
         if (!nodes?.length) return;
         const first = nodes[0];
         const last = nodes[nodes.length - 1];
@@ -248,21 +252,7 @@ function Viewer({ selection, onClose }: { selection: ClipSelection; onClose: () 
 
 function Media({ file }: { file: FolderFile }) {
   if (file.video) {
-    return (
-      <video
-        key={file.video}
-        src={file.video}
-        poster={file.image}
-        // the whole picture shows, also for clips that aren't 16:9
-        className="h-full w-full object-contain"
-        autoPlay
-        muted
-        loop
-        playsInline
-        controls
-        preload="auto"
-      />
-    );
+    return <VideoPlayer key={file.video} src={file.video} poster={file.image} />;
   }
   if (file.image) {
     // eslint-disable-next-line @next/next/no-img-element
