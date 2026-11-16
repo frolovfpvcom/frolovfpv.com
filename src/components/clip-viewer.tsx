@@ -6,6 +6,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { createPortal } from "react-dom";
 import type { FolderFile } from "@/components/ui/glass-folder-cards";
 import { useT } from "@/lib/lang";
+import { VideoPlayer } from "@/components/ui/video-player";
 
 const texts = {
   da: { from: "fra", close: "Luk", prev: "Forrige klip", next: "Næste klip", clip: "Klip", of: "af", show: "Vis" },
@@ -108,6 +109,9 @@ function Viewer({ selection, onClose }: { selection: ClipSelection; onClose: () 
   // keys win over the folder's own Escape handler, which listens on document
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      // the seek line takes the arrow keys while it has focus
+      const onSlider = (document.activeElement as HTMLElement | null)?.getAttribute("role") === "slider";
+      if (onSlider && (e.key === "ArrowLeft" || e.key === "ArrowRight")) return;
       if (e.key === "Escape") {
         e.preventDefault();
         close();
@@ -115,7 +119,7 @@ function Viewer({ selection, onClose }: { selection: ClipSelection; onClose: () 
       else if (e.key === "ArrowLeft") go(-1);
       else if (e.key === "Tab") {
         // keep focus inside the dialog
-        const nodes = panelRef.current?.parentElement?.querySelectorAll<HTMLElement>("button, video[controls]");
+        const nodes = panelRef.current?.parentElement?.querySelectorAll<HTMLElement>("button, [role=slider]");
         if (!nodes?.length) return;
         const first = nodes[0];
         const last = nodes[nodes.length - 1];
@@ -163,8 +167,8 @@ function Viewer({ selection, onClose }: { selection: ClipSelection; onClose: () 
 
       <div
         ref={panelRef}
-        className="relative w-full max-w-[min(960px,calc((100dvh-12rem)*16/9))] overflow-hidden rounded-[22px] border border-white/10 bg-neutral-900/80 text-white shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8)] will-change-transform"
-        style={{ opacity: 0 }}
+        className="relative w-full overflow-hidden rounded-[22px] border border-white/10 bg-neutral-900/80 text-white shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8)] will-change-transform"
+        style={{ opacity: 0, maxWidth: `min(960px, calc((100dvh - 12rem) * ${file.aspect ?? 16 / 9}))` }}
         onTouchStart={(e) => (touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY })}
         onTouchEnd={(e) => {
           const start = touch.current;
@@ -176,7 +180,7 @@ function Viewer({ selection, onClose }: { selection: ClipSelection; onClose: () 
           else if (dy > 90 && Math.abs(dy) > Math.abs(dx) * 1.5) close();
         }}
       >
-        <div className="relative aspect-video w-full overflow-hidden bg-black">
+        <div className="relative w-full overflow-hidden bg-black" style={{ aspectRatio: file.aspect ?? 16 / 9 }}>
           <AnimatePresence initial={false} custom={dir} mode="popLayout">
             <motion.div
               key={index}
@@ -248,20 +252,7 @@ function Viewer({ selection, onClose }: { selection: ClipSelection; onClose: () 
 
 function Media({ file }: { file: FolderFile }) {
   if (file.video) {
-    return (
-      <video
-        key={file.video}
-        src={file.video}
-        poster={file.image}
-        className="h-full w-full object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-        controls
-        preload="auto"
-      />
-    );
+    return <VideoPlayer key={file.video} src={file.video} mobileSrc={file.videoMobile} poster={file.image} />;
   }
   if (file.image) {
     // eslint-disable-next-line @next/next/no-img-element

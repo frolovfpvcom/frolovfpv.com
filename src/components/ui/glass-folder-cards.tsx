@@ -64,6 +64,10 @@ export type FolderFile = {
   image?: string
   /** …or a muted, looping video; `image` then serves as its poster. */
   video?: string
+  /** A lighter copy of `video` for phones. */
+  videoMobile?: string
+  /** Width / height of the clip, so the big viewer fits it without bars (16:9 if left out). */
+  aspect?: number
   /** An empty light-grey card, for a slot with nothing in it yet. */
   blank?: boolean
   /** Rendered as a link when the folder is open. */
