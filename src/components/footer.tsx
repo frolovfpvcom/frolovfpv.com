@@ -21,13 +21,13 @@ function InstagramIcon() {
 export function Footer() {
   const t = useT(texts);
   return (
-    <footer className="py-8 px-6">
-      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p className="text-sm text-foreground/50">
+    <footer className="mx-auto w-full max-w-[1360px] px-5 md:px-10">
+      <div className="flex flex-col justify-between gap-3 border-t border-border pb-10 pt-7 sm:flex-row sm:items-center">
+        <p className="text-sm text-muted-foreground">
           &copy; {new Date().getFullYear()} Frolov FPV. {t.rights}
         </p>
-        <div className="flex items-center gap-6 text-sm text-foreground/60">
-          <Link href="/cookies" className="hover:text-primary transition-colors duration-200">
+        <div className="flex items-center gap-6 text-sm text-muted-foreground">
+          <Link href="/cookies" className="hover:text-foreground transition-colors duration-200">
             {t.cookies}
           </Link>
           <a
@@ -35,7 +35,7 @@ export function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
-            className="flex items-center gap-2 hover:text-primary transition-colors duration-200"
+            className="flex items-center gap-2 hover:text-foreground transition-colors duration-200"
           >
             <InstagramIcon />
             @frolovfpv

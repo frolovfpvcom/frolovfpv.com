@@ -1,32 +1,27 @@
 @import "tailwindcss";
 @import "lenis/dist/lenis.css";
 
-/* Peters tema: "Taste in Motion Colour Slam" (mørkt). Varm næsten-sort baggrund, creme primær,
-   petroleumsblå sekundær og bordeaux accent. Koral (destructive) bruges kun til fejl. */
+/* "Galleri": helt hvidt, sort tekst og ingen accentfarve. Det eneste farverige på siden er
+   optagelserne. Destructive bruges kun til fejl. */
 :root {
-  --background: #141210;
-  --foreground: #fbf7ee;
-  --card: #23201d;
-  --card-foreground: #fbf7ee;
-  --popover: #23201d;
-  --popover-foreground: #fbf7ee;
-  --primary: #ffe3b0;
-  --primary-foreground: #141210;
-  --secondary: #0e6e72;
-  --secondary-foreground: #fbf7ee;
-  --accent: #8a1e50;
-  --accent-foreground: #fbf7ee;
-  --muted: #2a2622;
-  --muted-foreground: #b5ac9c;
-  --destructive: #d96a52;
-  --border: #3a342e;
-  --input: #3a342e;
-  --ring: #ffe3b0;
-  --chart-1: #ffe3b0;
-  --chart-2: #0e6e72;
-  --chart-3: #8a1e50;
-  --chart-4: #b5ac9c;
-  --chart-5: #d96a52;
+  --background: #ffffff;
+  --foreground: #111111;
+  --card: #f4f4f4;
+  --card-foreground: #111111;
+  --popover: #ffffff;
+  --popover-foreground: #111111;
+  --primary: #111111;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f4;
+  --secondary-foreground: #111111;
+  --accent: #111111;
+  --accent-foreground: #ffffff;
+  --muted: #f4f4f4;
+  --muted-foreground: #6b6b6b;
+  --destructive: #c62828;
+  --border: #e8e8e8;
+  --input: #dcdcdc;
+  --ring: #111111;
 }
 
 @theme inline {
@@ -50,37 +45,10 @@
   --color-primary-foreground: var(--primary-foreground);
 }
 
-/* The site's colour scales, all taken from the theme. */
-@theme {
-  /* skov: the warm dark browns of the surfaces, plus the petrol blue (500/600) for links and lines */
-  --color-skov-50: #23201d;
-  --color-skov-100: #2a2622;
-  --color-skov-200: #3a342e;
-  --color-skov-300: #3a342e;
-  --color-skov-400: #0e6e72;
-  --color-skov-500: #2a9599;
-  --color-skov-600: #5bb8ba;
-  --color-skov-700: #2a2622;
-  --color-skov-800: #23201d;
-  --color-skov-900: #1b1815;
-  --color-skov-950: #0c0a09;
-
-  /* sol: the cream */
-  --color-sol-100: #2f2922;
-  --color-sol-200: #fff0d4;
-  --color-sol-300: #ffe3b0;
-  --color-sol-400: #ffe3b0;
-  --color-sol-500: #c9ad7c;
-
-  /* ild: the bordeaux accent; 600 is a lighter tint of it so it can be read as text on the dark background */
-  --color-ild-400: #b8417a;
-  --color-ild-500: #8a1e50;
-  --color-ild-600: #d9689a;
-}
-
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-instrument-serif);
 }
 
 body {
@@ -90,13 +58,16 @@ body {
 }
 
 ::selection {
-  background: #ffe3b0;
-  color: #141210;
+  background: #111111;
+  color: #ffffff;
 }
 
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Overskrifter står i serif, balanceret over linjerne. */
+.font-serif {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
 /* Glas-menuen nederst på mobilen (components/mobile-dock.tsx): fire lige brede felter,

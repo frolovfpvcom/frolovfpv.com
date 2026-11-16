@@ -1,125 +1,57 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
-import { ChevronDown } from "lucide-react";
 import { useT } from "@/lib/lang";
 
 const texts = {
   da: {
-    title: "Se verden",
-    accent: "med nye øjne",
-    lead: "FPV-perspektiver, der fortæller historier fra vinkler, du aldrig har set før.",
-    down: "Gå til arbejde",
+    before: "FPV-droner kommer helt ",
+    accent: "tæt",
+    after: " på.",
+    lead: "Derhen hvor almindelige droner ikke tør, som får folk til at sige wow. Dronefilm til reklame, ejendomme, events og natur.",
+    tag: "Showreel",
   },
   en: {
-    title: "See the world",
-    accent: "With new eyes",
-    lead: "FPV perspectives that tell stories from angles you have never seen before.",
-    down: "Go to work",
+    before: "FPV drones get right ",
+    accent: "up close",
+    after: ".",
+    lead: "Where ordinary drones don't dare to go, which makes people say wow. Drone films for commercials, real estate, events and nature.",
+    tag: "Showreel",
   },
 };
 
-const EASE = [0.16, 1, 0.3, 1] as const;
-
-/** Splits a line into letters that rise into place one after another. */
-function Letters({ text, delay }: { text: string; delay: number }) {
-  return (
-    <span aria-label={text} className="inline-block">
-      {text.split("").map((ch, i) => (
-        <motion.span
-          key={i}
-          aria-hidden="true"
-          initial={{ y: "110%", opacity: 0, rotate: 8 }}
-          animate={{ y: "0%", opacity: 1, rotate: 0 }}
-          transition={{ duration: 0.9, delay: delay + i * 0.035, ease: EASE }}
-          className="inline-block whitespace-pre"
-        >
-          {ch}
-        </motion.span>
-      ))}
-    </span>
-  );
-}
-
+/* The headline on white, and the intro video under it in a frame with a white margin.
+   Nothing moves when the page scrolls; only the video plays. */
 export function Hero() {
   const t = useT(texts);
-  const ref = useRef<HTMLElement>(null);
-  // As the page scrolls, the video drifts slower than the page and zooms in a touch,
-  // while the headline lifts and fades: the next section slides up over it like a curtain.
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
-  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "-60%"]);
-  const textOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-
   return (
-    <section
-      ref={ref}
-      className="relative h-[100svh] min-h-[560px] w-full overflow-hidden bg-skov-950 text-white"
-    >
-      {/* The intro video fills the whole first screen, on phones as on desktop,
-          with the menu and the headline on top of it. */}
-      <motion.div
-        style={{ y: videoY, scale: videoScale }}
-        className="absolute inset-0 will-change-transform"
-      >
-        <motion.video
+    <header className="mx-auto max-w-[1360px] px-5 pt-24 md:px-10 md:pt-32">
+      <div className="flex flex-col gap-6 pb-8 md:flex-row md:items-end md:justify-between md:gap-10 md:pb-10">
+        <h1 className="font-serif text-[clamp(48px,7.4vw,112px)] leading-[0.98] md:max-w-[13ch]">
+          {t.before}
+          <em>{t.accent}</em>
+          {t.after}
+        </h1>
+        <p className="max-w-[34ch] text-muted-foreground md:pb-3">{t.lead}</p>
+      </div>
+
+      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-md bg-muted sm:aspect-[16/9] lg:aspect-[21/9]">
+        <video
           autoPlay
           loop
           muted
           playsInline
           // the first frame shows at once while the clip loads
           poster="/intro-4.jpg"
-          initial={{ opacity: 0, scale: 1.15 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.4, ease: EASE }}
-          className="block h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
         >
           {/* phones get a lighter 720p file, so the first screen starts quickly there too */}
           <source src="/intro-4-720.mp4" type="video/mp4" media="(max-width: 767px)" />
           <source src="/intro-4.mp4" type="video/mp4" />
-        </motion.video>
-      </motion.div>
-
-      {/* Darken the top for the menu and the bottom for the headline. */}
-      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-skov-950/55 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-t from-skov-950/80 via-skov-950/15 to-transparent" />
-
-      <motion.div
-        style={{ y: textY, opacity: textOpacity }}
-        className="relative z-10 flex h-full flex-col items-center justify-end px-6 pb-16 md:pb-24"
-      >
-        <div className="text-center">
-          <h1 className="overflow-hidden text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95]">
-            <Letters text={t.title} delay={0.3} />
-            <br />
-            <span className="text-sol-300">
-              <Letters text={t.accent} delay={0.6} />
-            </span>
-          </h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.1, ease: EASE }}
-            className="mt-5 text-white/85 text-base md:text-lg max-w-md mx-auto"
-          >
-            {t.lead}
-          </motion.p>
-        </div>
-
-        <motion.a
-          href="#projekter"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.6 }}
-          aria-label={t.down}
-          className="mt-8 grid size-11 place-items-center rounded-full border border-current/30 animate-bounce"
-        >
-          <ChevronDown size={22} />
-        </motion.a>
-      </motion.div>
-    </section>
+        </video>
+        <span className="absolute bottom-4 left-5 text-[13px] tracking-wide text-white [text-shadow:0_1px_8px_rgb(0_0_0/0.45)]">
+          {t.tag}
+        </span>
+      </div>
+    </header>
   );
 }
