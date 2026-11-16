@@ -90,14 +90,3 @@ body {
   height: 22px;
 }
 
-
-/* Den samme glas-menu øverst til højre på computer (components/navbar.tsx): ikoner med navne. */
-.desktop-dock .nimbus-nav[data-compact] .nimbus-item {
-  flex: none;
-  height: 42px;
-  padding: 0 16px;
-}
-.desktop-dock .nimbus-nav .nv-ico svg {
-  width: 18px;
-  height: 18px;
-}
