@@ -89,3 +89,48 @@ body {
   width: 22px;
   height: 22px;
 }
+
+/* Tågen lige efter introvideoen (components/front/fog-reveal.tsx): store, bløde skyer i hvid og
+   lys blågrå, der driver langsomt rundt. */
+.fog-cloud {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(40px);
+  will-change: transform;
+}
+.fog-a {
+  width: 90vw;
+  height: 70vh;
+  left: -25vw;
+  top: -10vh;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0));
+  animation: fog-drift-a 26s ease-in-out infinite alternate;
+}
+.fog-b {
+  width: 80vw;
+  height: 60vh;
+  right: -20vw;
+  top: 25vh;
+  background: radial-gradient(closest-side, rgba(226, 231, 238, 0.9), rgba(226, 231, 238, 0));
+  animation: fog-drift-b 32s ease-in-out infinite alternate;
+}
+.fog-c {
+  width: 110vw;
+  height: 55vh;
+  left: -5vw;
+  bottom: -15vh;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.92), rgba(240, 243, 247, 0));
+  animation: fog-drift-c 38s ease-in-out infinite alternate;
+}
+@keyframes fog-drift-a {
+  to { transform: translate3d(18vw, 6vh, 0) scale(1.1); }
+}
+@keyframes fog-drift-b {
+  to { transform: translate3d(-22vw, -8vh, 0) scale(1.15); }
+}
+@keyframes fog-drift-c {
+  to { transform: translate3d(10vw, -6vh, 0) scale(0.95); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fog-cloud { animation: none; }
+}
