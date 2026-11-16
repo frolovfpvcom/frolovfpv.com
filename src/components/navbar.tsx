@@ -5,6 +5,7 @@ import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useLang, useT, type Lang } from "@/lib/lang";
 import { GenieLink } from "@/lib/smooth-scroll";
+import { SiteDock } from "@/components/mobile-dock";
 
 const hrefs = ["/#ydelser", "/arbejde", "/ommig", "/kontakt"];
 
@@ -76,23 +77,14 @@ export function Navbar() {
           <span className="text-[15px] font-semibold tracking-tight">Frolov FPV</span>
         </GenieLink>
 
-        <div className="hidden items-center gap-9 md:flex">
-          {links.map((link) => {
-            const active = pathname === link.href;
-            return (
-              <GenieLink
-                key={link.href}
-                href={link.href}
-                aria-current={active ? "page" : undefined}
-                className={`text-[15px] transition-colors ${
-                  active ? "text-foreground underline underline-offset-[6px]" : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {link.label}
-              </GenieLink>
-            );
-          })}
-          <LangToggle />
+        {/* on a computer: the same liquid-glass menu as the phone dock, with the names shown */}
+        <div className="hidden items-center gap-6 md:flex">
+          <div className="mobile-dock desktop-dock">
+            <SiteDock id="bar" compact={false} />
+          </div>
+          <div className="flex">
+            <LangToggle />
+          </div>
         </div>
 
         <button

@@ -22,6 +22,9 @@ const clips = [
   { video: "/clips/telefon-pande-ram.mp4", poster: "/clips/telefon-pande-ram.jpg" },
 ];
 
+/** 0 before `from`, 1 after `to`, a straight line in between. */
+const ramp = (v: number, from: number, to: number) => Math.min(1, Math.max(0, (v - from) / (to - from)));
+
 /** A phone drawn in CSS with a clip playing on its screen. */
 function Phone({ clip, label, play }: { clip: (typeof clips)[number]; label: string; play: boolean }) {
   const video = useRef<HTMLVideoElement>(null);
@@ -55,22 +58,36 @@ function Phone({ clip, label, play }: { clip: (typeof clips)[number]; label: str
   );
 }
 
-/* Right after the intro video, on white: three phones playing clips rise up from the bottom of
-   the screen as you scroll down. All three are side by side from the start, so after a little
-   scroll you can already see there are three; the middle one leads, the outer two follow just
-   behind. With reduced motion they simply stand in place. */
+/* Right after the intro video, on white, all tied to the scroll: first only the middle phone
+   rises up from the bottom. Just as it has popped all the way up, the two others come out from
+   behind it, make a small hop and land one on each side. The screen holds still (sticky) while
+   they land, then the lines appear and the page carries on. With reduced motion the three phones
+   simply stand side by side. */
 export function Phones() {
   const t = useT(texts);
   const section = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
   const [near, setNear] = useState(false);
 
-  // 0 when the section's top reaches the bottom of the screen, 1 when it reaches the top
-  const { scrollYProgress: p } = useScroll({ target: section, offset: ["start end", "start start"] });
-  const middleY = useTransform(p, [0, 0.85], ["45%", "0%"]);
-  const sideY = useTransform(p, [0, 1], ["60%", "0%"]);
-  const textOpacity = useTransform(p, [0.55, 0.95], [0, 1]);
-  const ys = [sideY, middleY, sideY];
+  // 0 when the section's top reaches the bottom of the screen, 1 when its end reaches the bottom
+  const { scrollYProgress: p } = useScroll({ target: section, offset: ["start end", "end end"] });
+
+  // the middle phone: from below the screen up to its place, growing a little on the way
+  const midY = useTransform(p, [0, 0.42], ["80%", "0%"]);
+  const midScale = useTransform(p, [0, 0.42], [0.82, 1]);
+  // the side phones: out from behind it, up in a small hop, and down on their own side
+  const hop = [0.36, 0.52, 0.66];
+  const sideY = useTransform(p, hop, ["12%", "-16%", "0%"]);
+  const sideScale = useTransform(p, hop, [0.7, 0.9, 0.92]);
+  // opacity is worked out by hand: motion would otherwise hand a plain range over to the browser's
+  // own scroll timeline, which measures it against the whole page and got it wrong here
+  const sideOpacity = useTransform(p, (v) => ramp(v, 0.36, 0.42));
+  const leftX = useTransform(p, [hop[0], hop[2]], ["0%", "-96%"]);
+  const rightX = useTransform(p, [hop[0], hop[2]], ["0%", "96%"]);
+  const leftRotate = useTransform(p, [hop[0], hop[2]], [0, -7]);
+  const rightRotate = useTransform(p, [hop[0], hop[2]], [0, 7]);
+  const textOpacity = useTransform(p, (v) => ramp(v, 0.7, 0.85));
+  const textY = useTransform(p, [0.7, 0.85], [16, 0]);
 
   // only download and play the clips when the section is close to the screen
   useEffect(() => {
@@ -81,39 +98,48 @@ export function Phones() {
     return () => io.disconnect();
   }, []);
 
-  return (
-    <section
-      ref={section}
-      aria-label={t.lines.join(" ")}
-      className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden bg-white px-5 pb-16 pt-24 md:px-10 md:pt-28"
-    >
-      <div className="flex items-end justify-center">
-        {clips.map((clip, i) => {
-          const side = i - 1; // -1 left, 0 middle, 1 right
-          return (
-            <motion.div
-              key={clip.video}
-              style={reduced ? undefined : { y: ys[i] }}
-              className={`w-[min(32vw,26svh)] md:w-[min(17vw,27svh)] ${side === 0 ? "relative z-10" : "-mx-[3%] md:mx-[1.5vw]"}`}
-            >
-              <div style={{ transform: `rotate(${side * 6}deg) scale(${side === 0 ? 1 : 0.92})` }} className="origin-bottom">
-                <Phone clip={clip} label={t.phones[i]} play={near} />
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
+  const sides = [
+    { clip: clips[0], label: t.phones[0], x: leftX, rotate: leftRotate, still: { x: "-96%", rotate: -7, scale: 0.92 } },
+    { clip: clips[2], label: t.phones[2], x: rightX, rotate: rightRotate, still: { x: "96%", rotate: 7, scale: 0.92 } },
+  ];
 
-      <motion.p
-        style={reduced ? undefined : { opacity: textOpacity }}
-        className="mt-10 text-center font-serif text-[clamp(28px,4vw,56px)] leading-[1.05] md:mt-12 md:flex md:gap-[0.35em]"
+  return (
+    <section ref={section} aria-label={t.lines.join(" ")} className={reduced ? "relative" : "relative h-[230vh]"}>
+      <div
+        className={`${reduced ? "py-24" : "sticky top-0 h-[100svh]"} flex flex-col items-center justify-center overflow-hidden bg-white px-5 pt-16 md:px-10 md:pt-20`}
       >
-        {t.lines.map((line) => (
-          <span key={line} className="block">
-            {line}
-          </span>
-        ))}
-      </motion.p>
+        {/* the phones are sized by the screen height, and narrower on a phone screen */}
+        <div className="relative w-[min(30vw,28svh)] md:w-[min(17vw,28svh)]">
+          {sides.map((side) => (
+            <motion.div
+              key={side.clip.video}
+              style={
+                reduced
+                  ? side.still
+                  : { x: side.x, y: sideY, rotate: side.rotate, scale: sideScale, opacity: sideOpacity }
+              }
+              className="absolute inset-0 origin-bottom"
+            >
+              <Phone clip={side.clip} label={side.label} play={near} />
+            </motion.div>
+          ))}
+          {/* the middle phone sits in front of the other two */}
+          <motion.div style={reduced ? undefined : { y: midY, scale: midScale }} className="relative origin-bottom">
+            <Phone clip={clips[1]} label={t.phones[1]} play={near} />
+          </motion.div>
+        </div>
+
+        <motion.p
+          style={reduced ? undefined : { opacity: textOpacity, y: textY }}
+          className="relative mt-10 text-center font-serif text-[clamp(28px,4vw,56px)] leading-[1.05] md:mt-12 md:flex md:gap-[0.35em]"
+        >
+          {t.lines.map((line) => (
+            <span key={line} className="block">
+              {line}
+            </span>
+          ))}
+        </motion.p>
+      </div>
     </section>
   );
 }
