@@ -6,11 +6,11 @@ import { usePathname } from "next/navigation";
 import { useLang, useT, type Lang } from "@/lib/lang";
 import { GenieLink } from "@/lib/smooth-scroll";
 
-const hrefs = ["/arbejde", "/ommig", "/kontakt"];
+const hrefs = ["/#ydelser", "/arbejde", "/ommig", "/kontakt"];
 
 const texts = {
-  da: { links: ["Arbejde", "Om mig", "Kontakt"], home: "Til forsiden", open: "Åbn menu", close: "Luk menu", switchTo: "Switch to English" },
-  en: { links: ["Work", "About me", "Contact"], home: "To the front page", open: "Open menu", close: "Close menu", switchTo: "Skift til dansk" },
+  da: { links: ["Ydelser", "Arbejde", "Om mig", "Kontakt"], home: "Til forsiden", open: "Åbn menu", close: "Luk menu", switchTo: "Switch to English" },
+  en: { links: ["Services", "Work", "About me", "Contact"], home: "To the front page", open: "Open menu", close: "Close menu", switchTo: "Skift til dansk" },
 };
 
 /** DA / EN switch; the active language is dark, the other faded. */

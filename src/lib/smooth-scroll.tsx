@@ -58,7 +58,12 @@ export function SmoothScroll({ header, children }: { header: React.ReactNode; ch
   // A new page starts at the top. Once it has rendered and the pictures at the top
   // are decoded, let the transition open it, so it unfolds as a finished page.
   useEffect(() => {
-    lenis?.scrollTo(0, { immediate: true, force: true });
+    // a link like /#ydelser lands on that section; everything else starts at the top
+    const target = window.location.hash ? document.getElementById(window.location.hash.slice(1)) : null;
+    if (target) {
+      if (lenis) lenis.scrollTo(target, { immediate: true, force: true, offset: -40 });
+      else target.scrollIntoView();
+    } else lenis?.scrollTo(0, { immediate: true, force: true });
     const done = pending.current;
     if (!done) return;
     pending.current = null;
@@ -74,6 +79,16 @@ export function SmoothScroll({ header, children }: { header: React.ReactNode; ch
 
   const navigate = useCallback(
     async (href: string) => {
+      const [path, hash] = href.split("#");
+      // a section on the page we're already on: just glide down to it
+      if (hash && (path || "/") === pathname) {
+        const target = document.getElementById(hash);
+        if (target) {
+          if (lenis) lenis.scrollTo(target, { offset: -40 });
+          else target.scrollIntoView({ behavior: "smooth" });
+          return;
+        }
+      }
       if (href === pathname) {
         if (lenis) lenis.scrollTo(0);
         else window.scrollTo({ top: 0, behavior: "smooth" });

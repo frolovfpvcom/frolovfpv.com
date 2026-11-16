@@ -1,21 +1,25 @@
 "use client";
 
+import { ArrowUpRight } from "lucide-react";
 import { useT } from "@/lib/lang";
+import { GenieLink } from "@/lib/smooth-scroll";
 
 const texts = {
   da: {
     before: "FPV-droner kommer helt ",
     accent: "tæt",
     after: " på.",
-    lead: "Derhen hvor almindelige droner ikke tør, som får folk til at sige wow. Dronefilm til reklame, ejendomme, events og natur.",
-    down: "Scroll for at se mere",
+    lead: "Derhen hvor almindelige droner ikke tør, som får folk til at sige wow. Jeg laver FPV-dronefilm til virksomheder: indhold til sociale medier, one-takes og house tours.",
+    cta: "Få et tilbud",
+    more: "Se hvad jeg tilbyder",
   },
   en: {
     before: "FPV drones get right ",
     accent: "up close",
     after: ".",
-    lead: "Where ordinary drones don't dare to go, which makes people say wow. Drone films for commercials, real estate, events and nature.",
-    down: "Scroll to see more",
+    lead: "Where ordinary drones don't dare to go, which makes people say wow. I make FPV drone films for businesses: social media content, one-takes and house tours.",
+    cta: "Get a quote",
+    more: "See what I offer",
   },
 };
 
@@ -50,11 +54,23 @@ export function Hero() {
           <em>{t.accent}</em>
           {t.after}
         </h1>
-        <div className="mt-6 flex flex-col gap-4 border-t border-white/30 pt-5 md:mt-10 md:flex-row md:items-end md:justify-between">
-          <p className="max-w-[46ch] text-white/85">{t.lead}</p>
-          <a href="#projekter" className="hidden text-sm text-white/85 hover:text-white md:block">
-            {t.down} ↓
-          </a>
+        <div className="mt-6 flex flex-col gap-5 border-t border-white/30 pt-5 md:mt-10 md:flex-row md:items-end md:justify-between">
+          <p className="max-w-[52ch] text-white/85">{t.lead}</p>
+          <div className="flex shrink-0 flex-wrap items-center gap-x-6 gap-y-3">
+            <GenieLink
+              href="/kontakt"
+              className="group inline-flex h-12 items-center gap-2 rounded-full bg-white px-6 text-[15px] font-medium text-neutral-900 transition-colors hover:bg-white/85"
+            >
+              {t.cta}
+              <ArrowUpRight
+                size={16}
+                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </GenieLink>
+            <a href="#ydelser" className="text-[15px] text-white/85 underline-offset-[6px] hover:text-white hover:underline">
+              {t.more} ↓
+            </a>
+          </div>
         </div>
       </div>
     </header>

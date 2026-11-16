@@ -26,9 +26,9 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Frolov FPV | Dronefilm",
+  title: "Frolov FPV | FPV-dronefilm til virksomheder",
   description:
-    "Professionel FPV-dronefilm — filmiske luftoptagelser, medrivende footage og kreativ historiefortælling fra oven.",
+    "FPV-dronefilm til virksomheder: indhold til sociale medier, one-takes og house tours til ejendomsmæglere. Få et tilbud.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

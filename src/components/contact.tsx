@@ -8,16 +8,18 @@ import { SpiderShotLayer } from "@/components/ui/spider-shot";
 
 const texts = {
   da: {
-    before: "Lad os arbejde ",
-    accent: "sammen",
-    lead: "Har du et projekt i tankerne? Jeg vil meget gerne høre om det. Tag fat i mig, så skaber vi noget episk sammen.",
-    cta: "Kontakt mig",
+    before: "Skal jeres virksomhed ",
+    accent: "ses",
+    after: "?",
+    lead: "Fortæl mig hvad I vil vise, hvor og hvornår. Så vender jeg tilbage med en idé og en pris.",
+    cta: "Få et tilbud",
   },
   en: {
-    before: "Let's work ",
-    accent: "together",
-    lead: "Got a project in mind? I'd love to hear about it. Get in touch and let's create something epic together.",
-    cta: "Contact me",
+    before: "Should your business get ",
+    accent: "seen",
+    after: "?",
+    lead: "Tell me what you want to show, where and when. I'll come back with an idea and a price.",
+    cta: "Get a quote",
   },
 };
 
@@ -37,6 +39,7 @@ export function Contact() {
           <h2 className="font-serif text-[clamp(56px,8vw,120px)] leading-[0.95]">
             {t.before}
             <em>{t.accent}</em>
+            {t.after}
           </h2>
           <p className="mx-auto mb-10 mt-6 max-w-[46ch] text-muted-foreground">{t.lead}</p>
 

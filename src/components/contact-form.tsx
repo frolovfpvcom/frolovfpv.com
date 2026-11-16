@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { motion } from "motion/react";
 import { Mail, Send } from "lucide-react";
 import { useT } from "@/lib/lang";
@@ -12,54 +12,68 @@ const texts = {
     label: "Kontakt",
     title: "Nysgerrig?",
     accent: "Tøv ikke med at kontakte mig.",
-    lead: "Har du en idé, et event eller et produkt, der skal ses fra en vinkel, ingen har filmet før? Fortæl mig lidt om det, så vender jeg tilbage hurtigst muligt.",
+    lead: "Skal jeres virksomhed, bolig eller event ses fra en vinkel, ingen har filmet før? Fortæl mig lidt om det, så vender jeg tilbage med en idé og en pris.",
     name: "Navn *",
     namePh: "Dit navn",
     email: "Email *",
     emailPh: "din@email.dk",
     phone: "Telefon",
     optional: "Valgfrit",
+    company: "Virksomhed",
     when: "Hvornår?",
     whenPh: "Dato eller periode",
     type: "Hvad drejer det sig om?",
-    types: ["Reklame", "Event", "Natur og landskab", "Musikvideo", "Andet"],
+    types: ["Indhold til sociale medier", "One-take", "House tour / ejendom", "Event", "Andet"],
     message: "Besked *",
-    messagePh: "Fortæl lidt om dit projekt, sted og idé…",
+    messagePh: "Hvad skal filmes, hvor, og hvad skal videoen bruges til?",
     send: "Send besked",
     sent: "Din mail-app burde åbne nu med beskeden klar. Hvis ikke, så skriv direkte til",
     inquiry: "henvendelse fra",
-    mail: { name: "Navn", phone: "Telefon", date: "Dato" },
+    mail: { name: "Navn", company: "Virksomhed", phone: "Telefon", date: "Dato" },
   },
   en: {
     label: "Contact",
     title: "Curious?",
     accent: "Don't hesitate to reach out.",
-    lead: "Got an idea, an event or a product that should be seen from an angle nobody has filmed before? Tell me a bit about it and I'll get back to you as soon as I can.",
+    lead: "Should your business, property or event be seen from an angle nobody has filmed before? Tell me a bit about it and I'll come back with an idea and a price.",
     name: "Name *",
     namePh: "Your name",
     email: "Email *",
     emailPh: "you@email.com",
     phone: "Phone",
     optional: "Optional",
+    company: "Company",
     when: "When?",
     whenPh: "Date or period",
     type: "What is it about?",
-    types: ["Commercial", "Event", "Nature and landscape", "Music video", "Other"],
+    types: ["Social media content", "One-take", "House tour / real estate", "Event", "Other"],
     message: "Message *",
-    messagePh: "Tell me a bit about your project, location and idea…",
+    messagePh: "What should be filmed, where, and what is the video for?",
     send: "Send message",
     sent: "Your mail app should open now with the message ready. If not, write directly to",
     inquiry: "inquiry from",
-    mail: { name: "Name", phone: "Phone", date: "Date" },
+    mail: { name: "Name", company: "Company", phone: "Phone", date: "Date" },
   },
 };
+
+/* /kontakt?ydelse=… (from the "Ask for a price" buttons) opens the form with that service picked;
+   the order matches `types` above. */
+const SERVICE_SLUGS = ["sociale-medier", "one-take", "house-tour", "event"];
 
 const field =
   "w-full rounded-lg border border-input bg-background px-4 py-3 text-foreground placeholder:text-foreground/35 focus:border-foreground focus:bg-background focus:outline-none focus:ring-4 focus:ring-foreground/10 transition-all";
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
+  const [typeIndex, setTypeIndex] = useState(0);
   const t = useT(texts);
+
+  useEffect(() => {
+    const slug = new URLSearchParams(window.location.search).get("ydelse");
+    const i = slug ? SERVICE_SLUGS.indexOf(slug) : -1;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the address is only known in the browser
+    if (i >= 0) setTypeIndex(i);
+  }, []);
 
   // There's no mail server behind the site, so the form opens the visitor's
   // mail app with everything filled in, addressed to Peter.
@@ -73,6 +87,7 @@ export function ContactForm() {
       String(data.get("message")),
       "",
       `${t.mail.name}: ${name}`,
+      data.get("company") ? `${t.mail.company}: ${data.get("company")}` : "",
       `Email: ${data.get("email")}`,
       data.get("phone") ? `${t.mail.phone}: ${data.get("phone")}` : "",
       data.get("date") ? `${t.mail.date}: ${data.get("date")}` : "",
@@ -130,21 +145,32 @@ export function ContactForm() {
               <input name="phone" type="tel" autoComplete="tel" className={field} placeholder={t.optional} />
             </label>
             <label className="block">
+              <span className="mb-2 block text-sm font-medium text-foreground/70">{t.company}</span>
+              <input name="company" autoComplete="organization" className={field} placeholder={t.optional} />
+            </label>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <label className="block">
+              <span className="mb-2 block text-sm font-medium text-foreground/70">{t.type}</span>
+              <select
+                name="type"
+                className={`${field} appearance-none`}
+                value={t.types[typeIndex]}
+                onChange={(e) => setTypeIndex(t.types.indexOf(e.target.value))}
+              >
+                {t.types.map((type) => (
+                  <option key={type} value={type} className="bg-popover">
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block">
               <span className="mb-2 block text-sm font-medium text-foreground/70">{t.when}</span>
               <input name="date" className={field} placeholder={t.whenPh} />
             </label>
           </div>
-
-          <label className="block">
-            <span className="mb-2 block text-sm font-medium text-foreground/70">{t.type}</span>
-            <select name="type" className={`${field} appearance-none`} key={t.types[0]} defaultValue={t.types[0]}>
-              {t.types.map((type) => (
-                <option key={type} value={type} className="bg-popover">
-                  {type}
-                </option>
-              ))}
-            </select>
-          </label>
 
           <label className="block">
             <span className="mb-2 block text-sm font-medium text-foreground/70">{t.message}</span>

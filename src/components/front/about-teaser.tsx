@@ -11,8 +11,6 @@ const texts = {
     small: "Fra marker og skove til huse indefra og biler i fart. Kameraet kommer derhen, hvor andre droner ikke kan.",
     more: "Læs mere",
     alt: "Peter Frolov med FPV-briller på",
-    services: "Det laver jeg",
-    list: ["Reklame", "Ejendomme", "Events", "Natur", "Musikvideo", "Sport"],
   },
   en: {
     label: "About me",
@@ -20,16 +18,13 @@ const texts = {
     small: "From fields and forests to the inside of houses and cars at speed. The camera goes where other drones can't.",
     more: "Read more",
     alt: "Peter Frolov wearing FPV goggles",
-    services: "What I do",
-    list: ["Commercials", "Real estate", "Events", "Nature", "Music videos", "Sports"],
   },
 };
 
-/* A short "about me" with the portrait, and a plain list of what Peter films. */
+/* A short "about me" with the portrait, so businesses see who they would be working with. */
 export function AboutTeaser() {
   const t = useT(texts);
   return (
-    <>
       <section className="mx-auto max-w-[1360px] px-5 pt-24 md:px-10 md:pt-32">
         <Reveal className="grid grid-cols-1 items-end gap-7 md:grid-cols-[320px_1fr] md:gap-16">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -49,19 +44,5 @@ export function AboutTeaser() {
           </div>
         </Reveal>
       </section>
-
-      <section className="mx-auto max-w-[1360px] px-5 pt-24 md:px-10 md:pt-32">
-        <div className="mb-8 border-b border-border pb-4 md:mb-10">
-          <h2 className="font-serif text-[40px] leading-none md:text-[56px]">{t.services}</h2>
-        </div>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {t.list.map((item) => (
-            <li key={item} className="border-b border-border py-6 text-[22px]">
-              {item}
-            </li>
-          ))}
-        </ul>
-      </section>
-    </>
   );
 }
