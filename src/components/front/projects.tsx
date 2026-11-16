@@ -11,6 +11,10 @@ type Project = {
   image: string;
   /** Plays when the mouse is over the card, and in the viewer when it's clicked. Leave out for "coming soon". */
   video?: string;
+  /** A lighter copy of the video for phones, used in the viewer. */
+  videoMobile?: string;
+  /** Width / height of the video. */
+  aspect?: number;
   title: Record<Lang, string>;
   meta: Record<Lang, string>;
   note?: Record<Lang, string>;
@@ -21,6 +25,8 @@ const projects: Project[] = [
   {
     image: "/projekter/pande-ram.jpg",
     video: "/clips/pande-ram.mp4",
+    videoMobile: "/clips/pande-ram-720.mp4",
+    aspect: 16 / 9,
     title: { da: "Panoram", en: "Panoram" },
     meta: { da: "Natur · 0:13", en: "Nature · 0:13" },
     note: {
@@ -30,12 +36,16 @@ const projects: Project[] = [
   },
   {
     image: "/projekter/house-tour.jpg",
+    video: "/clips/house-tour.mp4",
+    videoMobile: "/clips/house-tour-720.mp4",
+    aspect: 4 / 3,
     title: { da: "House tour", en: "House tour" },
-    meta: { da: "Ejendom · kommer snart", en: "Real estate · coming soon" },
+    meta: { da: "Ejendom · 0:31", en: "Real estate · 0:31" },
   },
   {
     image: "/projekter/testkorsel.jpg",
     video: "/clips/testkorsel.mp4",
+    aspect: 4 / 3,
     title: { da: "Testkørsel", en: "Test drive" },
     meta: { da: "Bil · 0:10", en: "Car · 0:10" },
     note: {
@@ -133,6 +143,8 @@ export function Projects() {
     name: p.title[lang],
     meta: p.meta[lang],
     video: p.video,
+    videoMobile: p.videoMobile,
+    aspect: p.aspect,
     image: p.image,
   }));
 
