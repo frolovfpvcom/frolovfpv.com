@@ -147,11 +147,6 @@ export function SmoothScroll({ header, children }: { header: React.ReactNode; ch
   );
 }
 
-/** Opens one of the site's own pages with the genie transition (for links that aren't a GenieLink). */
-export function useGenieNavigate() {
-  return useContext(GenieContext);
-}
-
 /** A link to one of the site's own pages that opens it with the genie transition. */
 export function GenieLink({ href, onClick, ...props }: ComponentProps<typeof NextLink> & { href: string }) {
   const navigate = useContext(GenieContext);
@@ -167,4 +162,9 @@ export function GenieLink({ href, onClick, ...props }: ComponentProps<typeof Nex
       }}
     />
   );
+}
+
+/** Opens one of the site's own pages with the page transition (for links that aren't a GenieLink). */
+export function useGenieNavigate() {
+  return useContext(GenieContext);
 }

@@ -55,6 +55,34 @@ const folderIcon = (
   </svg>
 );
 
+/** Quadcopter seen from above; it still gets the "plane" animation and flies off when tapped. */
+const droneIcon = (
+  <svg
+    viewBox="0 0 24 24"
+    width="18"
+    height="18"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.7"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="5.6" cy="5.6" r="3.3" />
+    <circle cx="18.4" cy="5.6" r="3.3" />
+    <circle cx="5.6" cy="18.4" r="3.3" />
+    <circle cx="18.4" cy="18.4" r="3.3" />
+    <path d="M5.6 5.6 18.4 18.4M18.4 5.6 5.6 18.4" />
+    <path d="M12 8.9 15.1 12 12 15.1 8.9 12Z" fill="currentColor" />
+    <g fill="currentColor" stroke="none">
+      <circle cx="5.6" cy="5.6" r="1.1" />
+      <circle cx="18.4" cy="5.6" r="1.1" />
+      <circle cx="5.6" cy="18.4" r="1.1" />
+      <circle cx="18.4" cy="18.4" r="1.1" />
+    </g>
+  </svg>
+);
+
 const hrefs = ["/", "/arbejde", "/kontakt", "/ommig"];
 
 const texts = {
@@ -82,7 +110,7 @@ export function MobileDock() {
     setActive(indexFor(pathname));
   }, [pathname]);
 
-  const icons = [NimbusIcons.home, folderIcon, NimbusIcons.plane, NimbusIcons.user];
+  const icons = [NimbusIcons.home, folderIcon, droneIcon, NimbusIcons.user];
   const fx: LiquidNavItem["fx"][] = ["glow", "pop", "plane", "wave"];
   const items: LiquidNavItem[] = hrefs.map((href, i) => ({ href, label: t.labels[i], icon: icons[i], fx: fx[i] }));
 
