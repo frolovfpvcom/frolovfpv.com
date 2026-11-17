@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
-  animate,
   motion,
   useMotionValue,
   useMotionValueEvent,
@@ -69,12 +68,8 @@ function Phone({ clip, label, play }: { clip: (typeof clips)[number]; label: str
 /* Right after the intro video, on white: first only the middle phone rises up from the bottom.
    Just as it has popped all the way up, the two others come out from behind it and travel a
    half circle (up first, then out, then down) to land one on each side; then the lines appear.
-
-   On a computer it is all tied to the scroll and the screen holds still (sticky) meanwhile.
-   On a phone it plays by itself as soon as you have scrolled a little, so one swipe is enough
-   to see the whole thing. With reduced motion the three phones simply stand side by side. */
-
-const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+   It all follows the scroll, and the screen holds still (sticky), all white, while the phones
+   land. With reduced motion the three phones simply stand side by side. */
 
 export function Phones() {
   const t = useT(texts);
@@ -88,13 +83,15 @@ export function Phones() {
   const hop = useMotionValue(0);
   const words = useMotionValue(0);
 
-  // computer: 0 when the section's top reaches the bottom of the screen, 1 when its end does
+  // 0 when the section's top reaches the bottom of the screen, 1 when its end does. The section
+  // is shorter on a phone, so less scrolling plays it. The middle phone is all the way up just as
+  // the section's top reaches the top of the screen, so the side phones hop on a white screen.
   const { scrollYProgress: p } = useScroll({ target: section, offset: ["start end", "end end"] });
   useMotionValueEvent(p, "change", (v) => {
-    if (phone) return;
-    rise.set(ramp(v, 0, 0.42));
-    hop.set(ramp(v, 0.36, 0.66));
-    words.set(ramp(v, 0.7, 0.85));
+    const top = phone ? 1 / 1.7 : 1 / 2.3; // where the section's top meets the top of the screen
+    rise.set(ramp(v, 0, top));
+    hop.set(ramp(v, top - 0.03, phone ? 0.84 : 0.68));
+    words.set(ramp(v, phone ? 0.84 : 0.7, phone ? 0.95 : 0.85));
   });
 
   useEffect(() => {
@@ -104,37 +101,6 @@ export function Phones() {
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
   }, []);
-
-  // phone: play once the section is a little way onto the screen, rewind when it is gone below
-  useEffect(() => {
-    if (!phone || reduced) return;
-    let played = false;
-    const runs: { stop: () => void }[] = [];
-    const check = () => {
-      const top = section.current?.getBoundingClientRect().top ?? Infinity;
-      const h = window.innerHeight;
-      if (!played && top < h * 0.85) {
-        played = true;
-        runs.push(
-          animate(rise, 1, { duration: 0.75, ease: EASE_OUT }),
-          animate(hop, 1, { duration: 0.95, delay: 0.5, ease: "easeInOut" }),
-          animate(words, 1, { duration: 0.5, delay: 1.25, ease: "easeOut" }),
-        );
-      } else if (played && top > h) {
-        played = false;
-        runs.splice(0).forEach((r) => r.stop());
-        rise.set(0);
-        hop.set(0);
-        words.set(0);
-      }
-    };
-    check();
-    window.addEventListener("scroll", check, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", check);
-      runs.forEach((r) => r.stop());
-    };
-  }, [phone, reduced, rise, hop, words]);
 
   // the middle phone: from below up to its place, growing a little on the way
   const midY = useTransform(rise, (r) => `${80 * (1 - r)}%`);
@@ -167,9 +133,9 @@ export function Phones() {
   ];
 
   return (
-    <section ref={section} aria-label={t.lines.join(" ")} className={reduced ? "relative" : "relative md:h-[230vh]"}>
+    <section ref={section} aria-label={t.lines.join(" ")} className={reduced ? "relative" : "relative h-[170vh] md:h-[230vh]"}>
       <div
-        className={`${reduced ? "py-24" : "py-14 md:sticky md:top-0 md:h-[100svh] md:py-0 md:pt-20"} flex flex-col items-center justify-center overflow-hidden bg-white px-5 md:px-10`}
+        className={`${reduced ? "py-24" : "sticky top-0 h-[100svh] pt-16 md:pt-20"} flex flex-col items-center justify-center overflow-hidden bg-white px-5 md:px-10`}
       >
         {/* the phones are sized by the screen height, and narrower on a phone screen */}
         <div className="relative w-[min(30vw,28svh)] md:w-[min(17vw,28svh)]">
