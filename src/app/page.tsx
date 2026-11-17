@@ -1,24 +1,26 @@
 import { Hero } from "@/components/hero";
-import { GalleryWall } from "@/components/gallery-wall";
-import { Statement } from "@/components/landing/statement";
-import { Marquee } from "@/components/landing/marquee";
-import { ClipStrip } from "@/components/landing/clip-strip";
+import { Phones } from "@/components/front/phones";
+import { Pitch } from "@/components/front/pitch";
+import { Services } from "@/components/services";
+import { Projects } from "@/components/front/projects";
+import { Process } from "@/components/front/process";
+import { AboutTeaser } from "@/components/front/about-teaser";
 import { Contact } from "@/components/contact";
-import { Work } from "@/components/work";
 
+/* The front page is a shop window for businesses: the intro video, three phones with clips
+   that rise up from below, a pitch for why FPV helps a business, what Peter offers, examples, how booking works, who he is, and a
+   way to get a quote. */
 export default function Home() {
   return (
     <main>
       <Hero />
-      {/* the rest of the page slides up over the intro video like a curtain */}
-      <div className="relative z-10 rounded-t-[2rem] bg-background md:rounded-t-[3rem]">
-        <GalleryWall />
-        <Statement />
-        <Marquee />
-        <ClipStrip />
-        <Contact />
-        <Work />
-      </div>
+      <Phones />
+      <Pitch />
+      <Services />
+      <Projects />
+      <Process />
+      <AboutTeaser />
+      <Contact />
     </main>
   );
 }
