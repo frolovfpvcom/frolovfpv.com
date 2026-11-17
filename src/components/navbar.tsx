@@ -67,12 +67,11 @@ export function Navbar() {
     >
       <div className="mx-auto flex h-16 max-w-[1360px] items-center justify-between px-5 md:h-20 md:px-10">
         <GenieLink href="/" aria-label={t.home} className="flex items-center gap-2.5">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/kat-logo-tiger.png"
-            alt=""
-            className={`h-10 w-auto transition-[filter] duration-300 md:h-11 ${onVideo ? "invert" : ""}`}
-          />
+          {/* the cat always stays black on a white tile, also on top of the intro video */}
+          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.12)] md:h-12 md:w-12">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/kat-logo-tiger.png" alt="" className="h-9 w-auto md:h-10" />
+          </span>
           <span className="text-[15px] font-semibold tracking-tight">Frolov FPV</span>
         </GenieLink>
 
