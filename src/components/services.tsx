@@ -13,10 +13,11 @@ import { useLang, useT, type Lang } from "@/lib/lang";
 type Service = {
   /** Used in /kontakt?ydelse=… so the form opens with this service picked. */
   slug: string;
-  image: string;
-  video: string;
+  /** Leave the clip out and the card simply has no "Se eksempel" button. */
+  image?: string;
+  video?: string;
   videoMobile?: string;
-  aspect: number;
+  aspect?: number;
 };
 
 const media: Service[] = [
@@ -28,13 +29,7 @@ const media: Service[] = [
     videoMobile: "/clips/pande-ram-720.mp4",
     aspect: 16 / 9,
   },
-  {
-    slug: "house-tour",
-    image: "/projekter/house-tour.jpg",
-    video: "/clips/house-tour.mp4",
-    videoMobile: "/clips/house-tour-720.mp4",
-    aspect: 4 / 3,
-  },
+  { slug: "house-tour" },
 ];
 
 /* Each service has its own deep colour on the dark band (blue, green, plum), with a lighter
@@ -207,14 +202,16 @@ function ServiceCard({
                 className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
               />
             </GenieLink>
-            <button
-              type="button"
-              onClick={(e) => onOpen(e.currentTarget)}
-              className="inline-flex items-center gap-2 text-[15px] text-white/85 underline-offset-[6px] hover:text-white hover:underline"
-            >
-              <Play size={12} fill="currentColor" />
-              {t.example}
-            </button>
+            {service.video && (
+              <button
+                type="button"
+                onClick={(e) => onOpen(e.currentTarget)}
+                className="inline-flex items-center gap-2 text-[15px] text-white/85 underline-offset-[6px] hover:text-white hover:underline"
+              >
+                <Play size={12} fill="currentColor" />
+                {t.example}
+              </button>
+            )}
           </div>
         </div>
       </article>
@@ -226,7 +223,9 @@ export function Services() {
   const t = useT(texts);
   const { lang } = useLang();
   const [clip, setClip] = useState<ClipSelection | null>(null);
-  const files = media.map((m, i) => ({
+  // only the services that have an example clip go into the viewer
+  const withClip = media.flatMap((m, i) => (m.video ? [{ m, i }] : []));
+  const files = withClip.map(({ m, i }) => ({
     name: texts[lang].items[i].title,
     video: m.video,
     videoMobile: m.videoMobile,
@@ -252,7 +251,9 @@ export function Services() {
               key={service.slug}
               service={service}
               index={i}
-              onOpen={(el) => setClip({ files, index: i, folder: t.folder, origin: el })}
+              onOpen={(el) =>
+                setClip({ files, index: withClip.findIndex((c) => c.i === i), folder: t.folder, origin: el })
+              }
             />
           ))}
         </div>

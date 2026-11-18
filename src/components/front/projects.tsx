@@ -35,14 +35,6 @@ const projects: Project[] = [
     },
   },
   {
-    image: "/projekter/house-tour.jpg",
-    video: "/clips/house-tour.mp4",
-    videoMobile: "/clips/house-tour-720.mp4",
-    aspect: 4 / 3,
-    title: { da: "House tour", en: "House tour" },
-    meta: { da: "Ejendom · 0:31", en: "Real estate · 0:31" },
-  },
-  {
     image: "/projekter/testkorsel.jpg",
     video: "/clips/testkorsel.mp4",
     aspect: 4 / 3,
