@@ -35,12 +35,12 @@ export function Hero() {
         muted
         playsInline
         // the first frame shows at once while the clip loads
-        poster="/intro-4.jpg"
+        poster="/intro-5.jpg"
         className="absolute inset-0 h-full w-full object-cover"
       >
         {/* phones get a lighter 720p file, so the first screen starts quickly there too */}
-        <source src="/intro-4-720.mp4" type="video/mp4" media="(max-width: 767px)" />
-        <source src="/intro-4.mp4" type="video/mp4" />
+        <source src="/intro-5-720.mp4" type="video/mp4" media="(max-width: 767px)" />
+        <source src="/intro-5.mp4" type="video/mp4" />
       </video>
 
       {/* darken the top for the menu and the bottom for the headline */}
