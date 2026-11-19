@@ -185,7 +185,7 @@ export function ContactForm() {
 
           <button
             type="submit"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-neutral-700 sm:w-auto"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-brand-deep sm:w-auto"
           >
             <Send size={16} />
             {t.send}

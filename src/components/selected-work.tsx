@@ -34,7 +34,7 @@ export function SelectedWork() {
       <p className="mt-6 text-lg leading-relaxed text-muted-foreground">{t.more}</p>
       <Link
         href="/kontakt"
-        className="group mt-10 inline-flex items-center gap-2.5 rounded-full bg-primary px-7 py-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-neutral-700"
+        className="group mt-10 inline-flex items-center gap-2.5 rounded-full bg-primary px-7 py-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-brand-deep"
       >
         {t.cta}
         <ArrowUpRight
