@@ -1,6 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
+import { FpvIntro } from "@/components/front/fpv-intro";
 import { useT } from "@/lib/lang";
 import { GenieLink } from "@/lib/smooth-scroll";
 
@@ -21,13 +23,23 @@ const texts = {
   },
 };
 
-/* The intro video fills the whole first screen, edge to edge, with the menu and the buttons
-   on top of it in white. Nothing moves when the page scrolls; only the video plays. */
+/* First a 2.5 s tunnel of clips (FpvIntro) plays on top; then the intro video fills the whole
+   first screen, edge to edge, with the menu and the buttons on top of it in white. Nothing moves when the page scrolls; only the video plays. */
 export function Hero() {
   const t = useT(texts);
+  const video = useRef<HTMLVideoElement>(null);
+  // when the 2.5 s tunnel intro is over, the real intro video starts from the beginning
+  const startVideo = () => {
+    const v = video.current;
+    if (!v) return;
+    v.currentTime = 0;
+    v.play().catch(() => {});
+  };
   return (
     <header className="relative h-[100svh] min-h-[560px] w-full overflow-hidden bg-neutral-900 text-white">
+      <FpvIntro onDone={startVideo} />
       <video
+        ref={video}
         autoPlay
         loop
         muted
