@@ -7,6 +7,7 @@ import {
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
+  useSpring,
   useTransform,
 } from "motion/react";
 import { useT } from "@/lib/lang";
@@ -55,6 +56,16 @@ const phones: { clip: Clip; screen: Screen }[] = [
 
 /** 0 before `from`, 1 after `to`, a straight line in between. */
 const ramp = (v: number, from: number, to: number) => Math.min(1, Math.max(0, (v - from) / (to - from)));
+
+/** 0 → 1, but it shoots a little past 1 near the end and settles back: the "pop" of a bounce. */
+const backOut = (t: number, overshoot = 2.2) => {
+  const u = t - 1;
+  return 1 + (overshoot + 1) * u * u * u + overshoot * u * u;
+};
+
+/* Springs that follow the scroll but overshoot and wobble a little before they settle, so the
+   phones feel bouncy, also when the scrolling stops suddenly. */
+const bounce = { stiffness: 210, damping: 13, mass: 0.9 };
 
 /** A muted, looping clip that only plays while `play` is on. */
 function Clip({ clip, label, play, className }: { clip: Clip; label: string; play: boolean; className: string }) {
@@ -185,9 +196,10 @@ function Phone({ phone, label, play }: { phone: (typeof phones)[number]; label: 
   );
 }
 
-/* Right after the intro video, on white: first only the middle phone rises up from the bottom.
-   Just as it has popped all the way up, the two others come out from behind it and travel a
-   half circle (up first, then out, then down) to land one on each side; then the lines appear.
+/* Right after the intro video, on white: first only the middle phone pops up from the bottom,
+   shooting a little past its place and bouncing back. Just as it is all the way up, the two
+   others hop out from behind it on a half circle (up first, then out, then down) and land one
+   on each side with a little bounce; then the lines appear.
    It all follows the scroll, and the screen holds still (sticky), all white, while the phones
    land. With reduced motion the three phones simply stand side by side. */
 
@@ -222,19 +234,26 @@ export function Phones() {
     return () => mq.removeEventListener("change", update);
   }, []);
 
-  // the middle phone: from below up to its place, growing a little on the way
-  const midY = useTransform(rise, (r) => `${80 * (1 - r)}%`);
-  const midScale = useTransform(rise, (r) => 0.82 + 0.18 * r);
-  // the side phones on a half circle from behind the middle one to their own side:
-  // straight up at first, out across the top, and straight down at the end
-  const arcX = (h: number) => 48 * (1 - Math.cos(Math.PI * h)); // % of the phone's width, 0 → 96
-  const sideY = useTransform(hop, (h) => `${-20 * Math.sin(Math.PI * h)}%`);
-  const sideScale = useTransform(hop, (h) => 0.7 + 0.22 * h);
-  const sideOpacity = useTransform(hop, (h) => ramp(h, 0, 0.12));
-  const leftX = useTransform(hop, (h) => `${-arcX(h)}%`);
-  const rightX = useTransform(hop, (h) => `${arcX(h)}%`);
-  const leftRotate = useTransform(hop, (h) => -7 * h);
-  const rightRotate = useTransform(hop, (h) => 7 * h);
+  // the scroll steps go through springs, so they overshoot and wobble before they settle
+  const riseSpring = useSpring(rise, bounce);
+  const hopSpring = useSpring(hop, bounce);
+  // on a phone screen the side phones land a little closer, so they stay on the screen
+  const spread = phone ? 76 : 96; // % of the phone's width
+
+  // the middle phone: from below up to its place, growing on the way, popping a little past it
+  const midY = useTransform(riseSpring, (r) => `${80 * (1 - backOut(r))}%`);
+  const midScale = useTransform(riseSpring, (r) => 0.8 + 0.2 * backOut(r));
+  // the side phones hop from behind the middle one to their own side: up first, out across the
+  // top, down at the end, landing a little too far and bouncing back into place
+  const sideOut = (h: number) => backOut(Math.min(1, Math.max(0, h)), 1.8);
+  const lift = (h: number) => Math.sin(Math.PI * Math.min(1, Math.max(0, h)));
+  const sideY = useTransform(hopSpring, (h) => `${-(phone ? 16 : 20) * lift(h)}%`);
+  const sideScale = useTransform(hopSpring, (h) => 0.7 + 0.22 * sideOut(h));
+  const sideOpacity = useTransform(hopSpring, (h) => ramp(h, 0, 0.12));
+  const leftX = useTransform(hopSpring, (h) => `${-spread * sideOut(h)}%`);
+  const rightX = useTransform(hopSpring, (h) => `${spread * sideOut(h)}%`);
+  const leftRotate = useTransform(hopSpring, (h) => -7 * sideOut(h));
+  const rightRotate = useTransform(hopSpring, (h) => 7 * sideOut(h));
   const textOpacity = useTransform(words, (w) => w);
   const textY = useTransform(words, (w) => 16 * (1 - w));
 
@@ -248,17 +267,18 @@ export function Phones() {
   }, []);
 
   const sides = [
-    { phone: phones[0], label: t.phones[0], x: leftX, rotate: leftRotate, still: { x: "-96%", rotate: -7, scale: 0.92 } },
-    { phone: phones[2], label: t.phones[2], x: rightX, rotate: rightRotate, still: { x: "96%", rotate: 7, scale: 0.92 } },
+    { phone: phones[0], label: t.phones[0], x: leftX, rotate: leftRotate, still: { x: `-${spread}%`, rotate: -7, scale: 0.92 } },
+    { phone: phones[2], label: t.phones[2], x: rightX, rotate: rightRotate, still: { x: `${spread}%`, rotate: 7, scale: 0.92 } },
   ];
 
   return (
     <section ref={section} aria-label={t.lines.join(" ")} className={reduced ? "relative" : "relative h-[170vh] md:h-[230vh]"}>
       <div
-        className={`${reduced ? "py-24" : "sticky top-0 h-[100svh] pt-16 md:pt-20"} flex flex-col items-center justify-center overflow-hidden bg-white px-5 md:px-10`}
+        className={`${reduced ? "py-24" : "sticky top-0 h-[100svh] justify-start pt-[13svh] md:justify-center md:pt-20"} flex flex-col items-center overflow-hidden bg-white px-5 md:px-10`}
       >
-        {/* the phones are sized by the screen height, and narrower on a phone screen */}
-        <div className="relative w-[min(30vw,28svh)] md:w-[min(17vw,28svh)]">
+        {/* the phones are sized by the screen height; on a phone screen they sit higher up
+            and a little bigger, so the middle one fills the screen right after the intro */}
+        <div className="relative w-[min(36vw,34svh)] md:w-[min(17vw,28svh)]">
           {sides.map((side) => (
             <motion.div
               key={side.phone.clip.video}

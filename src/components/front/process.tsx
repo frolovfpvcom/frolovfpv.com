@@ -28,18 +28,21 @@ const texts = {
 export function Process() {
   const t = useT(texts);
   return (
-    <section className="mx-auto max-w-[1360px] px-5 pt-24 md:px-10 md:pt-32">
-      <div className="mb-8 border-b border-border pb-4 md:mb-10">
+    // a dark blue band with the four steps as numbered tiles
+    <section className="mt-24 bg-brand-deep text-white md:mt-32">
+      <div className="mx-auto max-w-[1360px] px-5 py-20 md:px-10 md:py-28">
         <h2 className="font-serif text-[40px] leading-none md:text-[56px]">{t.title}</h2>
-      </div>
-      <div className="grid grid-cols-1 gap-x-10 sm:grid-cols-2 lg:grid-cols-4">
-        {t.steps.map((step, i) => (
-          <Reveal key={step.title} delay={i * 0.06} className="border-b border-border py-7 lg:border-b-0">
-              <span className="font-serif text-[40px] leading-none text-muted-foreground">{i + 1}</span>
-              <h3 className="mt-3 text-[20px]">{step.title}</h3>
-              <p className="mt-1.5 max-w-[34ch] text-muted-foreground">{step.text}</p>
-          </Reveal>
-        ))}
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-12 lg:grid-cols-4 lg:gap-5">
+          {t.steps.map((step, i) => (
+            <Reveal key={step.title} delay={i * 0.06} className="rounded-2xl bg-white/[0.06] p-7 ring-1 ring-white/10">
+              <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-brand font-serif text-[24px] leading-none text-white">
+                {i + 1}
+              </span>
+              <h3 className="mt-5 text-[20px]">{step.title}</h3>
+              <p className="mt-1.5 max-w-[34ch] text-white/70">{step.text}</p>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );

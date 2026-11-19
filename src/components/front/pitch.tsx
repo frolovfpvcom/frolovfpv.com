@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Car, House, PartyPopper, Store } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { GenieLink } from "@/lib/smooth-scroll";
 import { useT } from "@/lib/lang";
@@ -68,38 +68,49 @@ const texts = {
 
 /* The pitch, as if Peter were standing in front of a customer: why FPV shots catch people,
    what that does for their kind of business, and how it differs from an ordinary drone. */
+/* one icon per kind of business, so the four cases can be told apart at a glance */
+const caseIcons = [House, Store, Car, PartyPopper];
+
 export function Pitch() {
   const t = useT(texts);
   return (
-    <section className="mx-auto max-w-[1360px] px-5 pt-24 md:px-10 md:pt-32">
+    // a light blue band, so the page doesn't read as plain black on white
+    <section id="ydelser" className="bg-brand-soft">
+      <div className="mx-auto max-w-[1360px] px-5 py-24 md:px-10 md:py-32">
       <Reveal className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
         <div>
-          <p className="text-[13px] uppercase tracking-[0.14em] text-muted-foreground">{t.label}</p>
-          <h2 className="mt-4 font-serif text-[40px] leading-[1.04] md:text-[64px]">{t.title}</h2>
+          <p className="text-[13px] font-medium uppercase tracking-[0.14em] text-brand">{t.label}</p>
+          <h2 className="mt-4 font-serif text-[40px] leading-[1.04] text-brand-deep md:text-[64px]">{t.title}</h2>
         </div>
-        <p className="self-end text-[18px] leading-relaxed text-muted-foreground md:text-[19px]">{t.lead}</p>
+        <p className="self-end text-[18px] leading-relaxed text-brand-deep/70 md:text-[19px]">{t.lead}</p>
       </Reveal>
 
-      <p className="mt-16 border-b border-border pb-4 text-[13px] uppercase tracking-[0.14em] text-muted-foreground md:mt-20">
+      <p className="mt-16 pb-5 text-[13px] font-medium uppercase tracking-[0.14em] text-brand md:mt-20">
         {t.forYou}
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-2">
-        {t.cases.map((c, i) => (
-          <Reveal
-            key={c.who}
-            delay={(i % 2) * 0.06}
-            className={`border-b border-border py-8 md:py-10 ${i % 2 === 0 ? "md:pr-10" : "md:border-l md:pl-10"}`}
-          >
-            <h3 className="font-serif text-[30px] leading-[1.1] md:text-[36px]">{c.who}</h3>
-            <p className="mt-3 max-w-[50ch] text-[17px] leading-relaxed text-muted-foreground">{c.text}</p>
-          </Reveal>
-        ))}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+        {t.cases.map((c, i) => {
+          const Icon = caseIcons[i];
+          return (
+            <Reveal
+              key={c.who}
+              delay={(i % 2) * 0.06}
+              className="rounded-2xl bg-white p-7 shadow-[0_18px_40px_-28px_rgba(11,31,77,0.45)] md:p-9"
+            >
+              <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand text-white">
+                <Icon size={22} aria-hidden="true" />
+              </span>
+              <h3 className="mt-5 font-serif text-[30px] leading-[1.1] text-brand-deep md:text-[34px]">{c.who}</h3>
+              <p className="mt-3 max-w-[50ch] text-[17px] leading-relaxed text-brand-deep/70">{c.text}</p>
+            </Reveal>
+          );
+        })}
       </div>
 
       <Reveal className="mt-14 grid grid-cols-1 gap-4 md:mt-16 md:grid-cols-2 md:gap-6">
-        <div className="rounded-2xl border border-border p-7 md:p-9">
-          <p className="text-[13px] uppercase tracking-[0.14em] text-muted-foreground">{t.vs.normal}</p>
-          <ul className="mt-4 space-y-3 text-[17px] text-muted-foreground">
+        <div className="rounded-2xl border border-brand-deep/10 bg-white/60 p-7 md:p-9">
+          <p className="text-[13px] uppercase tracking-[0.14em] text-brand-deep/55">{t.vs.normal}</p>
+          <ul className="mt-4 space-y-3 text-[17px] text-brand-deep/60">
             {t.normal.map((line) => (
               <li key={line} className="flex gap-3">
                 <span aria-hidden="true">–</span>
@@ -108,12 +119,12 @@ export function Pitch() {
             ))}
           </ul>
         </div>
-        <div className="rounded-2xl bg-[#16181d] p-7 text-white md:p-9">
-          <p className="text-[13px] uppercase tracking-[0.14em] text-white/60">{t.vs.fpv}</p>
+        <div className="rounded-2xl bg-gradient-to-br from-brand to-brand-deep p-7 text-white md:p-9">
+          <p className="text-[13px] uppercase tracking-[0.14em] text-white/70">{t.vs.fpv}</p>
           <ul className="mt-4 space-y-3 text-[17px]">
             {t.fpv.map((line) => (
               <li key={line} className="flex gap-3">
-                <span aria-hidden="true" className="text-[#8fe0c6]">
+                <span aria-hidden="true" className="text-brand-sky">
                   ✓
                 </span>
                 {line}
@@ -124,10 +135,10 @@ export function Pitch() {
       </Reveal>
 
       <div className="mt-12 flex flex-col items-start gap-5 md:mt-14 md:flex-row md:items-center md:justify-between">
-        <p className="max-w-[44ch] font-serif text-[26px] leading-[1.2] md:text-[30px]">{t.ask}</p>
+        <p className="max-w-[44ch] font-serif text-[26px] leading-[1.2] text-brand-deep md:text-[30px]">{t.ask}</p>
         <GenieLink
           href="/kontakt"
-          className="group inline-flex h-12 shrink-0 items-center gap-2 rounded-full bg-primary px-6 text-[15px] font-medium text-primary-foreground transition-colors hover:bg-neutral-700"
+          className="group inline-flex h-12 shrink-0 items-center gap-2 rounded-full bg-primary px-6 text-[15px] font-medium text-primary-foreground transition-colors hover:bg-brand-deep"
         >
           {t.cta}
           <ArrowUpRight
@@ -135,6 +146,7 @@ export function Pitch() {
             className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
           />
         </GenieLink>
+      </div>
       </div>
     </section>
   );
