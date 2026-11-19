@@ -23,12 +23,12 @@ const texts = {
   },
 };
 
-/* First a 2.5 s tunnel of clips (FpvIntro) plays on top; then the intro video fills the whole
+/* First a 4 s tunnel of clips (FpvIntro) plays on top; then the intro video fills the whole
    first screen, edge to edge, with the menu and the buttons on top of it in white. Nothing moves when the page scrolls; only the video plays. */
 export function Hero() {
   const t = useT(texts);
   const video = useRef<HTMLVideoElement>(null);
-  // when the 2.5 s tunnel intro is over, the real intro video starts from the beginning
+  // when the 4 s tunnel intro is over, the real intro video starts from the beginning
   const startVideo = () => {
     const v = video.current;
     if (!v) return;

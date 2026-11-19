@@ -108,10 +108,7 @@ export function PerspectiveTunnel({
   const titleScale = useTransform(progress, [0, 1], [0.86, 1.12]);
 
   return (
-    <div
-      className="absolute inset-0 flex items-center justify-center overflow-hidden bg-[#06122e] text-white"
-      style={{ perspective: stage.isMobile ? "900px" : "1200px", transformStyle: "preserve-3d" }}
-    >
+    <div className="absolute inset-0 flex items-center justify-center overflow-hidden bg-[#06122e] text-white">
       {/* a blue glow in the middle, a fine dot grid and two rings for depth */}
       <div
         aria-hidden="true"
@@ -124,15 +121,23 @@ export function PerspectiveTunnel({
       <div aria-hidden="true" className="pointer-events-none absolute h-[48vmin] w-[48vmin] rounded-full border border-sky-300/20" />
       <div aria-hidden="true" className="pointer-events-none absolute h-[76vmin] w-[76vmin] rounded-full border border-dashed border-white/10" />
 
-      <motion.div style={{ scale: titleScale }} className="relative z-0 flex max-w-2xl flex-col items-center px-6 text-center">
-        {children}
-      </motion.div>
-
-      <div className="pointer-events-none absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
+      {/* the cards fly in their own 3D space, behind the text */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{ perspective: stage.isMobile ? "900px" : "1200px", transformStyle: "preserve-3d" }}
+      >
         {cards.map((card) => (
           <TunnelCard key={card.item.image} card={card} progress={progress} total={cards.length} stage={stage} />
         ))}
       </div>
+
+      {/* the text sits on top, so the cards never cover it */}
+      <motion.div
+        style={{ scale: titleScale }}
+        className="relative z-20 flex max-w-3xl flex-col items-center px-6 text-center [text-shadow:0_2px_24px_rgba(6,18,46,0.9)]"
+      >
+        {children}
+      </motion.div>
     </div>
   );
 }
