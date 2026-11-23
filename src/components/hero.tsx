@@ -66,7 +66,8 @@ export function Hero() {
           {t.accent}
           {t.after}
         </h1>
-        <div className="flex md:justify-end">
+        {/* the thin white line above the buttons stays (Peter wants it), only the text over it went */}
+        <div className="flex border-t border-white/30 pt-5 md:justify-end">
           <div className="flex shrink-0 flex-wrap items-center gap-x-6 gap-y-3">
             <GenieLink
               href="/kontakt"
