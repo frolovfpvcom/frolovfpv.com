@@ -1,45 +1,30 @@
 "use client";
 
-import { useRef } from "react";
-import { ArrowUpRight } from "lucide-react";
-import { FpvIntro } from "@/components/front/fpv-intro";
+import { ArrowDown } from "lucide-react";
 import { useT } from "@/lib/lang";
-import { GenieLink } from "@/lib/smooth-scroll";
 
 const texts = {
   da: {
     before: "FPV-droner kommer helt ",
     accent: "tæt",
     after: " på.",
-    cta: "Få et tilbud",
     more: "Se hvad jeg tilbyder",
   },
   en: {
     before: "FPV drones get right ",
     accent: "up close",
     after: ".",
-    cta: "Get a quote",
     more: "See what I offer",
   },
 };
 
-/* First a 4 s tunnel of clips (FpvIntro) plays on top; then the intro video fills the whole
-   first screen, edge to edge, with the menu and the buttons on top of it in white. Nothing moves when the page scrolls; only the video plays. */
+/* The intro video fills the whole first screen, edge to edge, with the menu and the buttons
+   on top of it in white. Nothing moves when the page scrolls; only the video plays. */
 export function Hero() {
   const t = useT(texts);
-  const video = useRef<HTMLVideoElement>(null);
-  // when the 4 s tunnel intro is over, the real intro video starts from the beginning
-  const startVideo = () => {
-    const v = video.current;
-    if (!v) return;
-    v.currentTime = 0;
-    v.play().catch(() => {});
-  };
   return (
     <header className="relative h-[100svh] min-h-[560px] w-full overflow-hidden bg-neutral-900 text-white">
-      <FpvIntro onDone={startVideo} />
       <video
-        ref={video}
         autoPlay
         loop
         muted
@@ -66,22 +51,16 @@ export function Hero() {
           {t.accent}
           {t.after}
         </h1>
-        <div className="flex md:justify-end">
-          <div className="flex shrink-0 flex-wrap items-center gap-x-6 gap-y-3">
-            <GenieLink
-              href="/kontakt"
-              className="group inline-flex h-12 items-center gap-2 rounded-full bg-white px-6 text-[15px] font-medium text-neutral-900 transition-colors hover:bg-white/85"
-            >
-              {t.cta}
-              <ArrowUpRight
-                size={16}
-                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
-            </GenieLink>
-            <a href="#ydelser" className="text-[15px] text-white/85 underline-offset-[6px] hover:text-white hover:underline">
-              {t.more} ↓
-            </a>
-          </div>
+        {/* the thin white line above the buttons stays (Peter wants it), only the text over it went */}
+        <div className="flex border-t border-white/30 pt-5 md:justify-end">
+          {/* one white, slightly long button with the whole sentence in it */}
+          <a
+            href="#ydelser"
+            className="group inline-flex h-12 items-center gap-2.5 rounded-full bg-white px-8 text-[15px] font-medium text-neutral-900 transition-colors hover:bg-white/85"
+          >
+            {t.more}
+            <ArrowDown size={16} className="transition-transform duration-300 group-hover:translate-y-0.5" />
+          </a>
         </div>
       </div>
     </header>

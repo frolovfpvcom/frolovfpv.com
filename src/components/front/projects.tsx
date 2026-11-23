@@ -35,17 +35,6 @@ const projects: Project[] = [
     },
   },
   {
-    image: "/projekter/testkorsel.jpg",
-    video: "/clips/testkorsel.mp4",
-    aspect: 4 / 3,
-    title: { da: "Testkørsel", en: "Test drive" },
-    meta: { da: "Bil · 0:10", en: "Car · 0:10" },
-    note: {
-      da: "Test af bil på privat område. Ps det er ikke reklame for nogen som helst bil producenter",
-      en: "Car test on private grounds. PS: this is not an ad for any car manufacturer",
-    },
-  },
-  {
     image: "/projekter/gennem-skoven.jpg",
     title: { da: "Gennem skoven", en: "Through the woods" },
     meta: { da: "Natur · kommer snart", en: "Nature · coming soon" },
