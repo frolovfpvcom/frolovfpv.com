@@ -30,8 +30,12 @@ export function Contact() {
   const t = useT(texts);
 
   return (
-    <section id="contact" className="px-5 md:px-10">
-      <div ref={panel} className="relative mx-auto max-w-[1360px] py-28 text-center md:py-40">
+    <section id="contact" className="px-5 pb-16 pt-16 md:px-10 md:pb-24 md:pt-24">
+      {/* a blue panel, so the last thing on the page is the ask, and it stands out */}
+      <div
+        ref={panel}
+        className="relative mx-auto max-w-[1360px] overflow-hidden rounded-3xl bg-gradient-to-br from-brand via-[#1d44b8] to-brand-deep px-5 py-24 text-center text-white md:py-32"
+      >
         {/* after 5 s standing still a stickman pops out of the button, webs the mouse and yanks it onto the button */}
         <SpiderShotLayer areaRef={panel} targetRef={btnBox} leanRef={btnLean} />
 
@@ -41,14 +45,14 @@ export function Contact() {
             <em>{t.accent}</em>
             {t.after}
           </h2>
-          <p className="mx-auto mb-10 mt-6 max-w-[46ch] text-muted-foreground">{t.lead}</p>
+          <p className="mx-auto mb-10 mt-6 max-w-[46ch] text-white/80">{t.lead}</p>
 
           <div className="flex justify-center">
             <div ref={btnBox} className="inline-flex">
               <div ref={btnLean} className="inline-flex will-change-transform">
                 <GenieLink
                   href="/kontakt"
-                  className="group inline-flex h-14 items-center gap-2.5 rounded-full bg-primary px-8 font-medium text-primary-foreground transition-colors hover:bg-neutral-700"
+                  className="group inline-flex h-14 items-center gap-2.5 rounded-full bg-white px-8 font-medium text-brand-deep transition-colors hover:bg-brand-soft"
                 >
                   {t.cta}
                   <ArrowUpRight

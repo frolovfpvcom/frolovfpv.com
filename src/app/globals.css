@@ -1,8 +1,8 @@
 @import "tailwindcss";
 @import "lenis/dist/lenis.css";
 
-/* "Galleri": helt hvidt, sort tekst og ingen accentfarve. Det eneste farverige på siden er
-   optagelserne. Destructive bruges kun til fejl. */
+/* "Galleri" med en blå temafarve: hvid bund og sort tekst, men knapper, bånd og detaljer i
+   blåt (brand), så siden ikke bliver helt plain. Destructive bruges kun til fejl. */
 :root {
   --background: #ffffff;
   --foreground: #111111;
@@ -10,7 +10,7 @@
   --card-foreground: #111111;
   --popover: #ffffff;
   --popover-foreground: #111111;
-  --primary: #111111;
+  --primary: #2453d6;
   --primary-foreground: #ffffff;
   --secondary: #f4f4f4;
   --secondary-foreground: #111111;
@@ -21,13 +21,23 @@
   --destructive: #c62828;
   --border: #e8e8e8;
   --input: #dcdcdc;
-  --ring: #111111;
+  --ring: #2453d6;
+  --brand: #2453d6;
+  --brand-deep: #0b1f4d;
+  --brand-night: #06122e;
+  --brand-soft: #edf3ff;
+  --brand-sky: #8ab4ff;
 }
 
 @theme inline {
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-ring: var(--ring);
+  --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-night: var(--brand-night);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-sky: var(--brand-sky);
   --color-input: var(--input);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
