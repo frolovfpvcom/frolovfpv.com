@@ -1,22 +1,19 @@
 "use client";
 
-import { ArrowUpRight } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { useT } from "@/lib/lang";
-import { GenieLink } from "@/lib/smooth-scroll";
 
 const texts = {
   da: {
     before: "FPV-droner kommer helt ",
     accent: "tæt",
     after: " på.",
-    cta: "Få et tilbud",
     more: "Se hvad jeg tilbyder",
   },
   en: {
     before: "FPV drones get right ",
     accent: "up close",
     after: ".",
-    cta: "Get a quote",
     more: "See what I offer",
   },
 };
@@ -56,21 +53,14 @@ export function Hero() {
         </h1>
         {/* the thin white line above the buttons stays (Peter wants it), only the text over it went */}
         <div className="flex border-t border-white/30 pt-5 md:justify-end">
-          <div className="flex shrink-0 flex-wrap items-center gap-x-6 gap-y-3">
-            <GenieLink
-              href="/kontakt"
-              className="group inline-flex h-12 items-center gap-2 rounded-full bg-white px-6 text-[15px] font-medium text-neutral-900 transition-colors hover:bg-white/85"
-            >
-              {t.cta}
-              <ArrowUpRight
-                size={16}
-                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
-            </GenieLink>
-            <a href="#ydelser" className="text-[15px] text-white/85 underline-offset-[6px] hover:text-white hover:underline">
-              {t.more} ↓
-            </a>
-          </div>
+          {/* one white, slightly long button with the whole sentence in it */}
+          <a
+            href="#ydelser"
+            className="group inline-flex h-12 items-center gap-2.5 rounded-full bg-white px-8 text-[15px] font-medium text-neutral-900 transition-colors hover:bg-white/85"
+          >
+            {t.more}
+            <ArrowDown size={16} className="transition-transform duration-300 group-hover:translate-y-0.5" />
+          </a>
         </div>
       </div>
     </header>
