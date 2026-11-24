@@ -5,15 +5,15 @@ import { Arrow, Doodle, DOODLES, Heading, PenMark, Sheet, Write } from "@/compon
 import { useLang, useT } from "@/lib/lang";
 import { handLine, rand } from "@/lib/pen";
 
-// TODO (Peter): placeholder tools, gear and skills. Swap in what you really use.
-type Tool = { name: string; mark: string; bg: string; fg: string; note: Record<"da" | "en", string> };
+// Peter's own tools (2026-11-24), shown with their logos. The gear and the skills list
+// below are still placeholders (gear kept simple on Peter's ask: no batteries, DJI not GoPro).
+type Tool = { name: string; logo: string; note: Record<"da" | "en", string> };
 
 const tools: Tool[] = [
-  { name: "DaVinci Resolve", mark: "Dr", bg: "#14213d", fg: "#8ab4ff", note: { da: "klipning og farver", en: "editing and colour" } },
-  { name: "Betaflight", mark: "Bf", bg: "#2453d6", fg: "#ffffff", note: { da: "dronen indstilles helt skarpt", en: "tuning the drone" } },
-  { name: "GoPro", mark: "Gp", bg: "#0f8fd6", fg: "#ffffff", note: { da: "kameraet på dronen", en: "the camera on the drone" } },
-  { name: "Gyroflow", mark: "Gf", bg: "#e8eefb", fg: "#0b1f4d", note: { da: "rolige, stabile billeder", en: "smooth, stable footage" } },
-  { name: "CapCut", mark: "Cc", bg: "#3b2a7a", fg: "#d9ccff", note: { da: "hurtige klip til Reels og TikTok", en: "quick cuts for Reels and TikTok" } },
+  { name: "DaVinci Resolve", logo: "/images/tools/davinci-resolve.png", note: { da: "redigering af videoerne", en: "editing the videos" } },
+  { name: "Betaflight", logo: "/images/tools/betaflight.png", note: { da: "opsætning af dronen", en: "setting up the drone" } },
+  { name: "Gyroflow", logo: "/images/tools/gyroflow.png", note: { da: "stabilisering af de rå videofiler", en: "stabilising the raw footage" } },
+  { name: "DJI", logo: "/images/tools/dji.png", note: { da: "4K-videokvalitet", en: "4K video quality" } },
 ];
 
 const texts = {
@@ -21,7 +21,7 @@ const texts = {
     title: "Kompetencer",
     toolNote: "jeg bliver ved med at øve mig",
     gearNote: "mit udstyr",
-    gear: ["5\" FPV-drone", "Cinewhoop", "GoPro", "FPV-briller", "Batterier × 10"],
+    gear: ["FPV-drone", "DJI-kamera", "FPV-briller"],
     intro: "Rolige, præcise ruter tæt på mennesker, biler og bygninger, og klip der passer til både hjemmesiden og de sociale medier.",
     more: "der er meget mere i værktøjskassen",
     skills: [
@@ -34,7 +34,7 @@ const texts = {
       "Ruteplanlægning",
       "Farvekorrektion",
       "Klip til Reels og TikTok",
-      "Stabilisering",
+      "Stabilisering i Gyroflow",
       "Lyd og musik",
       "Sikker flyvning",
     ],
@@ -43,7 +43,7 @@ const texts = {
     title: "Skills",
     toolNote: "I'm always practising",
     gearNote: "my gear",
-    gear: ["5\" FPV drone", "Cinewhoop", "GoPro", "FPV goggles", "Batteries × 10"],
+    gear: ["FPV drone", "DJI camera", "FPV goggles"],
     intro: "Calm, precise routes close to people, cars and buildings, and edits that fit both your website and social media.",
     more: "there's plenty more in my toolkit",
     skills: [
@@ -56,7 +56,7 @@ const texts = {
       "Route planning",
       "Colour grading",
       "Edits for Reels and TikTok",
-      "Stabilisation",
+      "Stabilisation in Gyroflow",
       "Sound and music",
       "Safe flying",
     ],
@@ -132,7 +132,6 @@ export function Skills() {
                   key={tool.name}
                   type="button"
                   className="mg-tool"
-                  style={{ background: tool.bg, color: tool.fg }}
                   data-on={on === i}
                   aria-label={tool.name}
                   onPointerEnter={() => setOn(i)}
@@ -140,7 +139,8 @@ export function Skills() {
                   onBlur={() => setOn(-1)}
                   onClick={() => setOn(i)}
                 >
-                  {tool.mark}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={tool.logo} alt="" draggable={false} />
                 </button>
               ))}
               <PenMark kind="oval" seed={13} padX={6} padY={6} delay={0.3} />
