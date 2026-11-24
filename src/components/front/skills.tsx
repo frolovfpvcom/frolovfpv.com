@@ -22,7 +22,7 @@ const texts = {
     title: "Kompetencer",
     toolNote: "jeg bliver ved med at øve mig",
     gearNote: "mit udstyr",
-    gear: ["FPV-drone", "DJI-kamera", "FPV-briller"],
+    gear: ["5\" FPV-drone", "Cinewhoop", "DJI-kamera", "FPV-briller"],
     intro: "Rolige, præcise ruter tæt på mennesker, biler og bygninger, og klip der passer til både hjemmesiden og de sociale medier.",
     more: "der er meget mere i værktøjskassen",
     skills: [
@@ -44,7 +44,7 @@ const texts = {
     title: "Skills",
     toolNote: "I'm always practising",
     gearNote: "my gear",
-    gear: ["FPV drone", "DJI camera", "FPV goggles"],
+    gear: ["5\" FPV drone", "Cinewhoop", "DJI camera", "FPV goggles"],
     intro: "Calm, precise routes close to people, cars and buildings, and edits that fit both your website and social media.",
     more: "there's plenty more in my toolkit",
     skills: [
