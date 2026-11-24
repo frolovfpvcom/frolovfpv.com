@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Arrow, Doodle, DOODLES, Heading, PenMark, Sheet, Write } from "@/components/front/notebook";
+import { InstagramCard } from "@/components/front/instagram-card";
 import { useLang, useT } from "@/lib/lang";
 import { handLine, rand } from "@/lib/pen";
 
@@ -170,6 +171,7 @@ export function Skills() {
               <Doodle kind="pencil" />
               <Write delay={0.5}>{t.more}</Write>
             </div>
+            <InstagramCard />
           </div>
           <ul className="mg-skill-list">
             {t.skills.map((s) => (
