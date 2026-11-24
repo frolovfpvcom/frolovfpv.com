@@ -1,20 +1,24 @@
 import { Hero } from "@/components/hero";
-import { AboutIntro } from "@/components/front/about-intro";
-import { Projects } from "@/components/front/projects";
-import { Process } from "@/components/front/process";
-import { Contact } from "@/components/contact";
+import { Hello } from "@/components/front/hello";
+import { Education } from "@/components/front/education";
+import { WhyFpv } from "@/components/front/why-fpv";
+import { Skills } from "@/components/front/skills";
+import { ProjectReel } from "@/components/front/project-reel";
 
-/* The front page is a shop window for businesses: the intro video, a photo of Peter with a few
-   lines about him and what he makes (the "Ydelser" link lands there), examples, how booking works,
-   and a way to get a quote. The full Om mig text lives on /ommig. */
+/* The front page: the intro video, then a notebook laid out like a CV (Peter picked the style
+   from a CV template): "Hej." with his photo and a few lines about him (the "Ydelser" link
+   lands there), Uddannelse, Hvorfor FPV? (why FPV beats photos, handheld video and a regular drone),
+   Kompetencer, and Projekter, where the page holds still while his
+   videos play. The footer with Instagram, LinkedIn and Cookies follows from the layout. */
 export default function Home() {
   return (
     <main>
       <Hero />
-      <AboutIntro />
-      <Projects />
-      <Process />
-      <Contact />
+      <Hello />
+      <Education />
+      <WhyFpv />
+      <Skills />
+      <ProjectReel />
     </main>
   );
 }

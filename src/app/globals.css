@@ -100,3 +100,302 @@ body {
   height: 22px;
 }
 
+
+/* ------------------------------------------------------------------------------------------
+   Notesbogen på forsiden (components/front/notebook.tsx, hello, education, skills,
+   project-reel): lyse papirark og et mørkt natark, store serif-overskrifter og en blå pen,
+   der tegner kasser, ovaler, streger, pile og håndskrift i marginen. Efter CV-templaten
+   "Marginalia" (MIT, Kedhareswer Naidu), men i sidens egne blå farver.
+   ------------------------------------------------------------------------------------------ */
+:root {
+  --mg-paper: #eeece7;
+  --mg-ink: #1d1d20;
+  --mg-night: #0a1630;
+  --mg-pen: #4b5fe0;
+  --mg-pen-night: #8ab4ff;
+  --mg-h: 100svh;
+}
+
+.mg-sheet {
+  --fg: var(--mg-ink);
+  --muted: color-mix(in oklab, var(--mg-ink) 60%, var(--mg-paper));
+  --rule: color-mix(in oklab, var(--mg-ink) 16%, var(--mg-paper));
+  --pen: var(--mg-pen);
+  position: relative;
+  isolation: isolate;
+  container-type: inline-size;
+  overflow-x: clip;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--mg-h);
+  padding: clamp(84px, 8cqi, 130px) clamp(18px, 5.2cqi, 92px) clamp(56px, 6cqi, 100px);
+  background: var(--mg-paper);
+  color: var(--fg);
+  font-weight: 300;
+}
+.mg-sheet[data-tone="night"] {
+  --fg: #ecebe7;
+  --muted: color-mix(in oklab, #ecebe7 62%, var(--mg-night));
+  --rule: color-mix(in oklab, #ecebe7 16%, var(--mg-night));
+  --pen: var(--mg-pen-night);
+  background: var(--mg-paper);
+}
+.mg-sheet > * { width: 100%; }
+.mg-sheet-bg { position: absolute; inset: 0; z-index: -1; background: var(--mg-night); pointer-events: none; }
+.mg-grain {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.5; mix-blend-mode: multiply;
+  background-image: radial-gradient(color-mix(in oklab, var(--mg-ink) 9%, transparent) 0.6px, transparent 0.7px);
+  background-size: 5px 5px;
+}
+.mg-sheet[data-tone="night"] .mg-grain {
+  mix-blend-mode: screen;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 0.6px, transparent 0.7px);
+}
+
+.mg-display { font-family: var(--font-dm-serif), Georgia, serif; font-weight: 400; line-height: 0.92; letter-spacing: -0.012em; }
+.mg-hand { font-family: var(--font-caveat), "Bradley Hand", cursive; color: var(--pen); font-weight: 500; line-height: 1.02; }
+.mg-p { font-size: clamp(15px, 1.15cqi, 17px); line-height: 1.7; color: var(--fg); }
+.mg-muted { color: var(--muted); }
+.mg-h2 { font-size: clamp(54px, 8.6cqi, 150px); margin: 0; color: var(--fg); }
+
+/* pen strokes draw themselves in once their block is on screen */
+.mg-mk { position: relative; display: inline; white-space: normal; }
+.mg-mk:has(> .mg-mark) { display: inline-block; }
+.mg-mark { position: absolute; overflow: visible; pointer-events: none; fill: none; stroke: var(--pen); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.mg-ink { fill: none; stroke: var(--pen); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.mg-draw {
+  stroke-dasharray: 1 1.02;
+  stroke-dashoffset: 1.01;
+  opacity: 0;
+  transition:
+    stroke-dashoffset var(--dur, 0.9s) cubic-bezier(0.6, 0, 0.2, 1) var(--d, 0s),
+    opacity 0.01s linear var(--d, 0s);
+}
+[data-ink="on"] .mg-draw,
+[data-ink="on"].mg-draw,
+[data-dealt="true"] .mg-draw { stroke-dashoffset: 0; opacity: 1; }
+
+.mg-write {
+  display: inline-block;
+  clip-path: inset(-30% 100% -30% -6%);
+  transition: clip-path 0.9s cubic-bezier(0.5, 0, 0.3, 1) var(--d, 0s);
+}
+[data-ink="on"] .mg-write { clip-path: inset(-30% -6% -30% -6%); }
+.mg-note-swap { display: inline-block; animation: mg-swap 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
+@keyframes mg-swap { from { opacity: 0; transform: translateY(8px) rotate(-1deg); } }
+
+/* headings: the letters rise in, the pen underline draws under them */
+.mg-hd { position: relative; display: inline-block; }
+.mg-w { display: inline-block; white-space: nowrap; }
+.mg-c { display: inline-block; overflow: hidden; padding: 0.06em 0.01em 0.14em; margin: -0.06em -0.01em -0.14em; }
+.mg-ci {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i, 0) * 0.035s);
+}
+[data-ink="on"] .mg-ci { transform: none; }
+.mg-uline { display: block; width: min(70%, 320px); height: auto; aspect-ratio: 300 / 26; margin-top: 0.1em; overflow: visible; }
+.mg-uline path { fill: none; stroke: var(--pen); stroke-width: 2.2; stroke-linecap: round; }
+
+/* buttons */
+.mg-btn {
+  display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 24px; border-radius: 999px;
+  background: var(--primary); color: #fff; font-size: 15px; font-weight: 500; transition: background-color 0.2s;
+}
+.mg-btn:hover { background: var(--brand-deep); }
+.mg-btn-ghost { background: transparent; color: var(--mg-ink); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--mg-ink) 22%, transparent); }
+.mg-btn-ghost:hover { background: #fff; }
+
+/* Hej */
+.mg-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6cqi, 110px); align-items: center; max-width: 1500px; margin: 0 auto; }
+.mg-traits { position: relative; width: 100%; max-width: 560px; aspect-ratio: 500 / 520; margin: 0 auto; }
+.mg-trait-layer { position: absolute; inset: 0; pointer-events: none; }
+.mg-trait-layer > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.mg-portrait { position: absolute; left: 27%; top: 17%; width: 46%; height: 66%; }
+.mg-portrait-img { position: absolute; inset: 0; overflow: hidden; border-radius: 4px; background: color-mix(in oklab, var(--mg-ink) 10%, var(--mg-paper)); }
+.mg-portrait-img img {
+  width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 50% 55%;
+  filter: grayscale(1) contrast(1.05); transform: scale(1.04);
+  transition: filter 0.7s ease, transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.mg-portrait:hover .mg-portrait-img img { filter: grayscale(0) contrast(1); transform: scale(1.09); }
+.mg-trait { position: absolute; transform: translate(-50%, -50%); font-size: clamp(18px, 2cqi, 28px); white-space: nowrap; }
+.mg-h-hello { font-size: clamp(72px, 10.5cqi, 180px); }
+.mg-bio { max-width: 54ch; margin-top: clamp(18px, 2.4cqi, 34px); text-align: justify; hyphens: auto; }
+.mg-hello-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(26px, 3cqi, 40px); }
+
+/* Uddannelse */
+.mg-edu { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(32px, 6cqi, 110px); max-width: 1500px; margin: 0 auto; align-items: start; width: 100%; }
+.mg-edu-intro { max-width: 46ch; margin-top: clamp(14px, 2cqi, 28px); }
+.mg-edu-list { list-style: none; padding: 0; margin: clamp(26px, 3.4cqi, 52px) 0 0; display: grid; gap: clamp(16px, 1.8cqi, 26px); }
+.mg-edu-list li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: baseline; }
+.mg-edu-list li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--fg); transform: translateY(-3px); }
+.mg-edu-t { font-weight: 500; font-size: clamp(15px, 1.25cqi, 19px); }
+.mg-edu-s { font-size: clamp(13px, 1cqi, 15px); color: var(--muted); margin-top: 3px; }
+.mg-qr-wrap { position: relative; display: grid; grid-template-columns: auto 1fr; gap: clamp(16px, 2.4cqi, 36px); align-items: center; margin-top: 28px; }
+.mg-qr {
+  position: relative; display: block; width: clamp(120px, 13cqi, 190px); padding: 10px; background: #fff; border-radius: 10px;
+  box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.35); transform: rotate(-2deg); transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.mg-qr:hover { transform: rotate(0deg) scale(1.06); }
+.mg-qr svg { display: block; width: 100%; height: auto; }
+.mg-qr-tag { position: absolute; left: 8px; top: -24px; font-size: 18px; }
+.mg-qr-note { position: relative; font-size: clamp(26px, 2.6cqi, 38px); max-width: 7em; }
+.mg-qr-note svg { display: block; width: clamp(60px, 6cqi, 90px); height: auto; aspect-ratio: 90 / 60; margin: 0 0 6px -6px; }
+.mg-langs { margin-top: clamp(40px, 5cqi, 80px); }
+.mg-langs h3 { font-size: clamp(34px, 3.6cqi, 56px); margin: 0 0 clamp(14px, 1.8cqi, 24px); color: var(--fg); }
+.mg-lang { display: grid; grid-template-columns: 6.5em 6em minmax(0, 1fr); align-items: center; gap: 14px; padding: 10px 0; border-top: 1px solid var(--rule); font-size: clamp(14px, 1.05cqi, 15px); }
+.mg-lang b { font-weight: 500; }
+.mg-lang svg { width: 100%; height: 16px; overflow: visible; }
+.mg-lang-rule { stroke: var(--rule); stroke-width: 1.2; fill: none; }
+.mg-lang-line { stroke: var(--pen); stroke-width: 2.4; fill: none; stroke-linecap: round; }
+
+/* Kompetencer */
+.mg-skills { max-width: 1500px; margin: 0 auto; width: 100%; }
+.mg-skills-top { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(32px, 6cqi, 110px); align-items: end; }
+.mg-tools { position: relative; display: flex; flex-wrap: wrap; gap: clamp(10px, 1.2cqi, 16px); margin-top: clamp(26px, 3cqi, 44px); padding: 14px 18px; width: max-content; max-width: 100%; }
+.mg-tool {
+  position: relative; width: clamp(50px, 4.6cqi, 64px); aspect-ratio: 1; border-radius: 24%; display: grid; place-items: center;
+  font-weight: 600; font-size: clamp(16px, 1.6cqi, 22px); letter-spacing: -0.02em; box-shadow: 0 10px 22px -14px rgba(0, 0, 0, 0.6);
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.2, 1.3); cursor: pointer;
+}
+.mg-tool:hover, .mg-tool:focus-visible, .mg-tool[data-on="true"] { transform: translateY(-8px) rotate(-6deg) scale(1.08); }
+.mg-tool-note { min-height: 2.2em; margin-top: 6px; font-size: clamp(22px, 2cqi, 28px); padding-left: 18px; }
+.mg-gear { position: relative; justify-self: center; width: min(100%, 360px); }
+.mg-gear > svg { display: block; width: 100%; height: auto; overflow: visible; }
+.mg-gear-note { position: absolute; right: -4%; top: -6%; font-size: clamp(24px, 2.1cqi, 30px); transform: rotate(6deg); text-align: right; width: 6em; }
+.mg-gear-note svg { display: block; width: 54px; height: 44px; margin-left: auto; }
+.mg-skills-low { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: clamp(32px, 6cqi, 110px); margin-top: clamp(40px, 5cqi, 80px); align-items: start; }
+.mg-skill-list { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: clamp(20px, 3cqi, 48px); }
+.mg-skill-list li {
+  position: relative; padding: 8px 0 8px 18px; break-inside: avoid; font-size: clamp(14px, 1.1cqi, 16px);
+  border-bottom: 1px solid var(--rule); transition: color 0.3s, padding 0.3s;
+}
+.mg-skill-list li::before {
+  content: ""; position: absolute; left: 2px; top: 50%; width: 6px; height: 6px; border-radius: 50%; background: var(--fg);
+  transform: translateY(-50%); transition: background 0.3s, transform 0.3s;
+}
+.mg-skill-list li:hover { padding-left: 24px; color: var(--pen); }
+.mg-skill-list li:hover::before { background: var(--pen); transform: translateY(-50%) scale(1.5); }
+.mg-more { display: flex; align-items: center; gap: 14px; margin-top: clamp(26px, 3cqi, 40px); font-size: clamp(22px, 2cqi, 28px); }
+.mg-more svg { width: clamp(56px, 5cqi, 74px); height: auto; flex: none; }
+
+/* Hvorfor FPV? */
+.mg-why { max-width: 1500px; margin: 0 auto; width: 100%; }
+.mg-why-lead { max-width: 64ch; margin-top: clamp(18px, 2.4cqi, 34px); font-size: clamp(16px, 1.3cqi, 19px); }
+.mg-compare { list-style: none; margin: clamp(36px, 4.6cqi, 70px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 2cqi, 28px); }
+.mg-compare-item { position: relative; padding-top: 18px; border-top: 1px solid var(--rule); }
+.mg-compare-n { display: block; font-size: 30px; line-height: 1; }
+.mg-compare-name { margin: 10px 0 0; font-family: var(--font-dm-serif), Georgia, serif; font-weight: 400; font-size: clamp(24px, 2.2cqi, 32px); line-height: 1.05; color: var(--fg); }
+.mg-compare-text { margin-top: 10px; font-size: clamp(14px, 1.1cqi, 16px); line-height: 1.6; color: var(--muted); max-width: 30ch; }
+.mg-compare-best { border-top: 2px solid var(--pen); }
+.mg-compare-best .mg-compare-text { color: var(--fg); }
+.mg-compare-note { display: flex; align-items: flex-start; gap: 6px; margin-top: 12px; font-size: clamp(22px, 2cqi, 28px); transform: rotate(-3deg); }
+.mg-compare-note svg { width: 56px; height: 40px; flex: none; }
+.mg-why-low { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: clamp(32px, 6cqi, 110px); margin-top: clamp(44px, 5cqi, 80px); align-items: start; }
+.mg-why-h3 { margin: 0; font-size: clamp(34px, 3.6cqi, 56px); line-height: 1; color: var(--fg); }
+.mg-why-list { columns: 1; }
+.mg-why-list li { padding-top: 12px; padding-bottom: 12px; }
+
+/* Projekter: arket står stille, mens telefonerne deles ud, og videoerne kører */
+.mg-deal { position: relative; height: calc(var(--mg-h) * 2.6); }
+.mg-deal-sheet { display: block; height: 100%; padding: 0; }
+.mg-deal-stage {
+  position: sticky; top: 0; height: var(--mg-h); min-height: 560px; display: flex; flex-direction: column;
+  padding: clamp(84px, 7.5cqi, 120px) clamp(18px, 5.2cqi, 92px) clamp(30px, 4cqi, 60px); overflow: hidden;
+}
+.mg-deal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.mg-deal-note { position: relative; font-size: clamp(22px, 2.1cqi, 30px); max-width: 11em; text-align: right; transform: rotate(-3deg); margin-top: 0.6em; }
+.mg-deal-note svg { display: block; width: 54px; height: 44px; margin-left: auto; margin-right: 20%; }
+.mg-row {
+  --e: 0;
+  --card-w: min(14.2cqi, 210px, calc((var(--mg-h) - 330px) / 2.3));
+  position: relative; flex: 1; display: flex; justify-content: center; align-items: center;
+  gap: clamp(14px, 2.4cqi, 40px); flex-wrap: wrap; align-content: center; min-height: 0; padding-top: 28px;
+}
+.mg-card {
+  position: relative; flex: none; width: var(--card-w); display: flex; flex-direction: column; align-items: center;
+  transform:
+    translate(calc(var(--dx, 0px) * (1 - var(--e))), calc(var(--dy, 0px) * (1 - var(--e))))
+    rotate(calc(var(--r, 0deg) * (1 - var(--e))));
+  will-change: transform;
+}
+.mg-card-btn { display: block; width: 100%; border-radius: 16% / 7.4%; cursor: pointer; transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.2, 1.2); }
+.mg-row[data-dealt="true"] .mg-card-btn:not(.mg-card-static):hover,
+.mg-row[data-dealt="true"] .mg-card-btn:not(.mg-card-static):focus-visible { transform: translateY(-12px) scale(1.04); }
+.mg-card-static { cursor: default; }
+.mg-card-label { margin-top: clamp(10px, 1.4cqi, 20px); font-size: clamp(18px, 1.9cqi, 27px); white-space: nowrap; }
+.mg-card-tag {
+  position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%) rotate(-4deg);
+  font-size: clamp(16px, 1.6cqi, 23px); white-space: nowrap; display: flex; flex-direction: column; align-items: center;
+}
+.mg-card-tag svg { width: 24px; height: 30px; }
+.mg-card:nth-child(even) .mg-card-tag { transform: translateX(-50%) rotate(4deg); }
+.mg-card-write { display: inline-block; clip-path: inset(-30% 100% -30% -6%); transition: clip-path 0.8s cubic-bezier(0.5, 0, 0.3, 1); }
+.mg-row[data-dealt="true"] .mg-card-write { clip-path: inset(-30% -6% -30% -6%); }
+.mg-card:nth-child(2) .mg-card-write { transition-delay: 0.12s; }
+.mg-card:nth-child(3) .mg-card-write { transition-delay: 0.24s; }
+.mg-card:nth-child(4) .mg-card-write { transition-delay: 0.36s; }
+.mg-card:nth-child(n + 5) .mg-card-write { transition-delay: 0.48s; }
+
+/* telefonen */
+.mg-phone { position: relative; width: 100%; aspect-ratio: 9 / 19.5; container-type: inline-size; }
+.mg-phone-body {
+  position: absolute; inset: 0; border-radius: 15cqw; background: #0d1018; padding: 3.4cqw;
+  box-shadow: 0 0 0 0.7cqw #3a3f4c inset, 0 40px 70px -30px rgba(0, 0, 0, 0.6), 0 14px 24px -14px rgba(0, 0, 0, 0.45);
+}
+.mg-screen { position: relative; width: 100%; height: 100%; border-radius: 12cqw; overflow: hidden; background: #111827; color: #fff; isolation: isolate; text-align: left; }
+.mg-screen-media { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; }
+.mg-screen-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(4, 10, 26, 0.85) 0%, rgba(4, 10, 26, 0.15) 45%, rgba(4, 10, 26, 0.3) 100%); }
+.mg-screen-copy, .mg-screen-yours { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 9cqw 11cqw; display: flex; flex-direction: column; align-items: flex-start; gap: 2.4cqw; }
+.mg-screen-yours { top: 0; justify-content: center; align-items: center; text-align: center; padding: 0 9cqw; background: linear-gradient(160deg, #2453d6 0%, #0b1f4d 100%); }
+.mg-screen-title { font-family: var(--font-dm-serif), Georgia, serif; font-size: 15cqw; line-height: 1; }
+.mg-screen-meta, .mg-screen-lead { font-size: 7.4cqw; line-height: 1.3; color: rgba(255, 255, 255, 0.78); }
+.mg-screen-pill { margin-top: 3cqw; padding: 3.4cqw 7cqw; border-radius: 999px; background: #2453d6; font-size: 7cqw; font-weight: 600; }
+.mg-screen-pill-soon { background: rgba(255, 255, 255, 0.18); }
+.mg-screen-pill-light { background: #fff; color: #0b1f4d; }
+.mg-status { position: absolute; top: 0; left: 0; right: 0; height: 13cqw; display: flex; align-items: center; justify-content: space-between; padding: 0 9cqw; font-size: 6.4cqw; font-weight: 600; color: #fff; z-index: 2; }
+.mg-notch { position: absolute; left: 50%; top: 3cqw; width: 30cqw; height: 8cqw; border-radius: 99px; background: #0d1018; transform: translateX(-50%); }
+.mg-batt { width: 10cqw; height: 5cqw; border: 1px solid rgba(255, 255, 255, 0.85); border-radius: 1.6cqw; }
+
+/* telefoner og smalle skærme */
+@container (max-width: 860px) {
+  .mg-two, .mg-edu, .mg-skills-top, .mg-skills-low, .mg-why-low { grid-template-columns: minmax(0, 1fr); }
+  .mg-compare { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 18px; }
+  .mg-traits { max-width: 440px; }
+  .mg-bio { text-align: left; hyphens: manual; }
+  .mg-gear { width: min(100%, 300px); margin-top: 24px; }
+  .mg-skill-list { columns: 1; }
+  .mg-deal-head { flex-direction: column; gap: 6px; }
+  .mg-deal-note { text-align: left; transform: rotate(-2deg); margin-top: 0; font-size: 22px; }
+  .mg-deal-note svg { display: none; }
+  .mg-deal-sheet .mg-h2 { font-size: clamp(54px, 13cqi, 96px); }
+  /* two rows of phones that fit between the heading and the bottom of the screen */
+  .mg-row { --card-w: min(30cqi, calc((var(--mg-h) - 300px) / 2 / 2.17)); gap: 14px 22px; padding-top: 10px; }
+  .mg-card-label { font-size: 18px; margin-top: 4px; }
+  .mg-card-tag { display: none; }
+}
+/* on phones the glass menu sits at the bottom, so the phones stop above it */
+@media (max-width: 767px) {
+  .mg-deal { height: calc(var(--mg-h) * 2.3); }
+  .mg-deal-stage { padding-top: 80px; padding-bottom: calc(max(14px, env(safe-area-inset-bottom)) + 92px); }
+  .mg-row { --card-w: min(30cqi, calc((var(--mg-h) - 410px) / 2 / 2.17)); }
+}
+@media (min-width: 640px) and (max-width: 860px) {
+  .mg-skill-list { columns: 2; }
+  .mg-why-list { columns: 1; }
+}
+@container (max-width: 480px) {
+  .mg-compare { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* uden bevægelse: alt står tegnet og skrevet, og telefonerne ligger på række */
+@media (prefers-reduced-motion: reduce) {
+  .mg-draw { stroke-dashoffset: 0; opacity: 1; transition: none; }
+  .mg-write, .mg-card-write { clip-path: none; transition: none; }
+  .mg-ci { transform: none; transition: none; }
+  .mg-deal { height: auto; }
+  .mg-deal-stage { position: relative; height: auto; min-height: var(--mg-h); }
+  .mg-card { transform: none; }
+}
