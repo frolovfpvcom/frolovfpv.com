@@ -6,8 +6,8 @@ import { InstagramCard } from "@/components/front/instagram-card";
 import { useLang, useT } from "@/lib/lang";
 import { handLine, rand } from "@/lib/pen";
 
-// Peter's own tools (2026-11-24), shown with their logos. The gear and the skills list
-// below are still placeholders (gear kept simple on Peter's ask: no batteries, DJI not GoPro).
+// Peter's own tools (2026-11-24), shown with their logos. The book stack shows how a job goes,
+// step 1 on top (2026-11-25, replaced the gear list). The skills list below is still a placeholder.
 type Tool = { name: string; logo: string; note: Record<"da" | "en", string> };
 
 const tools: Tool[] = [
@@ -21,8 +21,8 @@ const texts = {
   da: {
     title: "Kompetencer",
     toolNote: "jeg bliver ved med at øve mig",
-    gearNote: "mit udstyr",
-    gear: ["5\" FPV-drone", "Cinewhoop", "DJI-kamera", "FPV-briller"],
+    stepsNote: "Sådan foregår det",
+    steps: ["Vi snakker sammen", "Jeg flyver", "Jeg klipper", "Du får videoen"],
     intro: "Rolige, præcise ruter tæt på mennesker, biler og bygninger, og klip der passer til både hjemmesiden og de sociale medier.",
     more: "der er meget mere i værktøjskassen",
     skills: [
@@ -43,8 +43,8 @@ const texts = {
   en: {
     title: "Skills",
     toolNote: "I'm always practising",
-    gearNote: "my gear",
-    gear: ["5\" FPV drone", "Cinewhoop", "DJI camera", "FPV goggles"],
+    stepsNote: "How it works",
+    steps: ["We talk it through", "I fly", "I edit", "You get the video"],
     intro: "Calm, precise routes close to people, cars and buildings, and edits that fit both your website and social media.",
     more: "there's plenty more in my toolkit",
     skills: [
@@ -66,8 +66,9 @@ const texts = {
 
 const GEAR_COLOURS = ["#0b1f4d", "#f4f2ec", "#2453d6", "#8ab4ff", "#3b2a7a"];
 
-/** Peter's gear as a hand-drawn stack, with a little drone sitting on top. */
-function GearStack({ items }: { items: string[] }) {
+/** How a job goes, as a hand-drawn stack of numbered books (step 1 on top), with a little
+    drone sitting on top. */
+function StepStack({ items }: { items: string[] }) {
   const list = items.slice(0, 7);
   const R = rand(5);
   const bh = 30;
@@ -80,11 +81,11 @@ function GearStack({ items }: { items: string[] }) {
       {list.map((title, i) => {
         const w = 168 + R() * 56;
         const x = (260 - w) / 2 + (R() - 0.5) * 22;
-        const y = base - (i + 1) * bh;
+        const y = base - (list.length - i) * bh;
         const rot = (R() - 0.5) * 5;
         const color = GEAR_COLOURS[i % GEAR_COLOURS.length];
         const dark = color !== "#f4f2ec" && color !== "#8ab4ff";
-        const label = title.toUpperCase();
+        const label = `${i + 1}. ${title}`.toUpperCase();
         return (
           <g key={title} transform={`rotate(${rot.toFixed(2)} ${(x + w / 2).toFixed(1)} ${(y + bh / 2).toFixed(1)})`}>
             <rect x={x} y={y} width={w} height={bh - 3} rx={3} fill={color} stroke="rgba(0,0,0,.28)" strokeWidth={0.7} />
@@ -115,7 +116,7 @@ function GearStack({ items }: { items: string[] }) {
 }
 
 /* Tool tiles in a pen oval (hover one and the note under them says what it's for), a stack of
-   gear and a two-column list of what Peter can do. */
+   the "how it works" steps and a two-column list of what Peter can do. */
 export function Skills() {
   const t = useT(texts);
   const [on, setOn] = useState(-1);
@@ -154,9 +155,9 @@ export function Skills() {
           </div>
 
           <div className="mg-gear" data-ink>
-            <GearStack items={t.gear} />
+            <StepStack items={t.steps} />
             <div className="mg-gear-note mg-hand">
-              <Write delay={0.6}>{t.gearNote}</Write>
+              <Write delay={0.6}>{t.stepsNote}</Write>
               <svg viewBox="0 0 60 50" className="mg-ink" aria-hidden="true">
                 <Arrow a={[44, 4]} b={[18, 44]} bend={-0.35} head={8} delay={0.9} />
               </svg>
