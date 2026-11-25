@@ -355,6 +355,48 @@ body {
 .mg-notch { position: absolute; left: 50%; top: 3cqw; width: 30cqw; height: 8cqw; border-radius: 99px; background: #0d1018; transform: translateX(-50%); }
 .mg-batt { width: 10cqw; height: 5cqw; border: 1px solid rgba(255, 255, 255, 0.85); border-radius: 1.6cqw; }
 
+/* Min rejse: tidslinjen under "Hej." (front/timeline.tsx), efter 21st.dev TimelineBlock01:
+   en indrammet overskrift, så en række pr. år med årstallet til venstre, en streg med en prik
+   og historien med et billede til højre. Pennen tegner stregen ned, mens man scroller. */
+.mg-tl { --rail-x: clamp(180px, 22cqi, 300px); max-width: 1240px; margin: 0 auto; width: 100%; }
+.mg-tl-head { border: 1px solid var(--rule); border-top: 0; padding: clamp(28px, 4cqi, 64px) clamp(22px, 4cqi, 64px); }
+.mg-tl-badge {
+  display: block; width: max-content; margin-bottom: clamp(14px, 1.6cqi, 22px); padding: 4px 13px; border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--mg-ink) 24%, transparent); font-size: 13px; font-weight: 400; color: var(--muted);
+}
+.mg-tl-lead { max-width: 52ch; margin-top: clamp(14px, 1.8cqi, 26px); font-size: clamp(16px, 1.3cqi, 19px); color: var(--muted); }
+.mg-tl-list { position: relative; list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--rule); border-right: 1px solid var(--rule); }
+.mg-tl-rail { position: absolute; top: 0; bottom: 0; left: var(--rail-x); width: 1px; background: var(--rule); }
+.mg-tl-rail-ink { position: absolute; left: -0.5px; top: 0; bottom: 0; width: 2px; background: var(--pen); transform-origin: top; }
+.mg-tl-row { position: relative; display: grid; grid-template-columns: var(--rail-x) minmax(0, 1fr); border-bottom: 1px solid var(--rule); }
+.mg-tl-row:last-child { border-bottom: 0; }
+.mg-tl-date { position: sticky; top: clamp(90px, 9cqi, 130px); align-self: start; padding: clamp(36px, 4.4cqi, 64px) clamp(18px, 2.6cqi, 40px); }
+.mg-tl-year { display: block; font-size: clamp(48px, 5.6cqi, 84px); color: var(--fg); }
+.mg-tl-dot {
+  position: absolute; right: -8px; top: calc(clamp(36px, 4.4cqi, 64px) + clamp(48px, 5.6cqi, 84px) * 0.42);
+  width: 15px; height: 15px; border-radius: 50%; background: var(--mg-paper); box-shadow: inset 0 0 0 2px var(--pen);
+  transition: background-color 0.5s ease 0.3s, transform 0.5s cubic-bezier(0.2, 0.9, 0.2, 1.4) 0.3s; transform: scale(0.6);
+}
+[data-ink="on"] .mg-tl-dot { background: var(--pen); transform: scale(1); }
+.mg-tl-note { display: block; margin-top: 10px; font-size: clamp(21px, 1.9cqi, 27px); transform: rotate(-4deg); transform-origin: left; }
+.mg-tl-body { padding: clamp(36px, 4.4cqi, 64px) clamp(22px, 4cqi, 64px) clamp(44px, 5cqi, 80px); }
+.mg-tl-title { margin: 0; font-family: var(--font-dm-serif), Georgia, serif; font-weight: 400; font-size: clamp(28px, 3cqi, 44px); line-height: 1.04; color: var(--fg); max-width: 18em; }
+.mg-tl-text { margin-top: 14px; max-width: 52ch; font-size: clamp(15px, 1.15cqi, 17px); line-height: 1.7; color: var(--muted); }
+.mg-tl-photo { position: relative; margin: clamp(24px, 2.8cqi, 40px) 0 0; max-width: 640px; }
+.mg-tl-img { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 4px; background: color-mix(in oklab, var(--mg-ink) 10%, var(--mg-paper)); }
+.mg-tl-img img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.mg-tl-photo:hover .mg-tl-img img { transform: scale(1.04); }
+.mg-tl-foot { height: clamp(48px, 7cqi, 112px); border: 1px solid var(--rule); border-bottom: 0; }
+
+@container (max-width: 700px) {
+  .mg-tl { --rail-x: 26px; }
+  .mg-tl-row { grid-template-columns: minmax(0, 1fr); padding-left: calc(var(--rail-x) + 22px); }
+  .mg-tl-date { position: relative; top: 0; padding: 34px 18px 0 0; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .mg-tl-dot { right: auto; left: -30px; top: calc(34px + clamp(48px, 5.6cqi, 84px) * 0.42); }
+  .mg-tl-note { margin-top: 0; }
+  .mg-tl-body { padding: 10px 18px 40px 0; }
+}
+
 /* telefoner og smalle skærme */
 @container (max-width: 860px) {
   .mg-two, .mg-skills-top, .mg-skills-low, .mg-why-low { grid-template-columns: minmax(0, 1fr); }
@@ -391,6 +433,7 @@ body {
   .mg-draw { stroke-dashoffset: 0; opacity: 1; transition: none; }
   .mg-write, .mg-card-write { clip-path: none; transition: none; }
   .mg-ci { transform: none; transition: none; }
+  .mg-tl-dot { transition: none; }
   .mg-deal { height: auto; }
   .mg-deal-stage { position: relative; height: auto; min-height: var(--mg-h); }
   .mg-card { transform: none; }
