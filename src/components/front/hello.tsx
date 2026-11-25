@@ -39,7 +39,7 @@ const SPOTS: { at: Pt; a: Pt; b: Pt; bend: number }[] = [
 
 /* Right under the intro video: Peter's photo in two sketchy pen boxes with words pointing at
    it, and "Hej." with a few lines about him. The photo is grey until you hover it. The hero
-   button and the "Ydelser" menu link land here (id="ydelser"). */
+   button lands here (id="ydelser"); the "Ydelser" menu link opens /ydelser. */
 export function Hello() {
   const t = useT(texts);
   const reduced = useReducedMotion();

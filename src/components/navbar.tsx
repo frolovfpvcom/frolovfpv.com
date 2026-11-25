@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useLang, useT, type Lang } from "@/lib/lang";
 import { GenieLink } from "@/lib/smooth-scroll";
 
-const hrefs = ["/#ydelser", "/arbejde", "/ommig", "/kontakt"];
+const hrefs = ["/ydelser", "/arbejde", "/ommig", "/kontakt"];
 
 const texts = {
   da: { links: ["Ydelser", "Arbejde", "Om mig", "Kontakt"], home: "Til forsiden", open: "Åbn menu", close: "Luk menu", switchTo: "Switch to English" },
