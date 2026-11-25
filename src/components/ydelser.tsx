@@ -98,8 +98,8 @@ const texts = {
         a: "Udendørs kræver det tørvejr og ikke for meget vind. Er vejret dårligt, finder vi en ny dag. Indendørs er vejret ligegyldigt.",
       },
       {
-        q: "Må du vise videoen?",
-        a: "Kun hvis I siger ja. Jeg spørger altid først, om jeg må vise videoen blandt mit arbejde.",
+        q: "Må jeg bruge videoen til mit eget brand?",
+        a: "Ja. Videoen er jeres, og I må bruge den til jeres brand: på hjemmesiden, de sociale medier og i annoncer. Jeg viser den kun blandt mit eget arbejde, hvis I siger ja.",
       },
     ],
     ctaTitle: "Skal vi lave en video sammen?",
@@ -190,8 +190,8 @@ const texts = {
         a: "Outdoors needs dry weather and not too much wind. If the weather is bad, we find a new day. Indoors, the weather doesn't matter.",
       },
       {
-        q: "Can you show the video?",
-        a: "Only if you say yes. I always ask first whether I may show the video among my work.",
+        q: "Can I use the video for my own brand?",
+        a: "Yes. The video is yours to use for your brand: on your website, social media and in ads. I only show it among my own work if you say yes.",
       },
     ],
     ctaTitle: "Shall we make a video together?",
