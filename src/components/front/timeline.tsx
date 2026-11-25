@@ -44,9 +44,9 @@ const entries: Entry[] = [
       da: "Så fandt jeg FPV-dronerne og var solgt på stedet. Brillerne på, og pludselig sad jeg selv oppe i luften.",
       en: "Then I found FPV drones and was sold on the spot. Goggles on, and suddenly I was up in the air myself.",
     },
-    image: "/images/portrait-fpv.jpg",
-    alt: { da: "Peter med FPV-briller på hovedet", en: "Peter with FPV goggles on his head" },
-    focus: "50% 62%",
+    image: "/images/peter-med-drone.jpg",
+    alt: { da: "Peter med FPV-briller på hovedet og sin FPV-drone i hænderne", en: "Peter with FPV goggles on his head, holding his FPV drone" },
+    focus: "50% 45%",
   },
   {
     year: "2026",
@@ -77,7 +77,7 @@ const texts = {
 /* "Min rejse": a timeline of how Peter got into FPV, built on the 21st.dev TimelineBlock01
    layout (framed header, then one row per year: the year on the left, a line with a dot,
    and the story with a photo on the right) in the notebook look. The pen line runs down
-   the timeline as you scroll. Sits right under "Hej." on the front page (id="tidslinje"). */
+   the timeline as you scroll. Sits on the "Om mig" page under the intro, and only there (Peter, 2026-11-25) (id="tidslinje"). */
 export function Timeline() {
   const t = useT(texts);
   const listRef = useRef<HTMLOListElement>(null);

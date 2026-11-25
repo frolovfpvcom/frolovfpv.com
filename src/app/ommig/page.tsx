@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { About } from "@/components/about";
 import { Contact } from "@/components/contact";
+import { Timeline } from "@/components/front/timeline";
 
 export const metadata: Metadata = {
   title: "Om mig | Frolov FPV",
@@ -11,6 +12,7 @@ export default function OmMigPage() {
   return (
     <main className="flex-1">
       <About />
+      <Timeline />
       <Contact />
     </main>
   );
