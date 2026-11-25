@@ -67,12 +67,22 @@ export function Navbar() {
     >
       <div className="mx-auto flex h-16 max-w-[1360px] items-center justify-between px-5 md:h-20 md:px-10">
         <GenieLink href="/" aria-label={t.home} className="flex items-center gap-2.5">
-          {/* the cat always stays black on a white tile, also on top of the intro video */}
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.12)] md:h-12 md:w-12">
+          {/* Peter's own logo: black on white pages, white on top of the intro video */}
+          <span className="relative block h-12 w-[107px] md:h-14 md:w-[125px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/kat-logo-tiger.png" alt="" className="h-9 w-auto md:h-10" />
+            <img
+              src="/images/logo.svg"
+              alt="Frolov FPV"
+              className={`absolute inset-0 h-full w-full transition-opacity duration-300 ${onVideo ? "opacity-0" : "opacity-100"}`}
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/logo-hvid.svg"
+              alt=""
+              aria-hidden="true"
+              className={`absolute inset-0 h-full w-full transition-opacity duration-300 ${onVideo ? "opacity-100" : "opacity-0"}`}
+            />
           </span>
-          <span className="text-[15px] font-semibold tracking-tight">Frolov FPV</span>
         </GenieLink>
 
         <div className="hidden items-center gap-9 md:flex">
