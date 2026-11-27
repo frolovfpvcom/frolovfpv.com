@@ -46,10 +46,13 @@ const reels: Reel[] = [
     tag: { da: "natur", en: "nature" },
   },
   {
-    image: "/projekter/gennem-skoven.jpg",
-    title: { da: "Gennem skoven", en: "Through the woods" },
-    meta: { da: "Kommer snart", en: "Coming soon" },
-    tag: { da: "snart!", en: "soon!" },
+    image: "/projekter/fortunfortet-fpv-drone.jpg",
+    video: "/clips/fortunfortet-fpv-drone-720.mp4",
+    videoLarge: "/clips/fortunfortet-fpv-drone.mp4",
+    aspect: 16 / 9,
+    title: { da: "Fortunfortet", en: "Fortun Fort" },
+    meta: { da: "Fæstning · 0:18", en: "Fortress · 0:18" },
+    tag: { da: "fæstning", en: "fortress" },
   },
 ];
 
